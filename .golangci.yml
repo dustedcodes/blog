@@ -1,0 +1,33 @@
+output:
+  format: colored-line-number
+linters:
+  disable-all: true
+  enable:
+    - bodyclose
+    - durationcheck
+    - errcheck
+    - errorlint
+    - errname
+    - exhaustive
+    - exportloopref
+    - goconst
+    - gofmt
+    - goimports
+    - gosec
+    - gosimple
+    - govet
+    - ineffassign
+    - noctx
+    - prealloc
+    - predeclared
+    - revive
+    - staticcheck
+    - typecheck
+    - unconvert
+    - unparam
+    - unused
+    - wastedassign
+    - wrapcheck
+linters-settings:
+  goconst:
+    ignore-tests: true

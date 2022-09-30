@@ -1,0 +1,13 @@
+{{ define "header" }}
+
+{{ end }}
+
+{{ define "content" }}
+<div class="text-center">
+    <h1>{{ .Base.Title }}</h1>
+    {{ range $i, $m := .Messages }}
+    <p class="mt-2">{{ $m }}</p>
+    {{ end }}
+    <p class="py-10">Return to the <a href="/">home page</a>.</p>
+</div>
+{{ end }}
