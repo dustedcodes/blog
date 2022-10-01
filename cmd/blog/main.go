@@ -6,7 +6,7 @@ import (
 	"time"
 
 	"github.com/dusted-go/config/dotenv"
-	"github.com/dusted-go/diagnostic/v2/log"
+	"github.com/dusted-go/diagnostic/v3/dlog"
 	"github.com/dusted-go/http/v3/middleware/assets"
 	"github.com/dusted-go/http/v3/middleware/httptrace"
 	"github.com/dusted-go/http/v3/middleware/proxy"
@@ -18,8 +18,8 @@ import (
 )
 
 func createLogProvider(settings *site.Settings) httptrace.CreateLogProviderFunc {
-	return func() *log.Provider {
-		provider := log.
+	return func() *dlog.Provider {
+		provider := dlog.
 			NewProvider().
 			SetFilter(assets.LogFilter).
 			SetMinLogLevel(settings.MinLogLevel()).
@@ -29,7 +29,7 @@ func createLogProvider(settings *site.Settings) httptrace.CreateLogProviderFunc 
 			AddLabel("appVersion", settings.ApplicationVersion)
 
 		if settings.IsProduction() {
-			provider.SetFormatter(log.NewStackdriverFormatter())
+			provider.SetFormatter(dlog.NewStackdriverFormatter())
 		}
 		return provider
 	}
@@ -53,7 +53,7 @@ func main() {
 	// Init logger
 	ctx := context.Background()
 	defaultLogProvider := createLogProvider(settings)
-	log.Context(ctx, defaultLogProvider())
+	dlog.Context(ctx, defaultLogProvider())
 
 	// Init public assets
 	assetMiddleware, err :=
@@ -71,8 +71,17 @@ func main() {
 		JSPath:  assetMiddleware.JS.VirtualFileName,
 	}
 
+	// Init all blog posts
+	blogPosts, err := site.ReadBlogPosts(ctx, "dist/posts")
+	if err != nil {
+		panic(err)
+	}
+
 	// Init web handler
-	webHandler := web.NewHandler(settings, siteAssets)
+	webHandler := web.NewHandler(
+		settings,
+		siteAssets,
+		blogPosts)
 
 	// ----------------------------------------
 	// Web Server:
@@ -91,7 +100,7 @@ func main() {
 	)
 	webApp := middleware.Next(webHandler)
 
-	log.New(ctx).Notice().Fmt("Starting web server on %s", settings.ServerAddress())
+	dlog.New(ctx).Notice().Fmt("Starting web server on %s", settings.ServerAddress())
 
 	httpServer := &http.Server{
 		Addr:              settings.ServerAddress(),

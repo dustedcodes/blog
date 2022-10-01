@@ -1,3 +1,32 @@
 @tailwind base;
 @tailwind components;
 @tailwind utilities;
+@tailwind screens;
+
+#logoLink {
+    @apply w-full grid grid-cols-5 gap-x-5 place-items-center text-5xl uppercase font-nunito font-extrabold text-zinc-300 hover:bg-gradient-to-l hover:from-lime-300 hover:via-cyan-300 hover:to-emerald-300 hover:text-transparent hover:bg-clip-text;
+}
+
+#logoLink:hover .logo > svg {
+    @apply fill-teal-300;
+}
+
+.logo > svg {
+    @apply fill-amber-300;
+}
+
+#menu a {
+    @apply font-sans uppercase font-semibold text-2xl text-transparent bg-clip-text bg-gradient-to-r from-rose-200 via-amber-300 to-orange-300 hover:bg-gradient-to-l hover:from-lime-300 hover:via-cyan-300 hover:to-emerald-300;
+}
+
+#socialLinks svg {
+    @apply w-7 fill-zinc-600 hover:fill-teal-300;
+}
+
+a {
+    @apply text-amber-300 hover:text-teal-300;
+}
+
+.pageTitle {
+    @apply text-center font-sans uppercase font-semibold text-xl text-transparent bg-clip-text bg-gradient-to-r from-teal-200 via-blue-200 to-cyan-300 hover:bg-gradient-to-l;
+}

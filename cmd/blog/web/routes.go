@@ -29,6 +29,6 @@ func (h *Handler) index(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
-	model := h.newBaseModel(r, "Dusted Codes").Empty()
+	model := h.newBaseModel(r, "Dusted Codes").Index(h.blogPosts)
 	h.renderView(w, r, 200, "index", model)
 }

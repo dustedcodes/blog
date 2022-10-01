@@ -1,0 +1,22 @@
+{{ define "header" }}
+{{ end }}
+
+{{ define "content" }}
+
+<div class="flex flex-row justify-center">
+    <h1 class="pageTitle">Blog</h1>
+</div>
+
+{{ range $i, $year := .SortedYears }}
+    <h2 class="text-center text-neutral-200 font-sans uppercase font-bold text-4xl my-10">{{ $year }}</h2>
+    <ul class="text-center text-xl my-5 font-sans">
+        {{ with $posts := index $.Catalogue $year }}
+            {{ range $i, $post := $posts }}
+                <li class="my-5"><a href="" class="text-neutral-400 font-normal text-xl">{{ $post }}</a></li>
+            {{ end }}
+        {{ end }}
+    </ul>
+{{ end }}
+
+
+{{ end }}

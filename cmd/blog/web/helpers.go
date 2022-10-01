@@ -8,7 +8,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/dusted-go/diagnostic/v2/log"
+	"github.com/dusted-go/diagnostic/v3/dlog"
 	"github.com/dusted-go/fault/fault"
 	"github.com/dusted-go/fault/stack"
 	"github.com/dusted-go/http/v3/request"
@@ -49,7 +49,7 @@ func (h *Handler) internalError(
 		"Oops, something went wrong. The server encountered an internal error or misconfiguration and was unable to complete your request.",
 		w, r)
 	if err != nil {
-		log.New(r.Context()).
+		dlog.New(r.Context()).
 			Err(err).
 			Critical().
 			Msg("Error sending 'Internal Server Error' response.")
@@ -70,7 +70,7 @@ func (h *Handler) renderView(
 		viewModel,
 		w, r)
 	if err != nil {
-		log.New(r.Context()).
+		dlog.New(r.Context()).
 			Critical().
 			Err(err).
 			Fmt("Failed to render view with key '%s'", viewKey)
@@ -120,7 +120,7 @@ func (h *Handler) handleErr(
 		return true
 	}
 
-	log.New(r.Context()).
+	dlog.New(r.Context()).
 		Critical().
 		Err(err).
 		Msg("An unexpected error occurred.")
@@ -132,7 +132,7 @@ func (h *Handler) notFound(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
-	log.New(r.Context()).
+	dlog.New(r.Context()).
 		Debug().
 		Fmt("Not Found: %s", request.FullURL(r))
 	response.ClearHeaders(w)
@@ -154,7 +154,7 @@ func (h *Handler) methodNotAllowed(
 		fmt.Sprintf("The HTTP method '%s' is not allowed on this path.", r.Method),
 		w, r)
 	if err != nil {
-		log.New(r.Context()).
+		dlog.New(r.Context()).
 			Err(err).
 			Critical().
 			Msg("Error sending 'Method Not Allowed' response.")
@@ -164,7 +164,7 @@ func (h *Handler) methodNotAllowed(
 func (h *Handler) Recover(recovered any, stackTrace stack.Trace) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		msg := fmt.Sprintf("%v\n\n%v", recovered, stackTrace.String())
-		log.New(r.Context()).Critical().Fmt("Application panicked with error:\n\n%v", msg)
+		dlog.New(r.Context()).Critical().Fmt("Application panicked with error:\n\n%v", msg)
 		h.internalError(w, r)
 	}
 }

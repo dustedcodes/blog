@@ -11,20 +11,44 @@ type Handler struct {
 	settings    *site.Settings
 	assets      *site.Assets
 	viewHandler *server.ViewHandler
+	blogPosts   []*site.BlogPost
 }
 
 func NewHandler(
 	settings *site.Settings,
 	assets *site.Assets,
+	blobPosts []*site.BlogPost,
 ) *Handler {
 	templateFiles := map[string][]string{
 		"index": {
-			"dist/templates/_layout.html",
-			"dist/templates/index.html",
+			"dist/templates/svgs/buymeacoffee.svg",
+			"dist/templates/svgs/docker.svg",
+			"dist/templates/svgs/github.svg",
+			"dist/templates/svgs/instagram.svg",
+			"dist/templates/svgs/linkedin.svg",
+			"dist/templates/svgs/paypal.svg",
+			"dist/templates/svgs/rssfeed.svg",
+			"dist/templates/svgs/stackoverflow.svg",
+			"dist/templates/svgs/twitter.svg",
+			"dist/templates/svgs/youtube.svg",
+			"dist/templates/svgs/logo.svg",
+			"dist/templates/pages/_layout.html",
+			"dist/templates/pages/index.html",
 		},
 		"message": {
-			"dist/templates/_layout.html",
-			"dist/templates/message.html",
+			"dist/templates/svgs/buymeacoffee.svg",
+			"dist/templates/svgs/docker.svg",
+			"dist/templates/svgs/github.svg",
+			"dist/templates/svgs/instagram.svg",
+			"dist/templates/svgs/linkedin.svg",
+			"dist/templates/svgs/paypal.svg",
+			"dist/templates/svgs/rssfeed.svg",
+			"dist/templates/svgs/stackoverflow.svg",
+			"dist/templates/svgs/twitter.svg",
+			"dist/templates/svgs/youtube.svg",
+			"dist/templates/svgs/logo.svg",
+			"dist/templates/pages/_layout.html",
+			"dist/templates/pages/message.html",
 		},
 	}
 	viewHandler := server.NewViewHandler(
@@ -36,6 +60,7 @@ func NewHandler(
 		settings:    settings,
 		assets:      assets,
 		viewHandler: viewHandler,
+		blogPosts:   blobPosts,
 	}
 }
 

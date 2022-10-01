@@ -7,7 +7,7 @@ import (
 	"strings"
 
 	"github.com/dusted-go/config/env"
-	"github.com/dusted-go/diagnostic/v2/log"
+	"github.com/dusted-go/diagnostic/v3/dlog"
 	"github.com/dusted-go/http/v3/request"
 )
 
@@ -18,7 +18,7 @@ type Assets struct {
 
 type Settings struct {
 	EnvironmentName    string
-	LogLevel           log.Level
+	LogLevel           dlog.Level
 	ApplicationName    string
 	ApplicationVersion string
 	HTTPPort           int
@@ -30,7 +30,7 @@ type Settings struct {
 	MaxRequestSize     int64
 }
 
-func (s *Settings) MinLogLevel() log.Level {
+func (s *Settings) MinLogLevel() dlog.Level {
 	return s.LogLevel
 }
 
@@ -72,7 +72,7 @@ func (s *Settings) URLs(r *http.Request) *URLs {
 func InitSettings() *Settings {
 	return &Settings{
 		EnvironmentName:    env.GetOrDefault("ENV_NAME", "Development"),
-		LogLevel:           log.ParseLevel(env.GetOrDefault("LOG_LEVEL", "Debug")),
+		LogLevel:           dlog.ParseLevel(env.GetOrDefault("LOG_LEVEL", "Debug")),
 		ApplicationName:    env.GetOrDefault("APP_NAME", "dustedcodes"),
 		ApplicationVersion: env.GetOrDefault("APP_VERSION", "0.1.0"),
 		HTTPPort:           env.GetIntOrDefault("HTTP_PORT", 3000),
