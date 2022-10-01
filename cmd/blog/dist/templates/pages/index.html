@@ -12,7 +12,7 @@
     <ul class="text-center text-xl my-5 font-sans">
         {{ with $posts := index $.Catalogue $year }}
             {{ range $i, $post := $posts }}
-                <li class="my-5"><a href="" class="text-neutral-400 font-normal text-xl">{{ $post }}</a></li>
+                <li class="my-5"><a href="{{ $post.Permalink }}" class="text-neutral-400 hover:text-amber-300 font-normal text-xl">{{ $post.Title }}</a></li>
             {{ end }}
         {{ end }}
     </ul>

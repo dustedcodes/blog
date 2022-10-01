@@ -25,9 +25,14 @@ type UserMessage struct {
 	Messages []template.HTML
 }
 
+type BlogPostLink struct {
+	Title     string
+	Permalink string
+}
+
 type Index struct {
 	Base        Base
-	Catalogue   map[int][]string
+	Catalogue   map[int][]BlogPostLink
 	SortedYears []int
 }
 
@@ -50,21 +55,25 @@ func (b Base) UserMessages(msgs ...template.HTML) UserMessage {
 }
 
 func (b Base) Index(blogPosts []*site.BlogPost) Index {
-	catalogue := map[int][]string{}
+	catalogue := map[int][]BlogPostLink{}
 	years := []int{}
+
 	for _, post := range blogPosts {
 		year := post.Year()
 		if !array.Contains(years, year) {
 			years = append(years, year)
 		}
-
 		catalogue[year] = array.Prepend(
 			catalogue[year],
-			post.Title)
+			BlogPostLink{
+				Title:     post.Title,
+				Permalink: b.URLs.BlogPostPermalink(post.ID),
+			})
 	}
 	sort.Slice(years, func(i, j int) bool {
 		return years[i] > years[j]
 	})
+
 	return Index{
 		Base:        b,
 		Catalogue:   catalogue,

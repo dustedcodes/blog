@@ -69,19 +69,19 @@
         </div>
         <div class="flex flex-row flex-nowrap justify-center items-center my-10">
             <nav id="menu" class="grid grid-cols-1 place-content-center text-center gap-y-2">
-                    <a href="">BLOG</a>
-                    <a href="">Products</a>
-                    <a href="">Open Source</a>
-                    <a href="">Hire</a>
-                    <a href="">About</a>
+                    <a href="/">BLOG</a>
+                    <a href="/products">Products</a>
+                    <a href="/open-source">Open Source</a>
+                    <a href="/hire">Hire</a>
+                    <a href="/about">About</a>
             </nav>
         </div>
     </header>
-    <main class="bg-neutral-900 mt-5 py-10">
+    <main class="bg-neutral-900 mt-5 py-10 border-y border-zinc-800">
         {{ template "content" . }}
     </main>
     <footer class="bg-zinc-900 text-center text-zinc-500 py-10 text-base">
-        <p class="mt-2 uppercase font-semibold font-nunito text-zinc-400">Copyright &copy; {{ .Base.Year }} Dusted Codes Limited</p>
+        <p class="mt-2 uppercase font-normal font-nunito text-zinc-400 tracking-wide">Copyright &copy; {{ .Base.Year }} Dusted Codes Limited</p>
         <p class="mt-2 font-light">All content on this website, such as text, graphics, logos and images is the property of Dusted Codes Limited.</p>
     </footer>
 </body>
