@@ -2,15 +2,21 @@ package site
 
 import (
 	"bufio"
+	"bytes"
 	"context"
 	"crypto/sha1"
 	"encoding/hex"
+	"html/template"
 	"os"
 	"strings"
 	"time"
 
 	"github.com/dusted-go/diagnostic/v3/dlog"
 	"github.com/dusted-go/fault/fault"
+	"github.com/yuin/goldmark"
+	"github.com/yuin/goldmark/extension"
+	"github.com/yuin/goldmark/parser"
+	"github.com/yuin/goldmark/renderer/html"
 )
 
 type BlogPost struct {
@@ -30,12 +36,29 @@ func (b *BlogPost) Year() int {
 	return b.PublishDate.Year()
 }
 
-func (b *BlogPost) URLEncodedTitle() string {
+func (b *BlogPost) Excerpt() string {
 	return "ToDo"
 }
 
-func (b *BlogPost) Excerpt() string {
-	return "ToDo"
+func (b *BlogPost) ParsedMarkdown() (template.HTML, error) {
+	parser := goldmark.New(
+		goldmark.WithExtensions(
+			extension.Table,
+			extension.Strikethrough),
+		goldmark.WithRendererOptions(
+			html.WithUnsafe(),
+		), goldmark.WithParserOptions(
+			parser.WithAutoHeadingID(),
+		))
+
+	var buf bytes.Buffer
+	if err := parser.Convert([]byte(b.Markdown), &buf); err != nil {
+		return template.HTML(""),
+			fault.SystemWrap(err, "markdown", "SafeParse", "could not parse Markdown")
+	}
+
+	// nolint: gosec // string was already escaped before
+	return template.HTML(buf.Bytes()), nil
 }
 
 func ReadBlogPosts(ctx context.Context, path string) ([]*BlogPost, error) {
@@ -56,31 +79,28 @@ func ReadBlogPosts(ctx context.Context, path string) ([]*BlogPost, error) {
 			continue
 		}
 		fileNameParts := strings.SplitN(fileName, "-", 2)
+		blogPostID := strings.TrimSuffix(fileNameParts[1], ".md")
 		publishDate, err := time.Parse("2006_01_02", fileNameParts[0])
 		if err != nil {
 			dlog.New(ctx).Error().Err(err).Msg("An error occurred when parsing the blog post's date.")
 			continue
 		}
 
-		file, err := os.Open(path + "/" + fileName)
-		defer func(f *os.File) {
-			err := f.Close()
-			if err != nil {
-				panic(err)
-			}
-		}(file)
-
+		fileBuffer, err := os.ReadFile(path + "/" + fileName)
 		if err != nil {
-			dlog.New(ctx).Error().Err(err).Msg("An error occurred when reading blog post.")
+			dlog.New(ctx).Error().Err(err).Msg("An error occurred when reading a .md file from disk.")
 			continue
 		}
+		fileBufferWithoutBOM := bytes.TrimLeft(fileBuffer, "\xef\xbb\xbf")
 
 		var metadata []string
-		var body []string
+		var title string
+		body := strings.Builder{}
+
 		readMeta := false
 		readBody := false
 
-		scanner := bufio.NewScanner(file)
+		scanner := bufio.NewScanner(bytes.NewReader(fileBufferWithoutBOM))
 		scanner.Split(bufio.ScanLines)
 		for scanner.Scan() {
 			line := scanner.Text()
@@ -96,10 +116,21 @@ func ReadBlogPosts(ctx context.Context, path string) ([]*BlogPost, error) {
 
 			if readMeta {
 				metadata = append(metadata, line)
+			} else if strings.TrimSpace(line) == "" && body.Len() == 0 {
+				continue
+			} else if strings.HasPrefix(line, "# ") && body.Len() == 0 {
+				title = strings.TrimSpace(strings.TrimPrefix(line, "# "))
 			} else if readBody {
-				body = append(body, line)
+				body.WriteString(line)
+				body.WriteString("\n")
 			}
 		}
+
+		if len(title) == 0 {
+			dlog.New(ctx).Warning().Fmt("Skipping blog post without title: %s", fileName)
+			continue
+		}
+		markdown := body.String()
 
 		var tags []string
 		for _, meta := range metadata {
@@ -112,34 +143,6 @@ func ReadBlogPosts(ctx context.Context, path string) ([]*BlogPost, error) {
 			tags = strings.Split(strings.TrimSpace(metaParts[1]), " ")
 		}
 
-		var title string
-		content := strings.Builder{}
-		skipBlogPost := false
-		for _, line := range body {
-			if content.Len() == 0 {
-				if strings.TrimSpace(line) == "" {
-					continue
-				}
-				if strings.HasPrefix(line, "# ") {
-					title = strings.TrimSpace(strings.TrimPrefix(line, "# "))
-				}
-			}
-
-			if len(title) == 0 {
-				dlog.New(ctx).Warning().Fmt("Skipping blog post without title: %s", fileName)
-				skipBlogPost = true
-				break
-			}
-
-			content.WriteString(line)
-			content.WriteString("\n")
-		}
-		if skipBlogPost {
-			continue
-		}
-
-		markdown := content.String()
-
 		valueToHash := title + markdown + publishDate.String()
 		for _, tag := range tags {
 			valueToHash = valueToHash + tag
@@ -151,7 +154,7 @@ func ReadBlogPosts(ctx context.Context, path string) ([]*BlogPost, error) {
 		hashCode := hex.EncodeToString(hash.Sum(nil))
 
 		blogPost := &BlogPost{
-			ID:          fileNameParts[1],
+			ID:          blogPostID,
 			Title:       title,
 			PublishDate: publishDate,
 			Tags:        tags,

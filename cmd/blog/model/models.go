@@ -2,7 +2,9 @@ package model
 
 import (
 	"html/template"
+	"net/url"
 	"sort"
+	"time"
 
 	"github.com/dusted-go/utils/array"
 	"github.com/dustedcodes/blog/cmd/blog/site"
@@ -34,6 +36,24 @@ type Index struct {
 	Base        Base
 	Catalogue   map[int][]BlogPostLink
 	SortedYears []int
+}
+
+type BlogPost struct {
+	Base             Base
+	PublishDate      time.Time
+	Content          template.HTML
+	Tags             []string
+	EncodedTitle     string
+	Permalink        string
+	EncodedPermalink string
+}
+
+func (b BlogPost) PublishedOn() string {
+	return b.PublishDate.Format("02 Jan 2006")
+}
+
+func (b BlogPost) PublishedOnMachineReadable() string {
+	return b.PublishDate.Format("2006-01-02T15:04:05")
 }
 
 func (b Base) Empty() Empty {
@@ -78,5 +98,23 @@ func (b Base) Index(blogPosts []*site.BlogPost) Index {
 		Base:        b,
 		Catalogue:   catalogue,
 		SortedYears: years,
+	}
+}
+
+func (b Base) BlogPost(
+	blogPostID string,
+	content template.HTML,
+	publishDate time.Time,
+	tags []string,
+) BlogPost {
+	permalink := b.URLs.BlogPostPermalink(blogPostID)
+	return BlogPost{
+		Base:             b,
+		PublishDate:      publishDate,
+		Content:          content,
+		Tags:             tags,
+		EncodedTitle:     url.QueryEscape(b.Title),
+		Permalink:        permalink,
+		EncodedPermalink: url.QueryEscape(permalink),
 	}
 }

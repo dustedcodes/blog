@@ -50,6 +50,21 @@ func NewHandler(
 			"dist/templates/pages/_layout.html",
 			"dist/templates/pages/message.html",
 		},
+		"blogPost": {
+			"dist/templates/svgs/buymeacoffee.svg",
+			"dist/templates/svgs/docker.svg",
+			"dist/templates/svgs/github.svg",
+			"dist/templates/svgs/instagram.svg",
+			"dist/templates/svgs/linkedin.svg",
+			"dist/templates/svgs/paypal.svg",
+			"dist/templates/svgs/rssfeed.svg",
+			"dist/templates/svgs/stackoverflow.svg",
+			"dist/templates/svgs/twitter.svg",
+			"dist/templates/svgs/youtube.svg",
+			"dist/templates/svgs/logo.svg",
+			"dist/templates/pages/_layout.html",
+			"dist/templates/pages/blogPost.html",
+		},
 	}
 	viewHandler := server.NewViewHandler(
 		settings.HotReload(),
@@ -84,6 +99,9 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			h.panic(w, r)
 			return
 		}
+
+		h.blogPost(w, r)
+		return
 	}
 
 	h.notFound(w, r)

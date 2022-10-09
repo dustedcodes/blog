@@ -36,7 +36,6 @@ func createLogProvider(settings *site.Settings) httptrace.CreateLogProviderFunc 
 }
 
 func main() {
-
 	// ----------------------------------------
 	// Bootstrap:
 	// ----------------------------------------
@@ -50,8 +49,11 @@ func main() {
 	// Init settings
 	settings := site.InitSettings()
 
+	// Init context
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
+
 	// Init logger
-	ctx := context.Background()
 	defaultLogProvider := createLogProvider(settings)
 	dlog.Context(ctx, defaultLogProvider())
 
@@ -104,7 +106,9 @@ func main() {
 
 	httpServer := &http.Server{
 		Addr:              settings.ServerAddress(),
+		ReadTimeout:       5 * time.Second,
 		ReadHeaderTimeout: 3 * time.Second,
+		WriteTimeout:      10 * time.Second,
 		Handler:           webApp,
 		MaxHeaderBytes:    int(settings.MaxRequestSize),
 	}

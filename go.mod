@@ -15,6 +15,7 @@ require ( // indirect
 	github.com/golang/protobuf v1.5.2 // indirect
 	github.com/tdewolff/minify v2.3.6+incompatible // indirect
 	github.com/tdewolff/parse v2.3.4+incompatible // indirect
+	github.com/yuin/goldmark v1.5.2
 	google.golang.org/genproto v0.0.0-20220930163606-c98284e70a91 // indirect
 	google.golang.org/protobuf v1.28.1 // indirect
 )

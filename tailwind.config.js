@@ -4,9 +4,9 @@ module.exports = {
   content: ["./cmd/**/*.{html,js,md}"],
   theme: {
     fontFamily: {
-      'sans': [...defaultTheme.fontFamily.sans],
+      'sans': ['Inter', ...defaultTheme.fontFamily.sans],
       'serif': [...defaultTheme.fontFamily.serif],
-      'mono': [...defaultTheme.fontFamily.mono],
+      'mono': ['Inconsolata', ...defaultTheme.fontFamily.mono],
       'nunito': ['Nunito', ...defaultTheme.fontFamily.sans]
   },
     extend: {},
