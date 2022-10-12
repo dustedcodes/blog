@@ -5,12 +5,12 @@
 {{ define "content" }}
 <article>
     <header>
-        <h1 class="text-7xl text-center font-bold text-neutral-300 mb-10 leading-normal">{{ .Base.Title }}</h1>
-        <p class="text-center text-lg font-nunito italic mb-10 text-neutral-400">Published <time datetime="{{ .PublishedOnMachineReadable }}">{{ .PublishedOn }}</time></p>
+        <h1 class="text-7xl text-center font-bold text-zinc-300 mb-10 leading-normal">{{ .Base.Title }}</h1>
+        <p class="text-center text-lg font-nunito italic mb-10 text-zinc-400">Published <time datetime="{{ .PublishedOnMachineReadable }}">{{ .PublishedOn }}</time></p>
         {{ if .Tags }}
         <p class="text-center font-semibold text-base mb-20 font-nunito">
             {{ range $i, $t := .Tags }}
-            <a class="mx-2 px-4 py-1 rounded-xl bg-neutral-800 hover:bg-amber-300 hover:text-black hover:no-underline" href="">{{ $t }}</a>
+            <a class="mx-2 px-4 py-1 rounded-xl bg-zinc-800 hover:bg-amber-300 hover:text-black hover:no-underline" href="">{{ $t }}</a>
             {{ end }}
         </p>
         {{ end }}
@@ -19,7 +19,7 @@
         {{ .Content }}
     </main>
     <footer class="mt-20 mb-10">
-        <h6 class="text-center text-neutral-400 uppercase font-semibold font-nunito">Share this post:</h6>
+        <h6 class="text-center text-zinc-400 uppercase font-semibold font-nunito">Share this post:</h6>
         <div class="share-links">
             <a href="mailto:?subject={{ .Base.Title }}&amp;body=Hi,%0D%0A%0D%0AI saw this article and thought you might find it interesting too:%0D%0A%0D%0A{{ .Base.Title }} - {{ .Permalink }}" target="_blank" rel="nofollow, noopener" title="Share by Email">
                 <svg version="1.0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612.074000 612.074000"><path d="M612.074,132.141v-2.38c0-8.849-4.016-19.26-11.229-26.473l-0.818-0.818c0,0-0.818,0-0.818-0.818   c-1.636-1.636-3.198-2.38-4.833-4.016c-0.818,0-0.818-0.818-1.636-0.818c-1.636-0.818-4.016-1.636-5.652-2.38   c-0.818,0-0.818-0.818-1.636-0.818c-2.38-0.818-4.833-1.636-7.213-1.636c-0.818,0-0.818,0-1.636,0c-2.38,0-5.651-0.818-8.849-0.818   H43.427c-3.198,0-6.395,0-9.667,0.818c-0.818,0-1.636,0-2.38,0.818c-2.38,0.818-4.834,0.818-6.395,1.636   c-0.818,0-0.818,0.818-1.636,0.818c-1.636,0.818-4.016,1.636-5.652,2.38l-0.818,0.818c-1.636,0.818-3.198,2.38-4.834,3.198   c-0.818,0.818-1.636,1.636-2.38,2.38C4.016,110.428,0.818,117.715,0,125.746c0,0.818,0,0.818,0,1.636v357.384   c0,0.818,0,0.818,0,1.636c1.636,11.229,7.213,20.896,15.244,26.473c7.213,4.833,16.062,8.031,26.473,8.031H569.39c0,0,0,0,0.818,0   l0,0c2.38,0,5.651,0,8.031-0.818c0.818,0,0.818,0,1.636,0c2.38-0.818,4.834-0.818,6.395-1.636h0.818   c17.698-6.395,24.911-21.714,24.911-36.14v-2.38v-0.818v-0.818V134.521c0-0.818,0-0.818,0-1.636   C612.074,132.959,612.074,132.959,612.074,132.141z M560.69,120.913l-252.98,246.51l-57.854-56.218l0,0L51.459,120.838H560.69   V120.913z M29.819,475.099V140.991l187.095,179.882L29.819,475.099z M299.679,491.905H56.292l182.336-149.393l58.597,57.036   c2.38,2.38,4.834,3.198,7.213,4.016h0.818c0.818,0,0.818,0,1.636,0l0,0c0.818,0,1.636,0,1.636,0h0.818   c2.38-0.818,5.651-1.636,7.213-4.016l55.4-53.838l183.079,146.196H299.679z M582.329,475.843L394.417,324.07L582.329,140.99   V475.843z"></path></svg>

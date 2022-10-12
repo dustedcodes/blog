@@ -107,10 +107,14 @@ func main() {
 	httpServer := &http.Server{
 		Addr:              settings.ServerAddress(),
 		ReadTimeout:       5 * time.Second,
-		ReadHeaderTimeout: 3 * time.Second,
 		WriteTimeout:      10 * time.Second,
-		Handler:           webApp,
-		MaxHeaderBytes:    int(settings.MaxRequestSize),
+		ReadHeaderTimeout: 3 * time.Second,
+		// Google Cloud LoadBalancer has a keepalive timeout of 600s
+		// and recommends to set the backend server to have one of 620s
+		// https://cloud.google.com/load-balancing/docs/https#timeouts_and_retries
+		IdleTimeout:    620 * time.Second,
+		Handler:        webApp,
+		MaxHeaderBytes: int(settings.MaxRequestSize),
 	}
 	err = httpServer.ListenAndServe()
 	if err != nil {

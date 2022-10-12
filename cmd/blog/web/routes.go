@@ -42,9 +42,9 @@ func (h *Handler) renderBlogPost(
 	b *site.BlogPost,
 ) {
 
-	// Parse Markdown:
+	// Parse content:
 	// ---
-	parsed, err := b.ParsedMarkdown()
+	content, err := b.HTML()
 	if h.handleErr(w, r, err) {
 		return
 	}
@@ -58,7 +58,7 @@ func (h *Handler) renderBlogPost(
 
 	// Respond with view:
 	// ---
-	m := h.newBaseModel(r, b.Title).BlogPost(b.ID, parsed, b.PublishDate, b.Tags)
+	m := h.newBaseModel(r, b.Title).BlogPost(b.ID, content, b.PublishDate, b.Tags)
 	h.renderView(
 		w, r, 200, "blogPost", m)
 }

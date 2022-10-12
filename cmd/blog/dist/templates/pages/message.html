@@ -4,10 +4,10 @@
 
 {{ define "content" }}
 <div class="text-center">
-    <h1 class="text-neutral-300 text-7xl font-semibold mb-10">{{ .Base.Title }}</h1>
+    <h1 class="text-zinc-300 text-7xl font-semibold mb-10">{{ .Base.Title }}</h1>
     {{ range $i, $m := .Messages }}
-    <p class="mt-2 text-neutral-400 text-xl">{{ $m }}</p>
+    <p class="mt-2 text-zinc-400 text-xl">{{ $m }}</p>
     {{ end }}
-    <p class="mt-2 text-neutral-400 text-xl">Return to the <a href="/">home page</a>.</p>
+    <p class="mt-2 text-zinc-400 text-xl">Return to the <a href="/">home page</a>.</p>
 </div>
 {{ end }}

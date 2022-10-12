@@ -24,7 +24,7 @@
 }
 
 #socialLinks svg {
-    @apply w-7 fill-zinc-600 hover:fill-cyan-300;
+    @apply w-7 fill-zinc-500 hover:fill-cyan-300;
 }
 
 a {
@@ -32,7 +32,7 @@ a {
 }
 
 .pageTitle {
-    @apply text-center font-sans uppercase font-semibold text-xl text-neutral-300;
+    @apply text-center font-sans uppercase font-semibold text-xl text-zinc-300;
 }
 
 /* ----------------
@@ -40,31 +40,31 @@ Blog Posts
 ---------------- */
 
 .blogPostContent {
-    @apply text-neutral-400 text-xl font-sans;
+    @apply text-zinc-400 text-xl font-sans;
 }
 
 .blogPostContent h1 {
-    @apply text-7xl text-center font-bold text-neutral-300 mb-10 leading-normal;
+    @apply text-7xl text-center font-bold text-zinc-300 mb-10 leading-normal;
 }
 
 .blogPostContent h2 {
-    @apply text-5xl text-left font-bold text-neutral-300 my-10 leading-normal;
+    @apply text-5xl text-left font-bold text-zinc-300 my-10 leading-normal;
 }
 
 .blogPostContent h3 {
-    @apply text-4xl text-left font-semibold text-neutral-300 my-10 leading-normal;
+    @apply text-4xl text-left font-semibold text-zinc-300 my-10 leading-normal;
 }
 
 .blogPostContent h4 {
-    @apply text-2xl text-left font-bold text-neutral-300 my-7 leading-normal;
+    @apply text-2xl text-left font-bold text-zinc-300 my-7 leading-normal;
 }
 
 .blogPostContent h5 {
-    @apply text-xl text-left font-semibold text-neutral-300 my-7 leading-normal;
+    @apply text-xl text-left font-semibold text-zinc-300 my-7 leading-normal;
 }
 
 .blogPostContent h6 {
-    @apply text-base font-bold text-neutral-300 my-5 leading-normal;
+    @apply text-base font-bold text-zinc-300 my-5 leading-normal;
 }
 
 .blogPostContent p {
@@ -80,7 +80,7 @@ Blog Posts
 }
 
 .blogPostContent code {
-    @apply inline-block px-2 rounded font-mono text-left whitespace-pre-wrap break-words bg-neutral-800 text-red-300 leading-snug;
+    @apply inline-block px-2 rounded font-mono text-left whitespace-pre-wrap break-words bg-zinc-800 text-red-300 leading-snug;
 }
 
 .blogPostContent pre {
@@ -109,11 +109,28 @@ Blog Posts
 
 .blogPostContent strong,
 .blogPostContent b {
-    @apply font-semibold text-neutral-300;
+    @apply font-semibold text-zinc-300;
+}
+
+.blogPostContent i,
+.blogPostContent em {
+    @apply font-nunito italic;
 }
 
 .blogPostContent .youTubeVideo {
     @apply my-10 max-w-3xl;
+}
+
+.blogPostContent blockquote {
+    @apply bg-zinc-800 rounded border-l-8 border-l-zinc-500 py-4 px-4 mt-5;
+}
+
+.blogPostContent blockquote > p:first-child {
+    @apply mt-0 pt-0;
+}
+
+.blogPostContent blockquote > footer {
+    @apply mt-4 font-nunito not-italic text-lg text-zinc-400;
 }
 
 .share-links {
@@ -121,7 +138,7 @@ Blog Posts
 }
 
 .share-links svg {
-    @apply w-7 fill-neutral-600 hover:fill-cyan-300;
+    @apply w-7 fill-zinc-500 hover:fill-cyan-300;
 }
 
 /* ----------------
@@ -162,10 +179,10 @@ Hamburger menu icon
     stroke-dashoffset: -132px;
 }
 .ham-line {
-    @apply stroke-zinc-400;
+    @apply stroke-zinc-300;
 }
 .ham-burger:hover .ham-line {
-    @apply stroke-zinc-300;
+    @apply stroke-zinc-200;
 }
 .ham-burger.ham-active .ham-top,
 .ham-burger.ham-active .ham-middle,

@@ -758,14 +758,15 @@ video {
   border-bottom-width: 1px;
 }
 
-.border-zinc-800 {
+.border-y-zinc-800 {
   --tw-border-opacity: 1;
-  border-color: rgb(39 39 42 / var(--tw-border-opacity));
+  border-top-color: rgb(39 39 42 / var(--tw-border-opacity));
+  border-bottom-color: rgb(39 39 42 / var(--tw-border-opacity));
 }
 
-.border-gray-800 {
-  --tw-border-opacity: 1;
-  border-color: rgb(31 41 55 / var(--tw-border-opacity));
+.bg-gray-900 {
+  --tw-bg-opacity: 1;
+  background-color: rgb(17 24 39 / var(--tw-bg-opacity));
 }
 
 .bg-zinc-900 {
@@ -773,19 +774,9 @@ video {
   background-color: rgb(24 24 27 / var(--tw-bg-opacity));
 }
 
-.bg-neutral-900 {
+.bg-zinc-800 {
   --tw-bg-opacity: 1;
-  background-color: rgb(23 23 23 / var(--tw-bg-opacity));
-}
-
-.bg-neutral-800 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(38 38 38 / var(--tw-bg-opacity));
-}
-
-.bg-gray-900 {
-  --tw-bg-opacity: 1;
-  background-color: rgb(17 24 39 / var(--tw-bg-opacity));
+  background-color: rgb(39 39 42 / var(--tw-bg-opacity));
 }
 
 .py-10 {
@@ -888,31 +879,6 @@ video {
   letter-spacing: 0.025em;
 }
 
-.text-zinc-400 {
-  --tw-text-opacity: 1;
-  color: rgb(161 161 170 / var(--tw-text-opacity));
-}
-
-.text-zinc-500 {
-  --tw-text-opacity: 1;
-  color: rgb(113 113 122 / var(--tw-text-opacity));
-}
-
-.text-neutral-300 {
-  --tw-text-opacity: 1;
-  color: rgb(212 212 212 / var(--tw-text-opacity));
-}
-
-.text-neutral-400 {
-  --tw-text-opacity: 1;
-  color: rgb(163 163 163 / var(--tw-text-opacity));
-}
-
-.text-neutral-200 {
-  --tw-text-opacity: 1;
-  color: rgb(229 229 229 / var(--tw-text-opacity));
-}
-
 .text-gray-400 {
   --tw-text-opacity: 1;
   color: rgb(156 163 175 / var(--tw-text-opacity));
@@ -921,6 +887,21 @@ video {
 .text-gray-500 {
   --tw-text-opacity: 1;
   color: rgb(107 114 128 / var(--tw-text-opacity));
+}
+
+.text-zinc-300 {
+  --tw-text-opacity: 1;
+  color: rgb(212 212 216 / var(--tw-text-opacity));
+}
+
+.text-zinc-400 {
+  --tw-text-opacity: 1;
+  color: rgb(161 161 170 / var(--tw-text-opacity));
+}
+
+.text-zinc-200 {
+  --tw-text-opacity: 1;
+  color: rgb(228 228 231 / var(--tw-text-opacity));
 }
 
 .underline {
@@ -1023,7 +1004,7 @@ video {
 
 #socialLinks svg {
   width: 1.75rem;
-  fill: #52525b;
+  fill: #71717a;
 }
 
 #socialLinks svg:hover {
@@ -1048,7 +1029,7 @@ a:hover {
   font-weight: 600;
   text-transform: uppercase;
   --tw-text-opacity: 1;
-  color: rgb(212 212 212 / var(--tw-text-opacity));
+  color: rgb(212 212 216 / var(--tw-text-opacity));
 }
 
 /* ----------------
@@ -1060,7 +1041,7 @@ Blog Posts
   font-size: 1.25rem;
   line-height: 1.75rem;
   --tw-text-opacity: 1;
-  color: rgb(163 163 163 / var(--tw-text-opacity));
+  color: rgb(161 161 170 / var(--tw-text-opacity));
 }
 
 .blogPostContent h1 {
@@ -1070,7 +1051,7 @@ Blog Posts
   font-weight: 700;
   line-height: 1.5;
   --tw-text-opacity: 1;
-  color: rgb(212 212 212 / var(--tw-text-opacity));
+  color: rgb(212 212 216 / var(--tw-text-opacity));
 }
 
 .blogPostContent h2 {
@@ -1081,7 +1062,7 @@ Blog Posts
   font-weight: 700;
   line-height: 1.5;
   --tw-text-opacity: 1;
-  color: rgb(212 212 212 / var(--tw-text-opacity));
+  color: rgb(212 212 216 / var(--tw-text-opacity));
 }
 
 .blogPostContent h3 {
@@ -1093,7 +1074,7 @@ Blog Posts
   font-weight: 600;
   line-height: 1.5;
   --tw-text-opacity: 1;
-  color: rgb(212 212 212 / var(--tw-text-opacity));
+  color: rgb(212 212 216 / var(--tw-text-opacity));
 }
 
 .blogPostContent h4 {
@@ -1105,7 +1086,7 @@ Blog Posts
   font-weight: 700;
   line-height: 1.5;
   --tw-text-opacity: 1;
-  color: rgb(212 212 212 / var(--tw-text-opacity));
+  color: rgb(212 212 216 / var(--tw-text-opacity));
 }
 
 .blogPostContent h5 {
@@ -1117,7 +1098,7 @@ Blog Posts
   font-weight: 600;
   line-height: 1.5;
   --tw-text-opacity: 1;
-  color: rgb(212 212 212 / var(--tw-text-opacity));
+  color: rgb(212 212 216 / var(--tw-text-opacity));
 }
 
 .blogPostContent h6 {
@@ -1128,7 +1109,7 @@ Blog Posts
   font-weight: 700;
   line-height: 1.5;
   --tw-text-opacity: 1;
-  color: rgb(212 212 212 / var(--tw-text-opacity));
+  color: rgb(212 212 216 / var(--tw-text-opacity));
 }
 
 .blogPostContent p {
@@ -1152,7 +1133,7 @@ Blog Posts
   overflow-wrap: break-word;
   border-radius: 0.25rem;
   --tw-bg-opacity: 1;
-  background-color: rgb(38 38 38 / var(--tw-bg-opacity));
+  background-color: rgb(39 39 42 / var(--tw-bg-opacity));
   padding-left: 0.5rem;
   padding-right: 0.5rem;
   text-align: left;
@@ -1209,13 +1190,48 @@ Blog Posts
 .blogPostContent b {
   font-weight: 600;
   --tw-text-opacity: 1;
-  color: rgb(212 212 212 / var(--tw-text-opacity));
+  color: rgb(212 212 216 / var(--tw-text-opacity));
+}
+
+.blogPostContent i, 
+.blogPostContent em {
+  font-family: Nunito, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-style: italic;
 }
 
 .blogPostContent .youTubeVideo {
   margin-top: 2.5rem;
   margin-bottom: 2.5rem;
   max-width: 48rem;
+}
+
+.blogPostContent blockquote {
+  margin-top: 1.25rem;
+  border-radius: 0.25rem;
+  border-left-width: 8px;
+  --tw-border-opacity: 1;
+  border-left-color: rgb(113 113 122 / var(--tw-border-opacity));
+  --tw-bg-opacity: 1;
+  background-color: rgb(39 39 42 / var(--tw-bg-opacity));
+  padding-top: 1rem;
+  padding-bottom: 1rem;
+  padding-left: 1rem;
+  padding-right: 1rem;
+}
+
+.blogPostContent blockquote > p:first-child {
+  margin-top: 0px;
+  padding-top: 0px;
+}
+
+.blogPostContent blockquote > footer {
+  margin-top: 1rem;
+  font-family: Nunito, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
+  font-size: 1.125rem;
+  line-height: 1.75rem;
+  font-style: normal;
+  --tw-text-opacity: 1;
+  color: rgb(161 161 170 / var(--tw-text-opacity));
 }
 
 .share-links {
@@ -1233,7 +1249,7 @@ Blog Posts
 
 .share-links svg {
   width: 1.75rem;
-  fill: #525252;
+  fill: #71717a;
 }
 
 .share-links svg:hover {
@@ -1285,11 +1301,11 @@ Hamburger menu icon
 }
 
 .ham-line {
-  stroke: #a1a1aa;
+  stroke: #d4d4d8;
 }
 
 .ham-burger:hover .ham-line {
-  stroke: #d4d4d8;
+  stroke: #e4e4e7;
 }
 
 .ham-burger.ham-active .ham-top, 

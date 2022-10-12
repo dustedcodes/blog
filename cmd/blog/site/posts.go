@@ -24,8 +24,9 @@ type BlogPost struct {
 	Title       string
 	PublishDate time.Time
 	Tags        []string
-	Markdown    string
 	HashCode    string
+	markdown    string
+	html        string
 }
 
 func (b *BlogPost) Validate() error {
@@ -40,7 +41,11 @@ func (b *BlogPost) Excerpt() string {
 	return "ToDo"
 }
 
-func (b *BlogPost) ParsedMarkdown() (template.HTML, error) {
+func (b *BlogPost) HTML() (template.HTML, error) {
+	if len(b.html) > 0 {
+		return template.HTML(b.html), nil
+	}
+
 	parser := goldmark.New(
 		goldmark.WithExtensions(
 			extension.Table,
@@ -52,7 +57,7 @@ func (b *BlogPost) ParsedMarkdown() (template.HTML, error) {
 		))
 
 	var buf bytes.Buffer
-	if err := parser.Convert([]byte(b.Markdown), &buf); err != nil {
+	if err := parser.Convert([]byte(b.markdown), &buf); err != nil {
 		return template.HTML(""),
 			fault.SystemWrap(err, "markdown", "SafeParse", "could not parse Markdown")
 	}
@@ -130,20 +135,24 @@ func ReadBlogPosts(ctx context.Context, path string) ([]*BlogPost, error) {
 			dlog.New(ctx).Warning().Fmt("Skipping blog post without title: %s", fileName)
 			continue
 		}
-		markdown := body.String()
+		content := body.String()
 
+		isHTML := false
 		var tags []string
 		for _, meta := range metadata {
 			metaParts := strings.SplitN(meta, ":", 2)
 			key := strings.ToLower(strings.TrimSpace(metaParts[0]))
-			if key != "tags" {
+			if key == "tags" {
+				tags = strings.Split(strings.TrimSpace(metaParts[1]), " ")
+			} else if key == "type" {
+				isHTML = strings.ToLower(strings.TrimSpace(metaParts[1])) == "html"
+			} else {
 				dlog.New(ctx).Warning().Fmt("Skipping unknown meta data key '%s' for blog post %s.", key, fileName)
 				continue
 			}
-			tags = strings.Split(strings.TrimSpace(metaParts[1]), " ")
 		}
 
-		valueToHash := title + markdown + publishDate.String()
+		valueToHash := title + content + publishDate.String()
 		for _, tag := range tags {
 			valueToHash = valueToHash + tag
 		}
@@ -158,8 +167,12 @@ func ReadBlogPosts(ctx context.Context, path string) ([]*BlogPost, error) {
 			Title:       title,
 			PublishDate: publishDate,
 			Tags:        tags,
-			Markdown:    markdown,
 			HashCode:    hashCode,
+		}
+		if isHTML {
+			blogPost.html = content
+		} else {
+			blogPost.markdown = content
 		}
 
 		blogPosts = append(blogPosts, blogPost)
