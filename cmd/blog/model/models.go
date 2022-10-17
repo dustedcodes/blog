@@ -18,6 +18,11 @@ type Base struct {
 	URLs     *site.URLs
 }
 
+func (b Base) WithTitle(title string) Base {
+	b.Title = title
+	return b
+}
+
 type Empty struct {
 	Base Base
 }

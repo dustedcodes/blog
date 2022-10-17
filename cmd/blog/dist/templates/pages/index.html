@@ -7,6 +7,7 @@
     <h1 class="pageTitle">Blog</h1>
 </div>
 
+<div class="mb-10">
 {{ range $i, $year := .SortedYears }}
     <h2 class="text-center text-zinc-200 font-sans uppercase font-bold text-4xl my-10">{{ $year }}</h2>
     <ul class="text-center text-xl my-5 font-sans font-normal">
@@ -17,6 +18,6 @@
         {{ end }}
     </ul>
 {{ end }}
-
+</div>
 
 {{ end }}

@@ -4,7 +4,7 @@ import (
 	"bufio"
 	"bytes"
 	"context"
-	"crypto/sha1"
+	"crypto/sha1" // nolint: gosec // used for cache invalidation
 	"encoding/hex"
 	"html/template"
 	"os"
@@ -43,6 +43,7 @@ func (b *BlogPost) Excerpt() string {
 
 func (b *BlogPost) HTML() (template.HTML, error) {
 	if len(b.html) > 0 {
+		// nolint: gosec // This is safe content
 		return template.HTML(b.html), nil
 	}
 
@@ -59,7 +60,7 @@ func (b *BlogPost) HTML() (template.HTML, error) {
 	var buf bytes.Buffer
 	if err := parser.Convert([]byte(b.markdown), &buf); err != nil {
 		return template.HTML(""),
-			fault.SystemWrap(err, "markdown", "SafeParse", "could not parse Markdown")
+			fault.SystemWrap(err, "error converting Markdown into HTML")
 	}
 
 	// nolint: gosec // string was already escaped before
@@ -69,7 +70,7 @@ func (b *BlogPost) HTML() (template.HTML, error) {
 func ReadBlogPosts(ctx context.Context, path string) ([]*BlogPost, error) {
 	files, err := os.ReadDir(path)
 	if err != nil {
-		return nil, fault.SystemWrap(err, "site", "ReadBlogPosts", "error reading blogs posts")
+		return nil, fault.SystemWrapf(err, "error reading files from directory '%s'", path)
 	}
 	blogPosts := []*BlogPost{}
 

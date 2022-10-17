@@ -16,6 +16,10 @@
 }
 
 .logo-neutral > svg {
+    @apply fill-neutral-200;
+}
+
+.logo-neutral > svg {
     @apply fill-zinc-300;
 }
 
@@ -32,7 +36,11 @@ a {
 }
 
 .pageTitle {
-    @apply text-center font-sans uppercase font-semibold text-xl text-zinc-300;
+    @apply text-center font-sans uppercase font-semibold text-4xl text-zinc-300 mt-10 mb-20;
+}
+
+.icon svg {
+ @apply w-5 fill-neutral-200;
 }
 
 /* ----------------

@@ -12,7 +12,7 @@ import (
 	"github.com/dusted-go/fault/fault"
 	"github.com/dusted-go/fault/stack"
 	"github.com/dusted-go/http/v3/request"
-	"github.com/dusted-go/http/v3/response"
+	"github.com/dusted-go/http/v3/server"
 	"github.com/dustedcodes/blog/cmd/blog/model"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -28,9 +28,9 @@ func convertErrorsToHTML(errorMessages []string) template.HTML {
 	return template.HTML(out)
 }
 
-func (h *Handler) newBaseModel(r *http.Request, title string) model.Base {
+func (h *Handler) newBaseModel(r *http.Request) model.Base {
 	return model.Base{
-		Title:    title,
+		Title:    "Dusted Codes",
 		SubTitle: "Programming Adventures",
 		Year:     time.Now().Year(),
 		Assets:   h.assets,
@@ -42,12 +42,11 @@ func (h *Handler) internalError(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
-	response.ClearHeaders(w)
-	err := response.Plaintext(
-		true,
+	server.ClearHeaders(w)
+	err := server.WritePlaintext(
+		w,
 		http.StatusInternalServerError,
-		"Oops, something went wrong. The server encountered an internal error or misconfiguration and was unable to complete your request.",
-		w, r)
+		"Oops, something went wrong. The server encountered an internal error or misconfiguration and was unable to complete your request.")
 	if err != nil {
 		dlog.New(r.Context()).
 			Err(err).
@@ -63,12 +62,11 @@ func (h *Handler) renderView(
 	viewKey string,
 	viewModel any,
 ) {
-	err := h.viewHandler.RenderView(
-		true,
+	err := h.viewHandler.WriteView(
+		w,
 		statusCode,
 		viewKey,
-		viewModel,
-		w, r)
+		viewModel)
 	if err != nil {
 		dlog.New(r.Context()).
 			Critical().
@@ -85,8 +83,8 @@ func (h *Handler) renderUserMessages(
 	title string,
 	messages ...template.HTML,
 ) {
-	response.ClearHeaders(w)
-	model := h.newBaseModel(r, title).UserMessages(messages...)
+	server.ClearHeaders(w)
+	model := h.newBaseModel(r).WithTitle(title).UserMessages(messages...)
 	h.renderView(
 		w, r,
 		statusCode,
@@ -135,7 +133,7 @@ func (h *Handler) notFound(
 	dlog.New(r.Context()).
 		Debug().
 		Fmt("Not Found: %s", request.FullURL(r))
-	response.ClearHeaders(w)
+	server.ClearHeaders(w)
 	h.renderUserMessages(
 		w, r,
 		http.StatusNotFound,
@@ -143,23 +141,22 @@ func (h *Handler) notFound(
 		"Sorry, the page you have requested may have been moved or deleted.")
 }
 
-func (h *Handler) methodNotAllowed(
-	w http.ResponseWriter,
-	r *http.Request,
-) {
-	response.ClearHeaders(w)
-	err := response.Plaintext(
-		true,
-		http.StatusMethodNotAllowed,
-		fmt.Sprintf("The HTTP method '%s' is not allowed on this path.", r.Method),
-		w, r)
-	if err != nil {
-		dlog.New(r.Context()).
-			Err(err).
-			Critical().
-			Msg("Error sending 'Method Not Allowed' response.")
-	}
-}
+// func (h *Handler) methodNotAllowed(
+// 	w http.ResponseWriter,
+// 	r *http.Request,
+// ) {
+// 	server.ClearHeaders(w)
+// 	err := server.WritePlaintext(
+// 		w,
+// 		http.StatusMethodNotAllowed,
+// 		fmt.Sprintf("The HTTP method '%s' is not allowed on this path.", r.Method))
+// 	if err != nil {
+// 		dlog.New(r.Context()).
+// 			Err(err).
+// 			Critical().
+// 			Msg("Error sending 'Method Not Allowed' response.")
+// 	}
+// }
 
 func (h *Handler) Recover(recovered any, stackTrace stack.Trace) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {

@@ -19,52 +19,46 @@ func NewHandler(
 	assets *site.Assets,
 	blobPosts []*site.BlogPost,
 ) *Handler {
+	socialSVGs := []string{
+		"dist/templates/svgs/buymeacoffee.svg",
+		"dist/templates/svgs/docker.svg",
+		"dist/templates/svgs/github.svg",
+		"dist/templates/svgs/instagram.svg",
+		"dist/templates/svgs/linkedin.svg",
+		"dist/templates/svgs/paypal.svg",
+		"dist/templates/svgs/rssfeed.svg",
+		"dist/templates/svgs/stackoverflow.svg",
+		"dist/templates/svgs/twitter.svg",
+		"dist/templates/svgs/youtube.svg",
+		"dist/templates/svgs/logo.svg",
+	}
+
 	templateFiles := map[string][]string{
-		"index": {
-			"dist/templates/svgs/buymeacoffee.svg",
-			"dist/templates/svgs/docker.svg",
-			"dist/templates/svgs/github.svg",
-			"dist/templates/svgs/instagram.svg",
-			"dist/templates/svgs/linkedin.svg",
-			"dist/templates/svgs/paypal.svg",
-			"dist/templates/svgs/rssfeed.svg",
-			"dist/templates/svgs/stackoverflow.svg",
-			"dist/templates/svgs/twitter.svg",
-			"dist/templates/svgs/youtube.svg",
-			"dist/templates/svgs/logo.svg",
+		"index": append(socialSVGs,
 			"dist/templates/pages/_layout.html",
 			"dist/templates/pages/index.html",
-		},
-		"message": {
-			"dist/templates/svgs/buymeacoffee.svg",
-			"dist/templates/svgs/docker.svg",
-			"dist/templates/svgs/github.svg",
-			"dist/templates/svgs/instagram.svg",
-			"dist/templates/svgs/linkedin.svg",
-			"dist/templates/svgs/paypal.svg",
-			"dist/templates/svgs/rssfeed.svg",
-			"dist/templates/svgs/stackoverflow.svg",
-			"dist/templates/svgs/twitter.svg",
-			"dist/templates/svgs/youtube.svg",
-			"dist/templates/svgs/logo.svg",
+		),
+		"message": append(socialSVGs,
 			"dist/templates/pages/_layout.html",
 			"dist/templates/pages/message.html",
-		},
-		"blogPost": {
-			"dist/templates/svgs/buymeacoffee.svg",
-			"dist/templates/svgs/docker.svg",
-			"dist/templates/svgs/github.svg",
-			"dist/templates/svgs/instagram.svg",
-			"dist/templates/svgs/linkedin.svg",
-			"dist/templates/svgs/paypal.svg",
-			"dist/templates/svgs/rssfeed.svg",
-			"dist/templates/svgs/stackoverflow.svg",
-			"dist/templates/svgs/twitter.svg",
-			"dist/templates/svgs/youtube.svg",
-			"dist/templates/svgs/logo.svg",
+		),
+		"blogPost": append(socialSVGs,
 			"dist/templates/pages/_layout.html",
 			"dist/templates/pages/blogPost.html",
-		},
+		),
+		"projects": append(socialSVGs,
+			"dist/templates/pages/_layout.html",
+			"dist/templates/svgs/link.svg",
+			"dist/templates/pages/projects.html",
+		),
+		"hire": append(socialSVGs,
+			"dist/templates/pages/_layout.html",
+			"dist/templates/pages/hire.html",
+		),
+		"about": append(socialSVGs,
+			"dist/templates/pages/_layout.html",
+			"dist/templates/pages/about.html",
+		),
 	}
 	viewHandler := server.NewViewHandler(
 		settings.HotReload(),
@@ -97,6 +91,21 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 		if path == "/panic" && !h.settings.IsProduction() {
 			h.panic(w, r)
+			return
+		}
+
+		if path == "/projects" {
+			h.projects(w, r)
+			return
+		}
+
+		if path == "/hire" {
+			h.hire(w, r)
+			return
+		}
+
+		if path == "/about" {
+			h.about(w, r)
 			return
 		}
 
