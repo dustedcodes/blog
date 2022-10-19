@@ -4,20 +4,20 @@
 
 {{ define "content" }}
 <article class="text-neutral-400 text-xl leading-normal">
-    <h1 class="pageTitle">About</h1>
+    <h1 class="pageTitle">{{ .Base.Title }}</h1>
 
     <div class="mt-10 flex flex-row justify-start items-stretch">
-        <img class="w-1/4 mr-10 rounded" src="https://cdn.dusted.codes/images/avatar/dustin-moris-gorski.jpg" alt="Dustin Gorski"/>
-        <div class="w-3/4 flex flex-col justify-between">
-            <h2 class="font-semibold text-3xl text-neutral-200">About me</h2>
-            <p class="mt-5">Hi, welcome to my personal website, software development blog and the official home of <strong class="text-neutral-200 font-semibold">Dusted Codes Limited</strong>, a UK registered company. I'm Dustin, a software engineer, entrepreneur and open source contributor who's originally from Vienna, Austria and now living in the UK.</p>
+        <img class="max-h-52 mr-10 rounded" src="{{ .Base.URLs.CDN }}/images/public/dustin-moris-gorski.jpg" alt="Dustin Gorski"/>
+        <div class="flex flex-col justify-between">
+            <h2 class="font-semibold text-3xl text-neutral-200">Who am I?</h2>
+            <p class="mt-2">Hi, welcome to my personal website, software development blog and the official home of <strong class="text-neutral-200 font-semibold">Dusted Codes Limited</strong>, a UK registered company. I'm Dustin, a software engineer, entrepreneur and open source contributor who's originally from Vienna, Austria and now living in the UK.</p>
         </div>
     </div>
     <p class="mt-10">Over the course of my career I've had the pleasure of working with a great wealth of different technologies for various sized companies, mainly operating in a very agile environment following <a href="https://dusted.codes/when-to-use-scrum-waterfall-vs-scrum-vs-kanban-vs-scrumban">Scrum or Kanban</a>, using continuous integration and deployment and having all the joys and stresses of running mission critical production systems in most major cloud providers (AWS, Google and Azure). One of my past roles involved me to lead and manage a team of highly skilled engineers building large scale Facebook games for one of Europe's biggest gaming companies. It was experiences like these which have taught me a great deal about working efficiently with teams, collaborating productively with stakeholders and delivering projects to the satisfaction of customers and users. After almost 10 years in the corporate world, numerous battle scars and a growing appetite for a new adventure I finally threw the towel in 2017, packed my bags and decided to travel the world with my wife, <a href="https://www.instagram.com/dustedtravels/" target="_blank">collecting some of the best memories of our life</a> and rethink what I really wanted to do in the future. After one year we eventually came back to the UK, settled in London and I decided to set up my own business, allowing me to work on the stuff which I enjoy the most. Today I maintain <a href="https://github.com/dustinmoris" target="_blank">several open source projects</a> in my spare time, take contract roles on the side whilst also trying to build my own start-up from the ground up.</p>
     <p class="mt-5">If I'm not busy developing something for the web then I'm probably being more physically active (tennis, basketball, snowboarding, surfing, swimming), reading a book, watching stand-up comedy or simply enjoying quality time with my wife and daughter. I rarely watch telly (unless it's a great nature documentary), love eating fine food (guilty of being a super fussy European) and totally addicted to coffee (I swear by my <a href="https://www.sageappliances.com/uk/en/products/espresso/bes980.html" target="_blank">Sage Oracle</a> and <a href="https://www.beanberrycoffee.com" target="_blank">coffee beans organically sourced and roasted by Beanberry</a>). Living and working in London also means that I get to spend a good amount of time <a href="https://top10.london/">exploring places</a> and discovering new things to do in one of the world's greatest cities!</p>
 
     <div class="mt-10 flex flex-row justify-start items-center">
-        <div class="w-1/4 mr-10 logo-neutral">
+        <div class="w-1/4 mr-10 svg-light">
             {{ template "logo" . }}
         </div>
         <div class="w-3/4">

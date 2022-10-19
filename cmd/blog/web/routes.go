@@ -84,6 +84,13 @@ func (h *Handler) projects(
 	h.renderView(w, r, 200, "projects", h.newBaseModel(r).WithTitle("Projects").Empty())
 }
 
+func (h *Handler) oss(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
+	h.renderView(w, r, 200, "oss", h.newBaseModel(r).WithTitle("Open Source").Empty())
+}
+
 func (h *Handler) hire(
 	w http.ResponseWriter,
 	r *http.Request,

@@ -4,7 +4,7 @@
 @tailwind screens;
 
 #logoLink {
-    @apply w-full grid grid-cols-5 gap-x-5 place-items-center text-5xl uppercase font-nunito font-extrabold text-zinc-300 hover:text-cyan-200;
+    @apply w-full grid grid-cols-5 gap-x-5 place-items-center text-5xl uppercase font-nunito font-extrabold text-zinc-300;
 }
 
 #logoLink:hover .logo > svg {
@@ -15,11 +15,11 @@
     @apply fill-amber-300;
 }
 
-.logo-neutral > svg {
+.svg-light > svg {
     @apply fill-neutral-200;
 }
 
-.logo-neutral > svg {
+.svg-light > svg {
     @apply fill-zinc-300;
 }
 
@@ -96,7 +96,7 @@ Blog Posts
 }
 
 .blogPostContent pre > code {
-    @apply block px-3 py-2 text-lime-100 text-lg leading-normal;
+    @apply block px-3 py-2 text-amber-100 text-lg leading-normal;
 }
 
 .blogPostContent ul {

@@ -51,6 +51,11 @@ func NewHandler(
 			"dist/templates/svgs/link.svg",
 			"dist/templates/pages/projects.html",
 		),
+		"oss": append(socialSVGs,
+			"dist/templates/pages/_layout.html",
+			"dist/templates/svgs/link.svg",
+			"dist/templates/pages/oss.html",
+		),
 		"hire": append(socialSVGs,
 			"dist/templates/pages/_layout.html",
 			"dist/templates/pages/hire.html",
@@ -96,6 +101,11 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 		if path == "/projects" {
 			h.projects(w, r)
+			return
+		}
+
+		if path == "/open-source" {
+			h.oss(w, r)
 			return
 		}
 

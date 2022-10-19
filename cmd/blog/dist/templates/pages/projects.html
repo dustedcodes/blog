@@ -3,11 +3,15 @@
 {{ end }}
 
 {{ define "content" }}
-    <h1 class="pageTitle">Projects</h1>
+    <h1 class="pageTitle">{{ .Base.Title }}</h1>
 
-    <div class="grid grid-cols-1 gap-10 my-10">
-        <article class="flex flex-row justify-start items-middle text-neutral-400">
-            <img class="w-1/4 mr-5" src="https://keyboardjobs.com/images/logo.svg">
+    <div class="text-center text-neutral-400 text-xl leading-normal mb-20">
+        <p>Here is a list of some free and paid-for services which I have built over the years and which are now maintained under the guardianship of Dusted Codes Limited:</p>
+    </div>
+
+    <div class="my-10">
+        <article class="flex flex-row justify-start items-middle text-neutral-400 mb-20">
+            <img class="w-1/4 mr-5 rounded bg-neutral-800" src="https://keyboardjobs.com/images/logo.svg">
             <div>
                 <header>
                     <h2 class="text-neutral-200 font-bold text-5xl uppercase mb-3">Keyboard Jobs</h2>
@@ -32,7 +36,7 @@
             </div>
         </article>
 
-        <article class="mt-10 border-t-2 border-t-neutral-800 pt-16 flex flex-row justify-start items-middle text-neutral-400">
+        <article class="mt-10 mb-20 border-t-2 border-t-neutral-800 pt-16 flex flex-row justify-start items-middle text-neutral-400">
             <div>
                 <header>
                     <h2 class="text-neutral-200 font-bold text-5xl mb-3">.NET Ketchup</h2>
@@ -57,7 +61,7 @@
             <img class="w-1/4 ml-10" src="https://cdn.dotnetketchup.com/images/logo.svg">
         </article>
 
-        <article class="mt-10 border-t-2 border-t-neutral-800 pt-16 flex flex-row justify-start items-middle text-neutral-400">
+        <article class="mt-10 mb-20 border-t-2 border-t-neutral-800 pt-16 flex flex-row justify-start items-middle text-neutral-400">
             <img class="w-1/4 mr-10" src="https://cdn.golang.christmas/images/golang-2.svg">
             <div>
                 <header>
@@ -80,7 +84,7 @@
             </div>
         </article>
 
-        <article class="my-10 border-t-2 border-t-neutral-800 pt-16 flex flex-row justify-start items-middle text-neutral-400">
+        <article class="my-10 mb-20 border-t-2 border-t-neutral-800 pt-16 flex flex-row justify-start items-middle text-neutral-400">
             <div>
                 <header>
                     <h2 class="text-neutral-200 font-bold text-5xl mb-3">.NET Advent Calendar</h2>
@@ -104,7 +108,7 @@
         </article>
     </div>
 
-    <h2 class="pageTitle border-t-4 border-t-neutral-700 pt-16">Archived Projects</h2>
+    <h2 class="pageTitle border-t-4 border-dashed border-t-neutral-700 pt-16">Archived Projects</h2>
 
     <article class="mt-10 mb-20 flex flex-row justify-start items-middle text-neutral-400">
         <img class="w-1/4 mr-10" src="https://storage.googleapis.com/top-10-london/images/logo.svg">
