@@ -30,11 +30,12 @@ func convertErrorsToHTML(errorMessages []string) template.HTML {
 
 func (h *Handler) newBaseModel(r *http.Request) model.Base {
 	return model.Base{
-		Title:    "Dusted Codes",
-		SubTitle: "Programming Adventures",
-		Year:     time.Now().Year(),
-		Assets:   h.assets,
-		URLs:     h.settings.URLs(r),
+		Title:           "Dusted Codes",
+		SubTitle:        "Programming Adventures",
+		Year:            time.Now().Year(),
+		Assets:          h.assets,
+		URLs:            h.settings.URLs(r),
+		DisqusShortname: h.settings.DisqusShortname,
 	}
 }
 

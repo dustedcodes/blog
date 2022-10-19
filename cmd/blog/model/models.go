@@ -11,11 +11,12 @@ import (
 )
 
 type Base struct {
-	Title    string
-	SubTitle string
-	Year     int
-	Assets   *site.Assets
-	URLs     *site.URLs
+	Title           string
+	SubTitle        string
+	Year            int
+	Assets          *site.Assets
+	URLs            *site.URLs
+	DisqusShortname string
 }
 
 func (b Base) WithTitle(title string) Base {
@@ -45,6 +46,7 @@ type Index struct {
 
 type BlogPost struct {
 	Base             Base
+	ID               string
 	PublishDate      time.Time
 	Content          template.HTML
 	Tags             []string
@@ -115,6 +117,7 @@ func (b Base) BlogPost(
 	permalink := b.URLs.BlogPostPermalink(blogPostID)
 	return BlogPost{
 		Base:             b,
+		ID:               blogPostID,
 		PublishDate:      publishDate,
 		Content:          content,
 		Tags:             tags,

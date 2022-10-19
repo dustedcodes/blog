@@ -6,11 +6,14 @@
 <article>
     <header>
         <h1 class="text-7xl text-center font-bold text-zinc-300 mb-10 leading-normal">{{ .Base.Title }}</h1>
-        <p class="text-center text-lg font-nunito italic mb-10 text-zinc-400">Published <time datetime="{{ .PublishedOnMachineReadable }}">{{ .PublishedOn }}</time></p>
+        <p class="text-center text-lg font-nunito italic my-5 text-zinc-400">Published <time datetime="{{ .PublishedOnMachineReadable }}">{{ .PublishedOn }}</time></p>
+        <p class="text-center text-lg font-nunito my-5 text-zinc-400">
+            <a class="font-nunito text-base text-zinc-400" href="#disqus_thread" data-disqus-identifier="{{ .ID }}">Comments</a>
+        </p>
         {{ if .Tags }}
-        <p class="text-center font-semibold text-base mb-20 font-nunito">
+        <p class="text-center font-semibold text-base mt-7 mb-20 font-nunito">
             {{ range $i, $t := .Tags }}
-            <a class="mx-2 px-4 py-1 rounded-xl bg-zinc-800 hover:bg-amber-300 hover:text-black hover:no-underline" href="">{{ $t }}</a>
+            <a class="mx-2 px-4 py-1 rounded-full bg-zinc-800 hover:bg-amber-300 hover:text-black hover:no-underline" href="">{{ $t }}</a>
             {{ end }}
         </p>
         {{ end }}
@@ -51,10 +54,25 @@
                 <svg stroke="#222222" version="1.0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24.000000 24.000000"><path d="M9.028 20.837c-.714 0-.593-.271-.839-.949l-2.103-6.92L22.263 3.37"></path><path d="M9.028 20.837c.552 0 .795-.252 1.105-.553l2.941-2.857-3.671-2.214"></path><path d="M9.403 15.213l8.89 6.568c1.015.56 1.748.271 2-.942l3.62-17.053c.372-1.487-.564-2.159-1.534-1.72L1.125 10.263c-1.45.582-1.443 1.392-.264 1.753l5.455 1.7L18.94 5.753c.595-.36 1.143-.167.694.232"></path></svg>
             </a>
         </div>
-        <p class="text-center font-nunito font-normal mt-10 text-lg"><a href="" onclick="document.body.scrollTop = 0; document.documentElement.scrollTop = 0;">Back to top</a></p>
+        <p class="text-center font-sans font-medium mt-16 text-lg"><a href="" onclick="document.body.scrollTop = 0; document.documentElement.scrollTop = 0;">Back to top</a></p>
     </footer>
-    <aside>
-
+    <aside id="comments" class="border-t-4 border-dashed border-neutral-700 my-16 pt-16">
+        <div id="disqus_thread"></div>
+        <script type="text/javascript">
+            var disqus_shortname = '{{ .Base.DisqusShortname }}';
+            var disqus_identifier = '{{ .ID }}';
+            var disqus_title = '{{ .EncodedTitle }}';
+            var disqus_url = '{{ .Permalink }}';
+            (function () {
+                var dsq = document.createElement('script');
+                dsq.async = true;
+                dsq.type = 'text/javascript';
+                dsq.src = '//' + disqus_shortname + '.disqus.com/embed.js';
+                (document.getElementsByTagName('head')[0] || document.getElementsByTagName('body')[0]).appendChild(dsq);
+            })();
+        </script>
+        <script id="dsq-count-scr" src="{{ .Base.URLs.DisqusCountScript }}" async></script>
+        <noscript>Please enable JavaScript to view comments.</noscript>
     </aside>
 </article>
 {{ end }}

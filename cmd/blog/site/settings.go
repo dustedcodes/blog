@@ -28,6 +28,7 @@ type Settings struct {
 	RedirectWWW        bool
 	CDN                string
 	MaxRequestSize     int64
+	DisqusShortname    string
 }
 
 func (s *Settings) MinLogLevel() dlog.Level {
@@ -63,9 +64,10 @@ func (s *Settings) DomainRedirects() map[string]string {
 
 func (s *Settings) URLs(r *http.Request) *URLs {
 	return &URLs{
-		RequestURL: request.FullURL(r),
-		BaseURL:    s.BaseURL,
-		CDN:        s.CDN,
+		RequestURL:      request.FullURL(r),
+		BaseURL:         s.BaseURL,
+		CDN:             s.CDN,
+		DisqusShortname: s.DisqusShortname,
 	}
 }
 
@@ -82,5 +84,6 @@ func InitSettings() *Settings {
 		RedirectWWW:        env.GetBoolOrDefault("REDIRECT_WWW", false),
 		CDN:                env.GetOrDefault("CDN", "https://cdn.dusted.codes"),
 		MaxRequestSize:     int64(env.GetIntOrDefault("MAX_REQUEST_SIZE", 500000)),
+		DisqusShortname:    env.GetOrDefault("DISQUS_SHORTNAME", ""),
 	}
 }
