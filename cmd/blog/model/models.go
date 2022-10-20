@@ -34,8 +34,14 @@ type UserMessage struct {
 }
 
 type BlogPostLink struct {
-	Title     string
-	Permalink string
+	Title       string
+	Permalink   string
+	PublishDate time.Time
+	Tags        []string
+}
+
+func (b BlogPostLink) PublishedOn() string {
+	return b.PublishDate.Format("02 Jan 2006")
 }
 
 type Index struct {
@@ -53,6 +59,11 @@ type BlogPost struct {
 	EncodedTitle     string
 	Permalink        string
 	EncodedPermalink string
+}
+
+type Tagged struct {
+	Base      Base
+	BlogPosts []BlogPostLink
 }
 
 func (b BlogPost) PublishedOn() string {
@@ -93,8 +104,10 @@ func (b Base) Index(blogPosts []*site.BlogPost) Index {
 		catalogue[year] = array.Prepend(
 			catalogue[year],
 			BlogPostLink{
-				Title:     post.Title,
-				Permalink: b.URLs.BlogPostPermalink(post.ID),
+				Title:       post.Title,
+				Permalink:   b.URLs.BlogPostPermalink(post.ID),
+				PublishDate: post.PublishDate,
+				Tags:        post.Tags,
 			})
 	}
 	sort.Slice(years, func(i, j int) bool {
@@ -105,6 +118,28 @@ func (b Base) Index(blogPosts []*site.BlogPost) Index {
 		Base:        b,
 		Catalogue:   catalogue,
 		SortedYears: years,
+	}
+}
+
+func (b Base) Tagged(blogPosts []*site.BlogPost) Tagged {
+	blogPostLinks := []BlogPostLink{}
+
+	for _, post := range blogPosts {
+		blogPostLinks = append(blogPostLinks, BlogPostLink{
+			Title:       post.Title,
+			Permalink:   b.URLs.BlogPostPermalink(post.ID),
+			PublishDate: post.PublishDate,
+			Tags:        post.Tags,
+		})
+	}
+
+	sort.Slice(blogPostLinks, func(i, j int) bool {
+		return blogPostLinks[i].PublishDate.After(blogPostLinks[j].PublishDate)
+	})
+
+	return Tagged{
+		Base:      b,
+		BlogPosts: blogPostLinks,
 	}
 }
 

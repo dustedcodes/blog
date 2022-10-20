@@ -2,7 +2,9 @@ package web
 
 import (
 	"net/http"
+	"strings"
 
+	"github.com/dusted-go/http/v3/request"
 	"github.com/dusted-go/http/v3/server"
 	"github.com/dustedcodes/blog/cmd/blog/site"
 )
@@ -37,6 +39,10 @@ func NewHandler(
 		"index": append(socialSVGs,
 			"dist/templates/pages/_layout.html",
 			"dist/templates/pages/index.html",
+		),
+		"tagged": append(socialSVGs,
+			"dist/templates/pages/_layout.html",
+			"dist/templates/pages/tagged.html",
 		),
 		"message": append(socialSVGs,
 			"dist/templates/pages/_layout.html",
@@ -116,6 +122,13 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 		if path == "/about" {
 			h.about(w, r)
+			return
+		}
+
+		head, tail := request.ShiftPath(path)
+		if head == "tagged" {
+			tagName := strings.TrimLeft(tail, "/")
+			h.tagged(w, r, tagName)
 			return
 		}
 

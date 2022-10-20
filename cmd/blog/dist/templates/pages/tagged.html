@@ -1,0 +1,27 @@
+{{ define "header" }}
+{{ end }}
+
+{{ define "content" }}
+
+<div class="flex flex-row justify-center">
+    <h1 class="pageTitle">Search</h1>
+</div>
+
+<h2 class="text-center text-neutral-400 text-4xl font-semibold mb-20">{{ .Base.Title }}</h2>
+<ul class="text-center mb-20">
+    {{ range $i, $post := .BlogPosts }}
+        <li class="my-10 pt-10 border-t-2 border-neutral-800">
+            <a href="{{ $post.Permalink }}" class="text-zinc-300 text-3xl">{{ $post.Title }}</a>
+            <p class="font-nunito text-zinc-500 text-base">
+                <span class="block font-semibold uppercase my-5">{{ $post.PublishedOn }}</span>
+
+                {{ range $i, $t := .Tags }}
+                <a class="mx-2 px-4 py-1 rounded-full text-zinc-300 bg-zinc-800 hover:bg-amber-300 hover:text-black hover:no-underline" href="/tagged/{{ $t }}">{{ $t }}</a>
+                {{ end }}
+            </p>
+        </li>
+    {{ end }}
+
+</ul>
+
+{{ end }}

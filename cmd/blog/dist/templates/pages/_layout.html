@@ -43,7 +43,7 @@
     {{ template "header" . }}
 </head>
 
-<body class="flex flex-col justify-between bg-gray-900">
+<body class="flex flex-col justify-between bg-slate-900">
     <header class="mt-20">
         <h1 class="flex flex-row flex-nowrap justify-center items-center max-w-xl mx-auto">
             <a id="logoLink" href="/">
@@ -52,7 +52,7 @@
                 <span class="block w-full text-left col-span-2">Codes</span>
             </a>
         </h1>
-        <h2 class="text-center text-gray-400 uppercase text-xl font-nunito font-light tracking-widest my-5">
+        <h2 class="text-center text-slate-400 uppercase text-xl font-nunito font-light tracking-widest my-5">
             Programming Adventures
         </h2>
         <div id="socialLinks" class="flex flex-row flex-nowrap justify-between max-w-lg mx-auto my-10">
@@ -89,9 +89,9 @@
             {{ template "content" . }}
         </div>
     </main>
-    <footer class="bg-gray-900 text-center text-gray-500 py-10 mb-5 text-base">
+    <footer class="bg-slate-900 text-center text-slate-500 py-10 mb-5 text-base">
         <div class="svg-light w-14 mx-auto mb-5">{{ template "logo" }}</div>
-        <p class="mt-2 uppercase font-normal font-nunito text-gray-400 tracking-wide">Copyright &copy; {{ .Base.Year }} Dusted Codes Limited</p>
+        <p class="mt-2 uppercase font-normal font-nunito text-slate-400 tracking-wide">Copyright &copy; {{ .Base.Year }} Dusted Codes Limited</p>
         <p class="mt-2 font-light">All content on this website, such as text, graphics, logos and images is the property of Dusted Codes Limited.</p>
     </footer>
 </body>

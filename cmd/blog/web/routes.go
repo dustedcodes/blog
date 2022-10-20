@@ -6,6 +6,7 @@ import (
 	"strings"
 
 	"github.com/dusted-go/http/v3/server"
+	"github.com/dusted-go/utils/array"
 	"github.com/dustedcodes/blog/cmd/blog/site"
 )
 
@@ -33,6 +34,21 @@ func (h *Handler) index(
 ) {
 	model := h.newBaseModel(r).Index(h.blogPosts)
 	h.renderView(w, r, 200, "index", model)
+}
+
+func (h *Handler) tagged(
+	w http.ResponseWriter,
+	r *http.Request,
+	tagName string,
+) {
+	filtered := []*site.BlogPost{}
+	for _, b := range h.blogPosts {
+		if array.Contains(b.Tags, tagName) {
+			filtered = append(filtered, b)
+		}
+	}
+	model := h.newBaseModel(r).WithTitle(fmt.Sprintf("Tagged with '%s'", tagName)).Tagged(filtered)
+	h.renderView(w, r, 200, "tagged", model)
 }
 
 func (h *Handler) renderBlogPost(
