@@ -2,6 +2,8 @@
 
 My personal website, blog and home of Dusted Codes Limited.
 
+Migrated from my previous [F# blog](https://github.com/dustinmoris/dustedcodes).
+
 ![Build and Deploy](https://github.com/dustedcodes/blog/workflows/Build%2C%20Test%20and%20Deploy/badge.svg?branch=master)
 
 [![Build History](https://buildstats.info/github/chart/dustedcodes/blog?branch=master)](https://github.com/dustedcodes/blog/actions?query=branch%3Amaster)
