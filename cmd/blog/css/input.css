@@ -4,7 +4,7 @@
 @tailwind screens;
 
 #logoLink {
-    @apply w-full grid grid-cols-5 gap-x-2 sm:gap-x-5 place-items-center text-2xl sm:text-5xl uppercase font-nunito font-extrabold text-zinc-300;
+    @apply w-full grid grid-cols-5 gap-x-2 sm:gap-x-5 place-items-center text-xl xs:text-4xl sm:text-5xl uppercase font-nunito font-extrabold text-zinc-300;
 }
 
 #logoLink:hover .logo > svg {
@@ -16,7 +16,7 @@
 }
 
 .logo > svg {
-    @apply fill-amber-300 w-20 sm:w-full;
+    @apply fill-amber-300 w-24 sm:w-full relative left-1;
 }
 
 .svg-light > svg {
@@ -27,16 +27,20 @@
     @apply fill-zinc-300;
 }
 
+#menu-button svg {
+    @apply w-14;
+}
+
 #menu a {
     @apply font-sans uppercase font-semibold text-2xl text-amber-300 hover:text-cyan-300;
 }
 
 #socialLinks {
-    @apply grid grid-cols-5 gap-y-6 place-items-center sm:flex sm:flex-row sm:flex-wrap sm:justify-between sm:items-center max-w-xs sm:max-w-lg mx-auto my-10;
+    @apply grid grid-cols-5 gap-y-6 place-items-center sm:flex sm:flex-row sm:flex-wrap sm:justify-between sm:items-center max-w-[70%] sm:max-w-lg mx-auto my-10;
 }
 
 #socialLinks svg {
-    @apply w-6 sm:w-7 fill-zinc-500 hover:fill-cyan-300;
+    @apply w-5 sm:w-7 fill-zinc-500 hover:fill-cyan-300;
 }
 
 a {

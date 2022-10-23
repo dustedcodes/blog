@@ -555,6 +555,12 @@ video {
   width: 100%;
 }
 
+@media (min-width: 400px) {
+  .container {
+    max-width: 400px;
+  }
+}
+
 @media (min-width: 640px) {
   .container {
     max-width: 640px;
@@ -776,6 +782,10 @@ video {
   width: 13rem;
 }
 
+.w-1\/2 {
+  width: 50%;
+}
+
 .max-w-xl {
   max-width: 36rem;
 }
@@ -852,13 +862,17 @@ video {
   gap: 0.5rem;
 }
 
-.gap-y-2 {
-  row-gap: 0.5rem;
+.gap-y-3 {
+  row-gap: 0.75rem;
 }
 
 .gap-x-5 {
   -moz-column-gap: 1.25rem;
        column-gap: 1.25rem;
+}
+
+.gap-y-2 {
+  row-gap: 0.5rem;
 }
 
 .rounded {
@@ -1093,10 +1107,6 @@ video {
   letter-spacing: 0.025em;
 }
 
-.tracking-wider {
-  letter-spacing: 0.05em;
-}
-
 .text-slate-400 {
   --tw-text-opacity: 1;
   color: rgb(148 163 184 / var(--tw-text-opacity));
@@ -1255,6 +1265,10 @@ video {
     display: flex;
   }
 
+  .sm\:max-h-52 {
+    max-height: 13rem;
+  }
+
   .sm\:w-3\/4 {
     width: 75%;
   }
@@ -1310,6 +1324,11 @@ video {
     line-height: 1.75rem;
   }
 
+  .sm\:text-3xl {
+    font-size: 1.875rem;
+    line-height: 2.25rem;
+  }
+
   .sm\:leading-normal {
     line-height: 1.5;
   }
@@ -1327,12 +1346,19 @@ video {
   -moz-column-gap: 0.5rem;
        column-gap: 0.5rem;
   font-family: Nunito, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
-  font-size: 1.5rem;
-  line-height: 2rem;
+  font-size: 1.25rem;
+  line-height: 1.75rem;
   font-weight: 800;
   text-transform: uppercase;
   --tw-text-opacity: 1;
   color: rgb(212 212 216 / var(--tw-text-opacity));
+}
+
+@media (min-width: 400px) {
+  #logoLink {
+    font-size: 2.25rem;
+    line-height: 2.5rem;
+  }
 }
 
 @media (min-width: 640px) {
@@ -1355,7 +1381,9 @@ video {
 }
 
 .logo > svg {
-  width: 5rem;
+  position: relative;
+  left: 0.25rem;
+  width: 6rem;
   fill: #fcd34d;
 }
 
@@ -1368,6 +1396,10 @@ video {
 .svg-light > svg {
   fill: #e5e5e5;
   fill: #d4d4d8;
+}
+
+#menu-button svg {
+  width: 3.5rem;
 }
 
 #menu a {
@@ -1391,7 +1423,7 @@ video {
   margin-top: 2.5rem;
   margin-bottom: 2.5rem;
   display: grid;
-  max-width: 20rem;
+  max-width: 70%;
   grid-template-columns: repeat(5, minmax(0, 1fr));
   place-items: center;
   row-gap: 1.5rem;
@@ -1409,7 +1441,7 @@ video {
 }
 
 #socialLinks svg {
-  width: 1.5rem;
+  width: 1.25rem;
   fill: #71717a;
 }
 
@@ -1605,14 +1637,14 @@ Blog Posts
   border-radius: 0.25rem;
 }
 
-.blogPostContent strong,
+.blogPostContent strong, 
 .blogPostContent b {
   font-weight: 600;
   --tw-text-opacity: 1;
   color: rgb(212 212 216 / var(--tw-text-opacity));
 }
 
-.blogPostContent i,
+.blogPostContent i, 
 .blogPostContent em {
   font-family: Nunito, ui-sans-serif, system-ui, -apple-system, BlinkMacSystemFont, "Segoe UI", Roboto, "Helvetica Neue", Arial, "Noto Sans", sans-serif, "Apple Color Emoji", "Segoe UI Emoji", "Segoe UI Symbol", "Noto Color Emoji";
   font-style: italic;
@@ -1746,8 +1778,8 @@ Hamburger menu icon
   stroke: #e4e4e7;
 }
 
-.ham-burger.ham-active .ham-top,
-.ham-burger.ham-active .ham-middle,
+.ham-burger.ham-active .ham-top, 
+.ham-burger.ham-active .ham-middle, 
 .ham-burger.ham-active .ham-bottom {
   stroke: #fda4af;
 }
