@@ -130,6 +130,11 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		if path == "/sitemap.xml" {
+			h.sitemap(w, r)
+			return
+		}
+
 		head, tail := request.ShiftPath(path)
 		if head == "tagged" {
 			tagName := strings.TrimLeft(tail, "/")

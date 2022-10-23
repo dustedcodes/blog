@@ -3,7 +3,6 @@ package web
 import (
 	"fmt"
 	"net/http"
-	"sort"
 	"strings"
 	"time"
 
@@ -12,6 +11,7 @@ import (
 	"github.com/dusted-go/utils/array"
 	"github.com/dustedcodes/blog/cmd/blog/rss"
 	"github.com/dustedcodes/blog/cmd/blog/site"
+	"github.com/dustedcodes/blog/cmd/blog/sitemap"
 )
 
 func (h *Handler) panic(
@@ -130,9 +130,6 @@ func (h *Handler) rss(
 	r *http.Request,
 ) {
 	urls := h.settings.URLs(r)
-	sort.Slice(h.blogPosts, func(i, j int) bool {
-		return h.blogPosts[i].PublishDate.After(h.blogPosts[j].PublishDate)
-	})
 	latestPost := h.blogPosts[0]
 	rssFeed := rss.NewFeed(
 		rss.NewChannel(
@@ -177,5 +174,33 @@ func (h *Handler) rss(
 	_, err = w.Write(bytes)
 	if err != nil {
 		dlog.New(r.Context()).Critical().Err(err).Msg("Error writing rss feed to response body.")
+	}
+}
+
+func (h *Handler) sitemap(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
+	urls := h.settings.URLs(r)
+	urlset := sitemap.NewURLSet()
+	for _, blogPost := range h.blogPosts {
+		urlset.AddURL(
+			sitemap.
+				NewURL(urls.BlogPostURL(blogPost.ID)).
+				SetPriority("0.9").
+				SetChangeFreq("monthly").
+				SetLastMod(blogPost.PublishDate))
+	}
+
+	bytes, err := urlset.ToXML(true, true)
+	if h.handleErr(w, r, err) {
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Header().Add("Content-Type", "application/xml; charset=UTF-8")
+	_, err = w.Write(bytes)
+	if err != nil {
+		dlog.New(r.Context()).Critical().Err(err).Msg("Error writing sitemap to response body.")
 	}
 }

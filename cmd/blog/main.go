@@ -3,6 +3,7 @@ package main
 import (
 	"context"
 	"net/http"
+	"sort"
 	"time"
 
 	"github.com/dusted-go/config/dotenv"
@@ -78,6 +79,11 @@ func main() {
 	if err != nil {
 		panic(err)
 	}
+
+	// Sort blog posts by date (newest first)
+	sort.Slice(blogPosts, func(i, j int) bool {
+		return blogPosts[i].PublishDate.After(blogPosts[j].PublishDate)
+	})
 
 	// Init web handler
 	webHandler := web.NewHandler(

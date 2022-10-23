@@ -113,7 +113,7 @@ func (b Base) Index(blogPosts []*site.BlogPost) Index {
 				URL:   b.URLs.TagURL(tag),
 			})
 		}
-		catalogue[year] = array.Prepend(
+		catalogue[year] = append(
 			catalogue[year],
 			BlogPostLink{
 				Title:       post.Title,
@@ -125,6 +125,12 @@ func (b Base) Index(blogPosts []*site.BlogPost) Index {
 	sort.Slice(years, func(i, j int) bool {
 		return years[i] > years[j]
 	})
+
+	for _, year := range years {
+		sort.Slice(catalogue[year], func(i, j int) bool {
+			return catalogue[year][i].PublishDate.After(catalogue[year][j].PublishDate)
+		})
+	}
 
 	return Index{
 		Base:        b,
