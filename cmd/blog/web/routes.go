@@ -14,6 +14,14 @@ import (
 	"github.com/dustedcodes/blog/cmd/blog/sitemap"
 )
 
+func (h *Handler) setCacheDirective(
+	w http.ResponseWriter,
+	cacheDuration int,
+) {
+	cacheDirective := fmt.Sprintf("public, max-age=%d", cacheDuration)
+	w.Header().Add("Cache-Control", cacheDirective)
+}
+
 func (h *Handler) panic(
 	_ http.ResponseWriter,
 	_ *http.Request,
@@ -48,6 +56,7 @@ func (h *Handler) index(
 	r *http.Request,
 ) {
 	model := h.newBaseModel(r).Index(h.blogPosts)
+	h.setCacheDirective(w, 60*60*4)
 	h.renderView(w, r, 200, "index", model)
 }
 
@@ -63,6 +72,7 @@ func (h *Handler) tagged(
 		}
 	}
 	model := h.newBaseModel(r).WithTitle(fmt.Sprintf("Tagged with '%s'", tagName)).Tagged(filtered)
+	h.setCacheDirective(w, 60*60*4)
 	h.renderView(w, r, 200, "tagged", model)
 }
 
@@ -78,16 +88,10 @@ func (h *Handler) renderBlogPost(
 		return
 	}
 
-	// Set Cache directive:
-	// ---
-	// 60sec * 60 * 24 = 1 day
-	cacheDuration := 60 * 60 * 24
-	cacheDirective := fmt.Sprintf("public, max-age=%d", cacheDuration)
-	w.Header().Add("Cache-Control", cacheDirective)
-
 	// Respond with view:
 	// ---
 	m := h.newBaseModel(r).WithTitle(b.Title).BlogPost(b.ID, content, b.PublishDate, b.Tags)
+	h.setCacheDirective(w, 60*60*4)
 	h.renderView(
 		w, r, 200, "blogPost", m)
 }
@@ -112,6 +116,7 @@ func (h *Handler) projects(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
+	h.setCacheDirective(w, 60*60*24)
 	h.renderView(w, r, 200, "projects", h.newBaseModel(r).WithTitle("Projects").Empty())
 }
 
@@ -119,6 +124,7 @@ func (h *Handler) oss(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
+	h.setCacheDirective(w, 60*60*24)
 	h.renderView(w, r, 200, "oss", h.newBaseModel(r).WithTitle("Open Source").Empty())
 }
 
@@ -126,6 +132,7 @@ func (h *Handler) hire(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
+	h.setCacheDirective(w, 60*60*24)
 	h.renderView(w, r, 200, "hire", h.newBaseModel(r).WithTitle("Hire").Empty())
 }
 
@@ -133,6 +140,7 @@ func (h *Handler) about(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
+	h.setCacheDirective(w, 60*60*24)
 	h.renderView(w, r, 200, "about", h.newBaseModel(r).WithTitle("About").Empty())
 }
 
