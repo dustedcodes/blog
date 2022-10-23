@@ -7,11 +7,11 @@ import (
 	"time"
 
 	"github.com/dusted-go/diagnostic/v3/dlog"
+	"github.com/dusted-go/http/v3/rss"
 	"github.com/dusted-go/http/v3/server"
+	"github.com/dusted-go/http/v3/sitemap"
 	"github.com/dusted-go/utils/array"
-	"github.com/dustedcodes/blog/cmd/blog/rss"
 	"github.com/dustedcodes/blog/cmd/blog/site"
-	"github.com/dustedcodes/blog/cmd/blog/sitemap"
 )
 
 func (h *Handler) setCacheDirective(
