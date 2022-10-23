@@ -1,0 +1,77 @@
+name: Build, Test and Deploy
+on:
+  push:
+  release:
+    types:
+      - published
+
+jobs:
+  build:
+    name: Build and Test
+    runs-on: ubuntu-latest
+    steps:
+      - name: Set up Go
+        uses: actions/setup-go@v1
+        with:
+          go-version: 1.19
+        id: go
+      - name: Checkout
+        uses: actions/checkout@v2
+      - name: Build
+        run: |
+          go build ./...
+      - name: Test
+        run: |
+          go test ./...
+      - name: Lint
+        uses: golangci/golangci-lint-action@v3
+        with:
+          version: latest
+
+  deploy:
+    name: Build Docker Image and Deploy
+    needs: build
+    if: github.event_name == 'release'
+    runs-on: ubuntu-latest
+    env:
+      GCP_PROJECT: ${{ secrets.GCP_PROJECT }}
+      GCP_USER: ${{ secrets.GCP_USER }}
+      GITHUB_SHA: ${{ github.sha }}
+      IMAGE: dustedcodes
+      REGISTRY_HOSTNAME: eu.gcr.io
+      NODE_ENV: production
+    steps:
+      - name: Checkout
+        uses: actions/checkout@v2
+
+      - uses: actions/setup-node@v2
+        with:
+          node-version: '16'
+      - run: npm install
+      - run: npm run build:css
+
+      # Setup gcloud CLI
+      - name: Set up Google Cloud SDK
+        uses: google-github-actions/setup-gcloud@v0
+        with:
+          project_id: ${{ secrets.GCP_PROJECT }}
+          service_account_email: ${{ secrets.GCP_USER }}
+          service_account_key: ${{ secrets.GCP_KEY }}
+          export_default_credentials: true
+      # Set up docker to authenticate via gcloud command-line tool.
+      - run: |
+          gcloud auth configure-docker
+      # Build the Docker image
+      - name: Build
+        run: |
+          PATTERN="refs/tags/v"
+          SUB=""
+          TAG="${GITHUB_REF/$PATTERN/$SUB}"
+          docker build --build-arg version=$TAG -t "$REGISTRY_HOSTNAME"/"$GCP_PROJECT"/"$IMAGE":"$TAG" .
+      # Push the Docker image to Google Container Registry
+      - name: Publish
+        run: |
+          PATTERN="refs/tags/v"
+          SUB=""
+          TAG="${GITHUB_REF/$PATTERN/$SUB}"
+          docker push $REGISTRY_HOSTNAME/$GCP_PROJECT/$IMAGE:$TAG
