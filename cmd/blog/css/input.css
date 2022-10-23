@@ -4,7 +4,7 @@
 @tailwind screens;
 
 #logoLink {
-    @apply w-full grid grid-cols-5 gap-x-2 sm:gap-x-5 place-items-center text-xl xs:text-4xl sm:text-5xl uppercase font-nunito font-extrabold text-zinc-300;
+    @apply w-full grid grid-cols-5 gap-x-2 sm:gap-x-5 place-items-center text-2xl xs:text-4xl sm:text-5xl uppercase font-nunito font-extrabold text-zinc-300;
 }
 
 #logoLink:hover .logo > svg {
