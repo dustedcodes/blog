@@ -32,6 +32,17 @@ func (h *Handler) version(
 	h.handleErr(w, r, err)
 }
 
+func (h *Handler) ping(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
+	err := server.WritePlaintext(
+		w,
+		http.StatusOK,
+		"pong")
+	h.handleErr(w, r, err)
+}
+
 func (h *Handler) index(
 	w http.ResponseWriter,
 	r *http.Request,
@@ -236,10 +247,9 @@ func (h *Handler) robots(
 	r *http.Request,
 ) {
 	contents := fmt.Sprintf("Sitemap: %s/sitemap.xml\n", h.settings.BaseURL)
-	w.WriteHeader(http.StatusOK)
-	w.Header().Add("Content-Type", "text/plain; charset=UTF-8")
-	_, err := w.Write([]byte(contents))
-	if err != nil {
-		dlog.New(r.Context()).Critical().Err(err).Msg("Error writing robots.txt to response body.")
-	}
+	err := server.WritePlaintext(
+		w,
+		http.StatusOK,
+		contents)
+	h.handleErr(w, r, err)
 }

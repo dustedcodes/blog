@@ -100,6 +100,11 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		if path == "/ping" {
+			h.ping(w, r)
+			return
+		}
+
 		if path == "/panic" && !h.settings.IsProduction() {
 			h.panic(w, r)
 			return
@@ -144,6 +149,15 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 		if head == "tagged" {
 			tagName := strings.TrimLeft(tail, "/")
 			h.tagged(w, r, tagName)
+			return
+		}
+
+		// Support for legacy URLs:
+		if head == "demystifying-aspnet-mvc-5-error-pages" {
+			http.Redirect(
+				w, r,
+				"/demystifying-aspnet-mvc-5-error-pages-and-error-logging",
+				http.StatusMovedPermanently)
 			return
 		}
 
