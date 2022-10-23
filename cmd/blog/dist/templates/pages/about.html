@@ -7,7 +7,7 @@
     <h1 class="pageTitle">{{ .Base.Title }}</h1>
 
     <div class="mt-10 flex flex-row justify-start items-stretch">
-        <img class="max-h-52 mr-10 rounded" src="{{ .Base.URLs.CDN }}/images/public/dustin-moris-gorski.jpg" alt="Dustin Gorski"/>
+        <img class="hidden sm:block max-h-52 mr-10 rounded" src="{{ .Base.URLs.CDN }}/images/public/dustin-moris-gorski.jpg" alt="Dustin Gorski"/>
         <div class="flex flex-col justify-between">
             <h2 class="font-semibold text-3xl text-neutral-200">Who am I?</h2>
             <p class="mt-2">Hi, welcome to my personal website, software development blog and the official home of <strong class="text-neutral-200 font-semibold">Dusted Codes Limited</strong>, a UK registered company. I'm Dustin, a software engineer, entrepreneur and open source contributor who's originally from Vienna, Austria and now living in the UK.</p>
@@ -17,10 +17,10 @@
     <p class="mt-5">If I'm not busy developing something for the web then I'm probably being more physically active (tennis, basketball, snowboarding, surfing, swimming), reading a book, watching stand-up comedy or simply enjoying quality time with my wife and daughter. I rarely watch telly (unless it's a great nature documentary), love eating fine food (guilty of being a super fussy European) and totally addicted to coffee (I swear by my <a href="https://www.sageappliances.com/uk/en/products/espresso/bes980.html" target="_blank">Sage Oracle</a> and <a href="https://www.beanberrycoffee.com" target="_blank">coffee beans organically sourced and roasted by Beanberry</a>). Living and working in London also means that I get to spend a good amount of time <a href="https://top10.london/">exploring places</a> and discovering new things to do in one of the world's greatest cities!</p>
 
     <div class="mt-10 flex flex-row justify-start items-center">
-        <div class="w-1/4 mr-10 svg-light">
+        <div class="hidden sm:block w-1/4 mr-10 svg-light">
             {{ template "logo" . }}
         </div>
-        <div class="w-3/4">
+        <div class="w-full sm:w-3/4">
             <h2 class="font-semibold text-3xl text-neutral-200">About Dusted Codes Limited</h2>
             <p class="mt-5">Dusted Codes Limited is a British company founded in 2018. It is the official business under which I trade and which is the legal owner of this domain as well as all products and projects released under this corporation.</p>
         </div>

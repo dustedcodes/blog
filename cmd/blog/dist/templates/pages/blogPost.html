@@ -5,15 +5,15 @@
 {{ define "content" }}
 <article>
     <header>
-        <h1 class="text-7xl text-center font-bold text-zinc-300 mb-10 leading-normal">{{ .Base.Title }}</h1>
+        <h1 class="text-5xl sm:text-7xl text-center font-bold text-zinc-300 mb-10 leading-snug sm:leading-normal">{{ .Base.Title }}</h1>
         <p class="text-center text-lg font-nunito italic my-5 text-zinc-400">Published <time datetime="{{ .PublishedOnMachineReadable }}">{{ .PublishedOn }}</time></p>
         <p class="text-center text-lg font-nunito my-5 text-zinc-400">
             <a class="font-nunito text-base text-zinc-400" href="#disqus_thread" data-disqus-identifier="{{ .ID }}">Comments</a>
         </p>
         {{ if .Tags }}
-        <p class="text-center font-semibold text-base mt-7 mb-20 font-nunito">
+        <p class="flex flex-row flex-wrap justify-center items-center font-semibold text-base mt-7 mb-14 font-nunito">
             {{ range $i, $t := .Tags }}
-            <a class="mx-2 px-4 py-1 rounded-full bg-zinc-800 hover:bg-amber-300 hover:text-black hover:no-underline" href="{{ $t.URL }}">{{ $t.Value }}</a>
+            <a class="mx-2 my-2 sm:my-0 px-4 py-1 rounded-full bg-zinc-800 hover:bg-amber-300 hover:text-black hover:no-underline" href="{{ $t.URL }}">{{ $t.Value }}</a>
             {{ end }}
         </p>
         {{ end }}

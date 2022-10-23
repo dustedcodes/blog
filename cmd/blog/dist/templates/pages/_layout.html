@@ -48,14 +48,14 @@
         <h1 class="flex flex-row flex-nowrap justify-center items-center max-w-xl mx-auto">
             <a id="logoLink" href="/">
                 <span class="block w-full text-right col-span-2">Dusted</span>
-                <span class="block w-full logo">{{ template "logo" }}</span>
-                <span class="block w-full text-left col-span-2">Codes</span>
+                <div class="block w-full logo">{{ template "logo" }}</div>
+                <span class="block w-full text-left col-span-2 tracking-widest sm:tracking-normal">Codes</span>
             </a>
         </h1>
-        <h2 class="text-center text-slate-400 uppercase text-xl font-nunito font-light tracking-widest my-5">
+        <h2 class="text-center text-slate-400 uppercase text-base sm:text-xl font-nunito font-light tracking-widest my-5">
             Programming Adventures
         </h2>
-        <div id="socialLinks" class="flex flex-row flex-nowrap justify-between items-center max-w-lg mx-auto my-10">
+        <div id="socialLinks">
             <a href="https://twitter.com/dustinmoris" target="_blank" title="Follow on Twitter">{{ template "twitter" }}</a>
             <a href="https://www.linkedin.com/in/dustinmoris/" target="_blank" title="Follow on LinkedIn">{{ template "linkedin" }}</a>
             <a href="https://www.instagram.com/dustedtravels/" target="_blank" title="Follow on Instagram">{{ template "instagram" }}</a>
@@ -84,12 +84,12 @@
             </nav>
         </div>
     </header>
-    <main class="bg-zinc-900 mt-5 py-10 border-y border-y-zinc-800">
+    <main class="bg-zinc-900 mt-5 py-10 border-y border-y-zinc-800 px-5">
         <div class="max-w-4xl mx-auto">
             {{ template "content" . }}
         </div>
     </main>
-    <footer class="bg-slate-900 text-center text-slate-500 py-10 mb-5 text-base">
+    <footer class="bg-slate-900 text-center text-slate-500 py-10 mb-5 text-base px-5">
         <div class="svg-light w-14 mx-auto mb-5">{{ template "logo" }}</div>
         <p class="mt-2 uppercase font-normal font-nunito text-slate-400 tracking-wide">Copyright &copy; {{ .Base.Year }} Dusted Codes Limited</p>
         <p class="mt-2 font-light">All content on this website, such as text, graphics, logos and images is the property of Dusted Codes Limited.</p>

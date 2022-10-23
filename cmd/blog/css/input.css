@@ -4,15 +4,19 @@
 @tailwind screens;
 
 #logoLink {
-    @apply w-full grid grid-cols-5 gap-x-5 place-items-center text-5xl uppercase font-nunito font-extrabold text-zinc-300;
+    @apply w-full grid grid-cols-5 gap-x-2 sm:gap-x-5 place-items-center text-2xl sm:text-5xl uppercase font-nunito font-extrabold text-zinc-300;
 }
 
 #logoLink:hover .logo > svg {
     @apply fill-cyan-300;
 }
 
+.logo {
+    @apply flex flex-row justify-center;
+}
+
 .logo > svg {
-    @apply fill-amber-300;
+    @apply fill-amber-300 w-20 sm:w-full;
 }
 
 .svg-light > svg {
@@ -27,8 +31,12 @@
     @apply font-sans uppercase font-semibold text-2xl text-amber-300 hover:text-cyan-300;
 }
 
+#socialLinks {
+    @apply grid grid-cols-5 gap-y-6 place-items-center sm:flex sm:flex-row sm:flex-wrap sm:justify-between sm:items-center max-w-xs sm:max-w-lg mx-auto my-10;
+}
+
 #socialLinks svg {
-    @apply w-7 fill-zinc-500 hover:fill-cyan-300;
+    @apply w-6 sm:w-7 fill-zinc-500 hover:fill-cyan-300;
 }
 
 a {
@@ -142,11 +150,11 @@ Blog Posts
 }
 
 .share-links {
-    @apply flex flex-row flex-nowrap justify-between items-center max-w-2xl mx-auto my-10;
+    @apply flex flex-row flex-wrap justify-center sm:justify-between items-center max-w-2xl mx-auto my-10;
 }
 
 .share-links svg {
-    @apply w-7 fill-zinc-500 hover:fill-cyan-300;
+    @apply w-7 mx-5 sm:mx-0 my-3 sm:my-0 fill-zinc-500 hover:fill-cyan-300;
 }
 
 /* ----------------
