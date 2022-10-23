@@ -135,6 +135,11 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		if path == "/robots.xml" {
+			h.robots(w, r)
+			return
+		}
+
 		head, tail := request.ShiftPath(path)
 		if head == "tagged" {
 			tagName := strings.TrimLeft(tail, "/")

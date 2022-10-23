@@ -182,7 +182,33 @@ func (h *Handler) sitemap(
 	r *http.Request,
 ) {
 	urls := h.settings.URLs(r)
-	urlset := sitemap.NewURLSet()
+	urlset := sitemap.NewURLSet().
+		AddURL(
+			sitemap.
+				NewURL(urls.BaseURL).
+				SetPriority("1").
+				SetChangeFreq("monthly")).
+		AddURL(
+			sitemap.
+				NewURL(urls.Projects()).
+				SetPriority("0.9").
+				SetChangeFreq("monthly")).
+		AddURL(
+			sitemap.
+				NewURL(urls.OpenSource()).
+				SetPriority("0.9").
+				SetChangeFreq("monthly")).
+		AddURL(
+			sitemap.
+				NewURL(urls.Hire()).
+				SetPriority("0.9").
+				SetChangeFreq("monthly")).
+		AddURL(
+			sitemap.
+				NewURL(urls.About()).
+				SetPriority("0.9").
+				SetChangeFreq("monthly"))
+
 	for _, blogPost := range h.blogPosts {
 		urlset.AddURL(
 			sitemap.
@@ -202,5 +228,18 @@ func (h *Handler) sitemap(
 	_, err = w.Write(bytes)
 	if err != nil {
 		dlog.New(r.Context()).Critical().Err(err).Msg("Error writing sitemap to response body.")
+	}
+}
+
+func (h *Handler) robots(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
+	contents := fmt.Sprintf("Sitemap: %s/sitemap.xml\n", h.settings.BaseURL)
+	w.WriteHeader(http.StatusOK)
+	w.Header().Add("Content-Type", "text/plain; charset=UTF-8")
+	_, err := w.Write([]byte(contents))
+	if err != nil {
+		dlog.New(r.Context()).Critical().Err(err).Msg("Error writing robots.txt to response body.")
 	}
 }

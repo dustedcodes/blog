@@ -9,6 +9,22 @@ type URLs struct {
 	DisqusShortname string
 }
 
+func (u *URLs) Projects() string {
+	return fmt.Sprintf("%s/projects", u.BaseURL)
+}
+
+func (u *URLs) OpenSource() string {
+	return fmt.Sprintf("%s/open-source", u.BaseURL)
+}
+
+func (u *URLs) Hire() string {
+	return fmt.Sprintf("%s/hire", u.BaseURL)
+}
+
+func (u *URLs) About() string {
+	return fmt.Sprintf("%s/about", u.BaseURL)
+}
+
 func (u *URLs) BlogPostURL(blogPostID string) string {
 	return fmt.Sprintf("%s/%s", u.BaseURL, blogPostID)
 }
