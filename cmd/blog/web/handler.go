@@ -125,6 +125,11 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
+		if path == "/feed/rss" {
+			h.rss(w, r)
+			return
+		}
+
 		head, tail := request.ShiftPath(path)
 		if head == "tagged" {
 			tagName := strings.TrimLeft(tail, "/")

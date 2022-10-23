@@ -3,10 +3,14 @@ package web
 import (
 	"fmt"
 	"net/http"
+	"sort"
 	"strings"
+	"time"
 
+	"github.com/dusted-go/diagnostic/v3/dlog"
 	"github.com/dusted-go/http/v3/server"
 	"github.com/dusted-go/utils/array"
+	"github.com/dustedcodes/blog/cmd/blog/rss"
 	"github.com/dustedcodes/blog/cmd/blog/site"
 )
 
@@ -119,4 +123,59 @@ func (h *Handler) about(
 	r *http.Request,
 ) {
 	h.renderView(w, r, 200, "about", h.newBaseModel(r).WithTitle("About").Empty())
+}
+
+func (h *Handler) rss(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
+	urls := h.settings.URLs(r)
+	sort.Slice(h.blogPosts, func(i, j int) bool {
+		return h.blogPosts[i].PublishDate.After(h.blogPosts[j].PublishDate)
+	})
+	latestPost := h.blogPosts[0]
+	rssFeed := rss.NewFeed(
+		rss.NewChannel(
+			"Dusted Codes",
+			urls.BaseURL,
+			"Programming Adventures").
+			SetLanguage("en-gb").
+			SetWebMaster("dustin@dusted.codes", "Dustin Moris Gorski").
+			SetManagingEditor("dustin@dusted.codes", "Dustin Moris Gorski").
+			SetCopyright(fmt.Sprintf("Copyright %d, Dustin Moris Gorski", time.Now().Year())).
+			SetLastBuildDate(latestPost.PublishDate).
+			SetPubDate(latestPost.PublishDate),
+	)
+
+	for _, b := range h.blogPosts {
+		permalink := urls.BlogPostURL(b.ID)
+		comments := urls.BlogPostCommentsURL(b.ID)
+		htmlContent, err := b.HTML()
+		if h.handleErr(w, r, err) {
+			return
+		}
+		rssItem := rss.NewItemWithTitle(b.Title).
+			SetLink(permalink).
+			SetGUID(permalink, true).
+			SetPubDate(b.PublishDate).
+			SetAuthor("dustin@dusted.codes", "Dustin Moris Gorski").
+			SetComments(comments).
+			SetDescription(string(htmlContent))
+		for _, t := range b.Tags {
+			rssItem.AddCategory(t, urls.TagURL(t))
+		}
+		rssFeed.Channel.AddItem(rssItem)
+	}
+
+	bytes, err := rssFeed.ToXML(true, true)
+	if h.handleErr(w, r, err) {
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Header().Add("Content-Type", "application/rss+xml")
+	_, err = w.Write(bytes)
+	if err != nil {
+		dlog.New(r.Context()).Critical().Err(err).Msg("Error writing rss feed to response body.")
+	}
 }

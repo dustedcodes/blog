@@ -13,7 +13,7 @@
         {{ if .Tags }}
         <p class="text-center font-semibold text-base mt-7 mb-20 font-nunito">
             {{ range $i, $t := .Tags }}
-            <a class="mx-2 px-4 py-1 rounded-full bg-zinc-800 hover:bg-amber-300 hover:text-black hover:no-underline" href="/tagged/{{ $t }}">{{ $t }}</a>
+            <a class="mx-2 px-4 py-1 rounded-full bg-zinc-800 hover:bg-amber-300 hover:text-black hover:no-underline" href="{{ $t.URL }}">{{ $t.Value }}</a>
             {{ end }}
         </p>
         {{ end }}

@@ -33,11 +33,16 @@ type UserMessage struct {
 	Messages []template.HTML
 }
 
+type Tag struct {
+	Value string
+	URL   string
+}
+
 type BlogPostLink struct {
 	Title       string
 	Permalink   string
 	PublishDate time.Time
-	Tags        []string
+	Tags        []Tag
 }
 
 func (b BlogPostLink) PublishedOn() string {
@@ -55,7 +60,7 @@ type BlogPost struct {
 	ID               string
 	PublishDate      time.Time
 	Content          template.HTML
-	Tags             []string
+	Tags             []Tag
 	EncodedTitle     string
 	Permalink        string
 	EncodedPermalink string
@@ -101,13 +106,20 @@ func (b Base) Index(blogPosts []*site.BlogPost) Index {
 		if !array.Contains(years, year) {
 			years = append(years, year)
 		}
+		tags := []Tag{}
+		for _, tag := range post.Tags {
+			tags = append(tags, Tag{
+				Value: tag,
+				URL:   b.URLs.TagURL(tag),
+			})
+		}
 		catalogue[year] = array.Prepend(
 			catalogue[year],
 			BlogPostLink{
 				Title:       post.Title,
-				Permalink:   b.URLs.BlogPostPermalink(post.ID),
+				Permalink:   b.URLs.BlogPostURL(post.ID),
 				PublishDate: post.PublishDate,
-				Tags:        post.Tags,
+				Tags:        tags,
 			})
 	}
 	sort.Slice(years, func(i, j int) bool {
@@ -125,11 +137,18 @@ func (b Base) Tagged(blogPosts []*site.BlogPost) Tagged {
 	blogPostLinks := []BlogPostLink{}
 
 	for _, post := range blogPosts {
+		tags := []Tag{}
+		for _, tag := range post.Tags {
+			tags = append(tags, Tag{
+				Value: tag,
+				URL:   b.URLs.TagURL(tag),
+			})
+		}
 		blogPostLinks = append(blogPostLinks, BlogPostLink{
 			Title:       post.Title,
-			Permalink:   b.URLs.BlogPostPermalink(post.ID),
+			Permalink:   b.URLs.BlogPostURL(post.ID),
 			PublishDate: post.PublishDate,
-			Tags:        post.Tags,
+			Tags:        tags,
 		})
 	}
 
@@ -149,13 +168,20 @@ func (b Base) BlogPost(
 	publishDate time.Time,
 	tags []string,
 ) BlogPost {
-	permalink := b.URLs.BlogPostPermalink(blogPostID)
+	permalink := b.URLs.BlogPostURL(blogPostID)
+	t := []Tag{}
+	for _, tag := range tags {
+		t = append(t, Tag{
+			Value: tag,
+			URL:   b.URLs.TagURL(tag),
+		})
+	}
 	return BlogPost{
 		Base:             b,
 		ID:               blogPostID,
 		PublishDate:      publishDate,
 		Content:          content,
-		Tags:             tags,
+		Tags:             t,
 		EncodedTitle:     url.QueryEscape(b.Title),
 		Permalink:        permalink,
 		EncodedPermalink: url.QueryEscape(permalink),

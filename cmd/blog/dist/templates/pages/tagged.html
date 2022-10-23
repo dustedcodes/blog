@@ -16,7 +16,7 @@
                 <span class="block font-semibold uppercase my-5">{{ $post.PublishedOn }}</span>
 
                 {{ range $i, $t := .Tags }}
-                <a class="mx-2 px-4 py-1 rounded-full text-zinc-300 bg-zinc-800 hover:bg-amber-300 hover:text-black hover:no-underline" href="/tagged/{{ $t }}">{{ $t }}</a>
+                <a class="mx-2 px-4 py-1 rounded-full text-zinc-300 bg-zinc-800 hover:bg-amber-300 hover:text-black hover:no-underline" href="{{ $t.URL }}">{{ $t.Value }}</a>
                 {{ end }}
             </p>
         </li>
