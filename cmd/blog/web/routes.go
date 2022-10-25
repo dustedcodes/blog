@@ -160,7 +160,8 @@ func (h *Handler) rss(
 			SetManagingEditor("dustin@dusted.codes", "Dustin Moris Gorski").
 			SetCopyright(fmt.Sprintf("Copyright %d, Dustin Moris Gorski", time.Now().Year())).
 			SetLastBuildDate(latestPost.PublishDate).
-			SetPubDate(latestPost.PublishDate),
+			SetPubDate(latestPost.PublishDate).
+			SetImage(rss.NewImage(urls.Logo(), "Dusted Codes", urls.BaseURL)),
 	)
 
 	for _, b := range h.blogPosts {
@@ -176,7 +177,8 @@ func (h *Handler) rss(
 			SetPubDate(b.PublishDate).
 			SetAuthor("dustin@dusted.codes", "Dustin Moris Gorski").
 			SetComments(comments).
-			SetDescription(string(htmlContent))
+			SetDescription(string(htmlContent)).
+			SetEnclosure(urls.OpenGraphImage(), 28*1024, "image/png")
 		for _, t := range b.Tags {
 			rssItem.AddCategory(t, urls.TagURL(t))
 		}
