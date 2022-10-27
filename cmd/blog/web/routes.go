@@ -7,8 +7,8 @@ import (
 	"time"
 
 	"github.com/dusted-go/diagnostic/v3/dlog"
+	"github.com/dusted-go/http/v3/response"
 	"github.com/dusted-go/http/v3/rss"
-	"github.com/dusted-go/http/v3/server"
 	"github.com/dusted-go/http/v3/sitemap"
 	"github.com/dusted-go/utils/array"
 	"github.com/dustedcodes/blog/cmd/blog/site"
@@ -33,7 +33,7 @@ func (h *Handler) version(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
-	err := server.WritePlaintext(
+	err := response.WritePlaintext(
 		w,
 		http.StatusOK,
 		h.settings.ApplicationVersion)
@@ -44,7 +44,7 @@ func (h *Handler) ping(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
-	err := server.WritePlaintext(
+	err := response.WritePlaintext(
 		w,
 		http.StatusOK,
 		"pong")
@@ -102,6 +102,15 @@ func (h *Handler) blogPost(
 ) {
 	blogPostID := strings.TrimPrefix(r.URL.Path, "/")
 
+	if !h.settings.IsProduction() {
+		blogPost, err := site.ReadBlogPost(r.Context(), site.DefaultBlogPostPath, blogPostID)
+		if h.handleErr(w, r, err) {
+			return
+		}
+		h.renderBlogPost(w, r, blogPost)
+		return
+	}
+
 	for _, blogPost := range h.blogPosts {
 		if blogPost.ID == blogPostID {
 			h.renderBlogPost(w, r, blogPost)
@@ -148,6 +157,10 @@ func (h *Handler) rss(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
+	loc, err := time.LoadLocation("Europe/London")
+	if h.handleErr(w, r, err) {
+		return
+	}
 	urls := h.settings.URLs(r)
 	latestPost := h.blogPosts[0]
 	rssFeed := rss.NewFeed(
@@ -159,8 +172,8 @@ func (h *Handler) rss(
 			SetWebMaster("dustin@dusted.codes", "Dustin Moris Gorski").
 			SetManagingEditor("dustin@dusted.codes", "Dustin Moris Gorski").
 			SetCopyright(fmt.Sprintf("Copyright %d, Dustin Moris Gorski", time.Now().Year())).
-			SetLastBuildDate(latestPost.PublishDate).
-			SetPubDate(latestPost.PublishDate).
+			SetLastBuildDate(latestPost.PublishDate, loc).
+			SetPubDate(latestPost.PublishDate, loc).
 			SetImage(rss.NewImage(urls.Logo(), "Dusted Codes", urls.BaseURL)),
 	)
 
@@ -174,7 +187,7 @@ func (h *Handler) rss(
 		rssItem := rss.NewItemWithTitle(b.Title).
 			SetLink(permalink).
 			SetGUID(permalink, true).
-			SetPubDate(b.PublishDate).
+			SetPubDate(b.PublishDate, loc).
 			SetAuthor("dustin@dusted.codes", "Dustin Moris Gorski").
 			SetComments(comments).
 			SetDescription(string(htmlContent)).
@@ -257,7 +270,7 @@ func (h *Handler) robots(
 	r *http.Request,
 ) {
 	contents := fmt.Sprintf("Sitemap: %s/sitemap.xml\n", h.settings.BaseURL)
-	err := server.WritePlaintext(
+	err := response.WritePlaintext(
 		w,
 		http.StatusOK,
 		contents)

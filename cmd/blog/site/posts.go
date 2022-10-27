@@ -19,6 +19,10 @@ import (
 	"github.com/yuin/goldmark/renderer/html"
 )
 
+const (
+	DefaultBlogPostPath = "dist/posts"
+)
+
 type BlogPost struct {
 	ID          string
 	Title       string
@@ -67,6 +71,132 @@ func (b *BlogPost) HTML() (template.HTML, error) {
 	return template.HTML(buf.Bytes()), nil
 }
 
+func parseBlogPost(
+	blogPostID string,
+	publishDate time.Time,
+	buffer []byte,
+) (
+	*BlogPost,
+	error,
+) {
+	bufferWithoutBOM := bytes.TrimLeft(buffer, "\xef\xbb\xbf")
+
+	var metadata []string
+	var title string
+	body := strings.Builder{}
+
+	readMeta := false
+	readBody := false
+
+	scanner := bufio.NewScanner(bytes.NewReader(bufferWithoutBOM))
+	scanner.Split(bufio.ScanLines)
+	for scanner.Scan() {
+		line := scanner.Text()
+
+		if strings.HasPrefix(line, "<!--") {
+			readMeta = true
+			continue
+		} else if strings.HasPrefix(line, "-->") {
+			readMeta = false
+			readBody = true
+			continue
+		}
+
+		if readMeta {
+			metadata = append(metadata, line)
+		} else if strings.TrimSpace(line) == "" && body.Len() == 0 {
+			continue
+		} else if strings.HasPrefix(line, "# ") && body.Len() == 0 {
+			title = strings.TrimSpace(strings.TrimPrefix(line, "# "))
+		} else if readBody {
+			body.WriteString(line)
+			body.WriteString("\n")
+		}
+	}
+
+	if len(title) == 0 {
+		return nil, fault.System("blog post title is missing")
+	}
+	content := body.String()
+
+	isHTML := false
+	var tags []string
+	for _, meta := range metadata {
+		metaParts := strings.SplitN(meta, ":", 2)
+		key := strings.ToLower(strings.TrimSpace(metaParts[0]))
+		if key == "tags" {
+			tags = strings.Split(strings.TrimSpace(metaParts[1]), " ")
+		} else if key == "type" {
+			isHTML = strings.ToLower(strings.TrimSpace(metaParts[1])) == "html"
+		} else {
+			return nil, fault.Systemf("unknown blog post metadata key: %s", key)
+		}
+	}
+
+	valueToHash := title + content + publishDate.String()
+	for _, tag := range tags {
+		valueToHash = valueToHash + tag
+	}
+
+	// nolint: gosec // hash used for caching, not security
+	hash := sha1.New()
+	hash.Write([]byte(valueToHash))
+	hashCode := hex.EncodeToString(hash.Sum(nil))
+
+	blogPost := &BlogPost{
+		ID:          blogPostID,
+		Title:       title,
+		PublishDate: publishDate,
+		Tags:        tags,
+		HashCode:    hashCode,
+	}
+	if isHTML {
+		blogPost.html = content
+	} else {
+		blogPost.markdown = content
+	}
+
+	return blogPost, nil
+}
+
+func ReadBlogPost(ctx context.Context, path string, blogPostID string) (*BlogPost, error) {
+	files, err := os.ReadDir(path)
+	if err != nil {
+		return nil, fault.SystemWrapf(err, "error reading files from directory '%s'", path)
+	}
+
+	fileName := ""
+	for _, f := range files {
+		name := f.Name()
+		if strings.HasSuffix(name, blogPostID+".md") {
+			fileName = name
+			break
+		}
+	}
+
+	if len(fileName) == 0 {
+		return nil, fault.Systemf("blog post with ID '%s' not found", blogPostID)
+	}
+
+	fileNameParts := strings.SplitN(fileName, "-", 2)
+	publishDate, err := time.Parse("2006_01_02", fileNameParts[0])
+	if err != nil {
+		return nil, fault.SystemWrapf(err, "error parsing date from file name '%s'", fileName)
+	}
+
+	fileBuffer, err := os.ReadFile(path + "/" + fileName)
+	if err != nil {
+		return nil, fault.SystemWrap(err, "error reading blog post file")
+	}
+
+	blogPost, err := parseBlogPost(blogPostID, publishDate, fileBuffer)
+	if err != nil {
+		return nil, fault.SystemWrapf(err, "error parsing blog post '%s'", fileName)
+	}
+
+	return blogPost, nil
+}
+
 func ReadBlogPosts(ctx context.Context, path string) ([]*BlogPost, error) {
 	files, err := os.ReadDir(path)
 	if err != nil {
@@ -97,83 +227,11 @@ func ReadBlogPosts(ctx context.Context, path string) ([]*BlogPost, error) {
 			dlog.New(ctx).Error().Err(err).Msg("An error occurred when reading a .md file from disk.")
 			continue
 		}
-		fileBufferWithoutBOM := bytes.TrimLeft(fileBuffer, "\xef\xbb\xbf")
 
-		var metadata []string
-		var title string
-		body := strings.Builder{}
-
-		readMeta := false
-		readBody := false
-
-		scanner := bufio.NewScanner(bytes.NewReader(fileBufferWithoutBOM))
-		scanner.Split(bufio.ScanLines)
-		for scanner.Scan() {
-			line := scanner.Text()
-
-			if strings.HasPrefix(line, "<!--") {
-				readMeta = true
-				continue
-			} else if strings.HasPrefix(line, "-->") {
-				readMeta = false
-				readBody = true
-				continue
-			}
-
-			if readMeta {
-				metadata = append(metadata, line)
-			} else if strings.TrimSpace(line) == "" && body.Len() == 0 {
-				continue
-			} else if strings.HasPrefix(line, "# ") && body.Len() == 0 {
-				title = strings.TrimSpace(strings.TrimPrefix(line, "# "))
-			} else if readBody {
-				body.WriteString(line)
-				body.WriteString("\n")
-			}
-		}
-
-		if len(title) == 0 {
-			dlog.New(ctx).Warning().Fmt("Skipping blog post without title: %s", fileName)
+		blogPost, err := parseBlogPost(blogPostID, publishDate, fileBuffer)
+		if err != nil {
+			dlog.New(ctx).Warning().Fmt("Skipping blog post '%s': %s", fileName, err.Error())
 			continue
-		}
-		content := body.String()
-
-		isHTML := false
-		var tags []string
-		for _, meta := range metadata {
-			metaParts := strings.SplitN(meta, ":", 2)
-			key := strings.ToLower(strings.TrimSpace(metaParts[0]))
-			if key == "tags" {
-				tags = strings.Split(strings.TrimSpace(metaParts[1]), " ")
-			} else if key == "type" {
-				isHTML = strings.ToLower(strings.TrimSpace(metaParts[1])) == "html"
-			} else {
-				dlog.New(ctx).Warning().Fmt("Skipping unknown meta data key '%s' for blog post %s.", key, fileName)
-				continue
-			}
-		}
-
-		valueToHash := title + content + publishDate.String()
-		for _, tag := range tags {
-			valueToHash = valueToHash + tag
-		}
-
-		// nolint: gosec // hash used for caching, not security
-		hash := sha1.New()
-		hash.Write([]byte(valueToHash))
-		hashCode := hex.EncodeToString(hash.Sum(nil))
-
-		blogPost := &BlogPost{
-			ID:          blogPostID,
-			Title:       title,
-			PublishDate: publishDate,
-			Tags:        tags,
-			HashCode:    hashCode,
-		}
-		if isHTML {
-			blogPost.html = content
-		} else {
-			blogPost.markdown = content
 		}
 
 		blogPosts = append(blogPosts, blogPost)

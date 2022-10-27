@@ -12,7 +12,7 @@ import (
 	"github.com/dusted-go/fault/fault"
 	"github.com/dusted-go/fault/stack"
 	"github.com/dusted-go/http/v3/request"
-	"github.com/dusted-go/http/v3/server"
+	"github.com/dusted-go/http/v3/response"
 	"github.com/dustedcodes/blog/cmd/blog/model"
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
@@ -43,8 +43,8 @@ func (h *Handler) internalError(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
-	server.ClearHeaders(w)
-	err := server.WritePlaintext(
+	response.ClearHeaders(w)
+	err := response.WritePlaintext(
 		w,
 		http.StatusInternalServerError,
 		"Oops, something went wrong. The server encountered an internal error or misconfiguration and was unable to complete your request.")
@@ -84,7 +84,7 @@ func (h *Handler) renderUserMessages(
 	title string,
 	messages ...template.HTML,
 ) {
-	server.ClearHeaders(w)
+	response.ClearHeaders(w)
 	model := h.newBaseModel(r).WithTitle(title).UserMessages(messages...)
 	h.renderView(
 		w, r,
@@ -134,7 +134,7 @@ func (h *Handler) notFound(
 	dlog.New(r.Context()).
 		Debug().
 		Fmt("Not Found: %s", request.FullURL(r))
-	server.ClearHeaders(w)
+	response.ClearHeaders(w)
 	h.renderUserMessages(
 		w, r,
 		http.StatusNotFound,

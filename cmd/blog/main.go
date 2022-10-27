@@ -8,12 +8,12 @@ import (
 
 	"github.com/dusted-go/config/dotenv"
 	"github.com/dusted-go/diagnostic/v3/dlog"
+	"github.com/dusted-go/http/v3/middleware"
 	"github.com/dusted-go/http/v3/middleware/assets"
 	"github.com/dusted-go/http/v3/middleware/httptrace"
 	"github.com/dusted-go/http/v3/middleware/proxy"
 	"github.com/dusted-go/http/v3/middleware/recoverer"
 	"github.com/dusted-go/http/v3/middleware/redirect"
-	"github.com/dusted-go/http/v3/server"
 	"github.com/dustedcodes/blog/cmd/blog/site"
 	"github.com/dustedcodes/blog/cmd/blog/web"
 )
@@ -75,7 +75,7 @@ func main() {
 	}
 
 	// Init all blog posts
-	blogPosts, err := site.ReadBlogPosts(ctx, "dist/posts")
+	blogPosts, err := site.ReadBlogPosts(ctx, site.DefaultBlogPostPath)
 	if err != nil {
 		panic(err)
 	}
@@ -95,7 +95,7 @@ func main() {
 	// Web Server:
 	// ----------------------------------------
 
-	middleware := server.CombineMiddlewares(
+	middleware := middleware.Chain(
 		recoverer.HandlePanics(webHandler.Recover),
 		proxy.ForwardedHeaders(settings.ProxyCount),
 		httptrace.GoogleCloudTrace(createLogProvider(settings)),

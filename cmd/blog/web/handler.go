@@ -4,15 +4,15 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/dusted-go/http/v3/request"
-	"github.com/dusted-go/http/v3/server"
+	"github.com/dusted-go/http/v3/path"
+	"github.com/dusted-go/http/v3/view"
 	"github.com/dustedcodes/blog/cmd/blog/site"
 )
 
 type Handler struct {
 	settings    *site.Settings
 	assets      *site.Assets
-	viewHandler *server.ViewHandler
+	viewHandler *view.Handler
 	blogPosts   []*site.BlogPost
 }
 
@@ -71,7 +71,7 @@ func NewHandler(
 			"dist/templates/pages/about.html",
 		),
 	}
-	viewHandler := server.NewViewHandler(
+	viewHandler := view.NewViewHandler(
 		settings.HotReload(),
 		"layout",
 		templateFiles)
@@ -86,66 +86,66 @@ func NewHandler(
 
 func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	verb := r.Method
-	path := r.URL.Path
+	p := r.URL.Path
 
 	if verb == "GET" || verb == "HEAD" {
 
-		if path == "/" {
+		if p == "/" {
 			h.index(w, r)
 			return
 		}
 
-		if path == "/version" {
+		if p == "/version" {
 			h.version(w, r)
 			return
 		}
 
-		if path == "/ping" {
+		if p == "/ping" {
 			h.ping(w, r)
 			return
 		}
 
-		if path == "/panic" && !h.settings.IsProduction() {
+		if p == "/panic" && !h.settings.IsProduction() {
 			h.panic(w, r)
 			return
 		}
 
-		if path == "/projects" {
+		if p == "/projects" {
 			h.projects(w, r)
 			return
 		}
 
-		if path == "/open-source" {
+		if p == "/open-source" {
 			h.oss(w, r)
 			return
 		}
 
-		if path == "/hire" {
+		if p == "/hire" {
 			h.hire(w, r)
 			return
 		}
 
-		if path == "/about" {
+		if p == "/about" {
 			h.about(w, r)
 			return
 		}
 
-		if path == "/feed/rss" {
+		if p == "/feed/rss" {
 			h.rss(w, r)
 			return
 		}
 
-		if path == "/sitemap.xml" {
+		if p == "/sitemap.xml" {
 			h.sitemap(w, r)
 			return
 		}
 
-		if path == "/robots.xml" {
+		if p == "/robots.xml" {
 			h.robots(w, r)
 			return
 		}
 
-		head, tail := request.ShiftPath(path)
+		head, tail := path.Shift(p)
 		if head == "tagged" {
 			tagName := strings.TrimLeft(tail, "/")
 			h.tagged(w, r, tagName)
