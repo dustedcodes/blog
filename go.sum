@@ -6,6 +6,10 @@ github.com/dusted-go/fault v1.4.0 h1:iWhVBH1IluFzTe5GXuUYnV5Pdek+DtCsbKFJwrozUOY
 github.com/dusted-go/fault v1.4.0/go.mod h1:Lk3b6220V5WGPrLaAaBOpsA7qjogVj5f+76orT9ImCY=
 github.com/dusted-go/http/v3 v3.14.0 h1:UKeQSkEVGUmE6kvrwmNgv6Yzm4wxKXYYC8B31EDCNbc=
 github.com/dusted-go/http/v3 v3.14.0/go.mod h1:RIF5TLu7wWCu2GHbVMMgtTClPTDVJz63UTWkiilX83w=
+github.com/dusted-go/http/v3 v3.15.0 h1:pu3bYM31yxItVa78ouZfslDU91KTjtNYoFeVSr8qTlI=
+github.com/dusted-go/http/v3 v3.15.0/go.mod h1:RIF5TLu7wWCu2GHbVMMgtTClPTDVJz63UTWkiilX83w=
+github.com/dusted-go/http/v3 v3.16.0 h1:Ogs6zrfi9mTiLUUg52x5b7o3k2YdPfKojwx1YjozalI=
+github.com/dusted-go/http/v3 v3.16.0/go.mod h1:RIF5TLu7wWCu2GHbVMMgtTClPTDVJz63UTWkiilX83w=
 github.com/dusted-go/utils v1.17.0 h1:lS4BpeaMFdUFtWAgQqf/JjBDGxYZUzBK6kEmefWnWoM=
 github.com/dusted-go/utils v1.17.0/go.mod h1:yQjwKRaqeWuFBDb8cKPiOTzceP/5TMJUYcrkHPFACJE=
 github.com/golang/protobuf v1.5.0/go.mod h1:FsONVRAS9T7sI+LIUmWTfcYkHO4aIWwzhcaSAoJOfIk=

@@ -29,6 +29,10 @@ func (u *URLs) RSSFeed() string {
 	return fmt.Sprintf("%s/feed/rss", u.BaseURL)
 }
 
+func (u *URLs) AtomFeed() string {
+	return fmt.Sprintf("%s/feed/atom", u.BaseURL)
+}
+
 func (u *URLs) BlogPostURL(blogPostID string) string {
 	return fmt.Sprintf("%s/%s", u.BaseURL, blogPostID)
 }

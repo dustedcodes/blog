@@ -71,7 +71,7 @@ func NewHandler(
 			"dist/templates/pages/about.html",
 		),
 	}
-	viewHandler := view.NewViewHandler(
+	viewHandler := view.NewHandler(
 		settings.HotReload(),
 		"layout",
 		templateFiles)
@@ -132,6 +132,11 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 
 		if p == "/feed/rss" {
 			h.rss(w, r)
+			return
+		}
+
+		if p == "/feed/atom" {
+			h.atom(w, r)
 			return
 		}
 

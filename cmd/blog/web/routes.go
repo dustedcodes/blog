@@ -7,6 +7,7 @@ import (
 	"time"
 
 	"github.com/dusted-go/diagnostic/v3/dlog"
+	"github.com/dusted-go/http/v3/atom"
 	"github.com/dusted-go/http/v3/response"
 	"github.com/dusted-go/http/v3/rss"
 	"github.com/dusted-go/http/v3/sitemap"
@@ -205,6 +206,67 @@ func (h *Handler) rss(
 
 	w.WriteHeader(http.StatusOK)
 	w.Header().Add("Content-Type", "application/rss+xml")
+	_, err = w.Write(bytes)
+	if err != nil {
+		dlog.New(r.Context()).Critical().Err(err).Msg("Error writing rss feed to response body.")
+	}
+}
+
+func (h *Handler) atom(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
+	urls := h.settings.URLs(r)
+	latestPost := h.blogPosts[0]
+	author := atom.NewPerson(
+		"Dustin Moris Gorski").
+		SetEmail("dustin@dusted.codes").
+		SetURI(urls.BaseURL)
+	atomFeed := atom.NewFeed(
+		urls.BaseURL,
+		atom.NewText("Dusted Codes"),
+		latestPost.PublishDate).
+		SetSubtitle(atom.NewText("Programming Adventures")).
+		SetIcon(urls.Logo()).
+		SetAuthor(author).
+		AddLink(atom.NewLink(urls.AtomFeed()).SetRel("self")).
+		AddLink(atom.NewLink(urls.BaseURL).SetRel("alternate")).
+		SetRights(
+			atom.NewText(
+				fmt.Sprintf("Copyright © %d, Dusted Codes Limited", time.Now().Year())))
+
+	for _, b := range h.blogPosts {
+		permalink := urls.BlogPostURL(b.ID)
+		htmlContent, err := b.HTML()
+		if h.handleErr(w, r, err) {
+			return
+		}
+		entry := atom.NewEntry(
+			permalink,
+			atom.NewText(b.Title),
+			b.PublishDate).
+			SetAuthor(author).
+			AddLink(atom.NewLink(permalink).SetRel("alternate")).
+			AddLink(atom.NewLink(urls.BlogPostCommentsURL(b.ID)).SetRel("related")).
+			AddLink(atom.NewLink(urls.OpenGraphImage()).SetRel("enclosure").SetLength(28 * 1024)).
+			SetPublished(b.PublishDate).
+			SetContent(atom.NewHTML(string(htmlContent)))
+
+		for _, t := range b.Tags {
+			entry.AddCategory(atom.NewCategory(t).
+				SetLabel(t).
+				SetScheme(urls.TagURL(t)))
+		}
+		atomFeed.AddEntry(entry)
+	}
+
+	bytes, err := atomFeed.ToXML(true, true)
+	if h.handleErr(w, r, err) {
+		return
+	}
+
+	w.WriteHeader(http.StatusOK)
+	w.Header().Add("Content-Type", "application/atom+xml")
 	_, err = w.Write(bytes)
 	if err != nil {
 		dlog.New(r.Context()).Critical().Err(err).Msg("Error writing rss feed to response body.")
