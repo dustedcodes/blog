@@ -100,7 +100,7 @@ Blog Posts
 }
 
 .blogPostContent code {
-    @apply inline-block px-2 rounded font-mono text-left whitespace-pre-wrap break-words bg-zinc-800 text-red-300 leading-snug;
+    @apply inline-block px-1 rounded font-mono text-left text-lg whitespace-pre-wrap break-words bg-zinc-800 text-orange-300 leading-snug;
 }
 
 .blogPostContent pre {
@@ -108,7 +108,7 @@ Blog Posts
 }
 
 .blogPostContent pre > code {
-    @apply block px-3 py-2 text-amber-100 text-lg leading-normal;
+    @apply block px-3 py-2 text-stone-300 text-lg leading-normal;
 }
 
 .blogPostContent ul {

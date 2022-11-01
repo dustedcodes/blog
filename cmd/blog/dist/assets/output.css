@@ -1581,13 +1581,15 @@ Blog Posts
   border-radius: 0.25rem;
   --tw-bg-opacity: 1;
   background-color: rgb(39 39 42 / var(--tw-bg-opacity));
-  padding-left: 0.5rem;
-  padding-right: 0.5rem;
+  padding-left: 0.25rem;
+  padding-right: 0.25rem;
   text-align: left;
   font-family: Inconsolata, ui-monospace, SFMono-Regular, Menlo, Monaco, Consolas, "Liberation Mono", "Courier New", monospace;
+  font-size: 1.125rem;
+  line-height: 1.75rem;
   line-height: 1.375;
   --tw-text-opacity: 1;
-  color: rgb(252 165 165 / var(--tw-text-opacity));
+  color: rgb(253 186 116 / var(--tw-text-opacity));
 }
 
 .blogPostContent pre {
@@ -1605,7 +1607,7 @@ Blog Posts
   line-height: 1.75rem;
   line-height: 1.5;
   --tw-text-opacity: 1;
-  color: rgb(254 243 199 / var(--tw-text-opacity));
+  color: rgb(214 211 209 / var(--tw-text-opacity));
 }
 
 .blogPostContent ul {
