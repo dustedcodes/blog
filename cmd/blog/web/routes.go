@@ -57,7 +57,7 @@ func (h *Handler) index(
 	r *http.Request,
 ) {
 	model := h.newBaseModel(r).Index(h.blogPosts)
-	h.setCacheDirective(w, 60*60*4)
+	h.setCacheDirective(w, 60*60)
 	h.renderView(w, r, 200, "index", model)
 }
 
