@@ -10,6 +10,7 @@ import (
 	"github.com/dusted-go/diagnostic/v3/dlog"
 	"github.com/dusted-go/http/v3/middleware"
 	"github.com/dusted-go/http/v3/middleware/assets"
+	"github.com/dusted-go/http/v3/middleware/headers"
 	"github.com/dusted-go/http/v3/middleware/httptrace"
 	"github.com/dusted-go/http/v3/middleware/proxy"
 	"github.com/dusted-go/http/v3/middleware/recoverer"
@@ -104,6 +105,7 @@ func main() {
 		redirect.ForceHTTPS(
 			settings.IsProduction(),
 			settings.PublicHosts()...),
+		headers.Security(60*60*24*14),
 		assetMiddleware,
 	)
 	webApp := middleware.Next(webHandler)

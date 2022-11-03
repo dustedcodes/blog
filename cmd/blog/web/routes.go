@@ -93,6 +93,7 @@ func (h *Handler) renderBlogPost(
 	// ---
 	m := h.newBaseModel(r).WithTitle(b.Title).BlogPost(b.ID, content, b.PublishDate, b.Tags)
 	h.setCacheDirective(w, 60*60*4)
+	w.Header().Add("ETag", fmt.Sprintf("\"%s\"", b.HashCode))
 	h.renderView(
 		w, r, 200, "blogPost", m)
 }

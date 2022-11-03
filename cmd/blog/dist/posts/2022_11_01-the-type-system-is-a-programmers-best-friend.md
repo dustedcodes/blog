@@ -1,5 +1,5 @@
 <!--
-    Tags: architecture ddd software-design
+    Tags: architecture software-design ddd
 -->
 
 # The type system is a programmer's best friend
@@ -48,7 +48,7 @@ var money = Money.FromMinorUnit(1000050, gbp);
 
 money.Format(loc)        // ==> £10,000.50
 money.FormatVerbose(loc) // ==> GBP 10,000.50
-money.FormatShort(loc)   // ==> £10.5k
+money.FormatShort(loc)   // ==> £10k
 ```
 
 Sure modelling such a `Money` type would be a little bit of an effort to begin with, but once it has been implemented and tested to satisfaction then the rest of a codebase could rely on much greater safety and prevent the majority of bugs which would otherwise creep in over time. Even if small features such as the guarded initialisation of a `Money` object through either `Money.FromUnit(decimal v, Currency c)` or `Money.FromMinorUnit(int v, Currency c)` doesn't seem like much, it makes successive developers think every time whether the value which they received from a user input or external API is one or the other and therefore prevent bugs from the start.
