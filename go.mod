@@ -4,7 +4,7 @@ go 1.19
 
 require (
 	github.com/dusted-go/config v1.0.0
-	github.com/dusted-go/diagnostic/v3 v3.1.0
+	github.com/dusted-go/diagnostic/v3 v3.2.0
 	github.com/dusted-go/fault v1.4.0
 	github.com/dusted-go/http/v3 v3.18.0
 	github.com/dusted-go/utils v1.17.0

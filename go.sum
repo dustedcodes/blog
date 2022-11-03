@@ -2,6 +2,8 @@ github.com/dusted-go/config v1.0.0 h1:G/zz/CJC9//ZBEDdFyMK5RQ5dnE0i7LHeoOs6q+yzK
 github.com/dusted-go/config v1.0.0/go.mod h1:dEaLb35jkv7uUQ1/oKRIPORF2r4lXTBDi6FD5eMRtVE=
 github.com/dusted-go/diagnostic/v3 v3.1.0 h1:ZGG26XHXzMco3s00ZxnjMq2Lpy8e5cKRstJFHHg+1ow=
 github.com/dusted-go/diagnostic/v3 v3.1.0/go.mod h1:5w3R8+izm02E6YU0BlFrZ0oHp8x1yw7/3nSItz9Lanc=
+github.com/dusted-go/diagnostic/v3 v3.2.0 h1:YYm5u+K84JX7ZkQGzv0IqywJ6+vcDBnkWubAPYbT9ac=
+github.com/dusted-go/diagnostic/v3 v3.2.0/go.mod h1:5w3R8+izm02E6YU0BlFrZ0oHp8x1yw7/3nSItz9Lanc=
 github.com/dusted-go/fault v1.4.0 h1:iWhVBH1IluFzTe5GXuUYnV5Pdek+DtCsbKFJwrozUOY=
 github.com/dusted-go/fault v1.4.0/go.mod h1:Lk3b6220V5WGPrLaAaBOpsA7qjogVj5f+76orT9ImCY=
 github.com/dusted-go/http/v3 v3.14.0 h1:UKeQSkEVGUmE6kvrwmNgv6Yzm4wxKXYYC8B31EDCNbc=
