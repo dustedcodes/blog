@@ -209,7 +209,7 @@ func (h *Handler) rss(
 	w.WriteHeader(http.StatusOK)
 	w.Header().Add("Content-Type", "application/rss+xml")
 	_, err = w.Write(bytes)
-	if err != nil {
+	if err != nil && !cancelledByPeer(err) {
 		dlog.New(r.Context()).Critical().Err(err).Msg("Error writing rss feed to response body.")
 	}
 }
@@ -270,7 +270,7 @@ func (h *Handler) atom(
 	w.WriteHeader(http.StatusOK)
 	w.Header().Add("Content-Type", "application/atom+xml")
 	_, err = w.Write(bytes)
-	if err != nil {
+	if err != nil && !cancelledByPeer(err) {
 		dlog.New(r.Context()).Critical().Err(err).Msg("Error writing rss feed to response body.")
 	}
 }
@@ -324,7 +324,7 @@ func (h *Handler) sitemap(
 	w.WriteHeader(http.StatusOK)
 	w.Header().Add("Content-Type", "application/xml; charset=UTF-8")
 	_, err = w.Write(bytes)
-	if err != nil {
+	if err != nil && !cancelledByPeer(err) {
 		dlog.New(r.Context()).Critical().Err(err).Msg("Error writing sitemap to response body.")
 	}
 }

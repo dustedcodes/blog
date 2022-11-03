@@ -6,6 +6,7 @@ import (
 	"fmt"
 	"html/template"
 	"net/http"
+	"syscall"
 	"time"
 
 	"github.com/dusted-go/diagnostic/v3/dlog"
@@ -17,6 +18,19 @@ import (
 	"google.golang.org/grpc/codes"
 	"google.golang.org/grpc/status"
 )
+
+func cancelledByPeer(err error) bool {
+	if errors.Is(err, context.Canceled) ||
+		errors.Is(err, syscall.ECONNRESET) {
+		return true
+	}
+	if grpcStatus, ok := fault.As(err, status.FromError); ok {
+		if grpcStatus != nil && grpcStatus.Code() == codes.Canceled {
+			return true
+		}
+	}
+	return false
+}
 
 func convertErrorsToHTML(errorMessages []string) template.HTML {
 	out := "<div class=\"error\"><p>We've encountered some errors with your request:</p>"
@@ -48,7 +62,7 @@ func (h *Handler) internalError(
 		w,
 		http.StatusInternalServerError,
 		"Oops, something went wrong. The server encountered an internal error or misconfiguration and was unable to complete your request.")
-	if err != nil {
+	if err != nil && !cancelledByPeer(err) {
 		dlog.New(r.Context()).
 			Err(err).
 			Critical().
@@ -68,7 +82,7 @@ func (h *Handler) renderView(
 		statusCode,
 		viewKey,
 		viewModel)
-	if err != nil {
+	if err != nil && !cancelledByPeer(err) {
 		dlog.New(r.Context()).
 			Critical().
 			Err(err).
@@ -101,13 +115,9 @@ func (h *Handler) handleErr(
 	if err == nil {
 		return false
 	}
-	if errors.Is(err, context.Canceled) {
+
+	if cancelledByPeer(err) {
 		return true
-	}
-	if grpcStatus, ok := fault.As(err, status.FromError); ok {
-		if grpcStatus != nil && grpcStatus.Code() == codes.Canceled {
-			return true
-		}
 	}
 
 	var userErr *fault.UserError
