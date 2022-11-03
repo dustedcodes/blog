@@ -18,9 +18,11 @@ import (
 func (h *Handler) setCacheDirective(
 	w http.ResponseWriter,
 	cacheDuration int,
+	eTag string,
 ) {
 	cacheDirective := fmt.Sprintf("public, max-age=%d", cacheDuration)
 	w.Header().Add("Cache-Control", cacheDirective)
+	w.Header().Add("ETag", fmt.Sprintf("\"%s\"", eTag))
 }
 
 func (h *Handler) panic(
@@ -57,7 +59,7 @@ func (h *Handler) index(
 	r *http.Request,
 ) {
 	model := h.newBaseModel(r).Index(h.blogPosts)
-	h.setCacheDirective(w, 60*60)
+	h.setCacheDirective(w, 60*60, h.settings.ApplicationVersion)
 	h.renderView(w, r, 200, "index", model)
 }
 
@@ -73,7 +75,7 @@ func (h *Handler) tagged(
 		}
 	}
 	model := h.newBaseModel(r).WithTitle(fmt.Sprintf("Tagged with '%s'", tagName)).Tagged(filtered)
-	h.setCacheDirective(w, 60*60*4)
+	h.setCacheDirective(w, 60*60*4, h.settings.ApplicationVersion)
 	h.renderView(w, r, 200, "tagged", model)
 }
 
@@ -92,8 +94,7 @@ func (h *Handler) renderBlogPost(
 	// Respond with view:
 	// ---
 	m := h.newBaseModel(r).WithTitle(b.Title).BlogPost(b.ID, content, b.PublishDate, b.Tags)
-	h.setCacheDirective(w, 60*60*4)
-	w.Header().Add("ETag", fmt.Sprintf("\"%s\"", b.HashCode))
+	h.setCacheDirective(w, 60*60*4, b.HashCode)
 	h.renderView(
 		w, r, 200, "blogPost", m)
 }
@@ -127,7 +128,7 @@ func (h *Handler) projects(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
-	h.setCacheDirective(w, 60*60*24)
+	h.setCacheDirective(w, 60*60*24, h.settings.ApplicationVersion)
 	h.renderView(w, r, 200, "projects", h.newBaseModel(r).WithTitle("Projects").Empty())
 }
 
@@ -135,7 +136,7 @@ func (h *Handler) oss(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
-	h.setCacheDirective(w, 60*60*24)
+	h.setCacheDirective(w, 60*60*24, h.settings.ApplicationVersion)
 	h.renderView(w, r, 200, "oss", h.newBaseModel(r).WithTitle("Open Source").Empty())
 }
 
@@ -143,7 +144,7 @@ func (h *Handler) hire(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
-	h.setCacheDirective(w, 60*60*24)
+	h.setCacheDirective(w, 60*60*24, h.settings.ApplicationVersion)
 	h.renderView(w, r, 200, "hire", h.newBaseModel(r).WithTitle("Hire").Empty())
 }
 
@@ -151,7 +152,7 @@ func (h *Handler) about(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
-	h.setCacheDirective(w, 60*60*24)
+	h.setCacheDirective(w, 60*60*24, h.settings.ApplicationVersion)
 	h.renderView(w, r, 200, "about", h.newBaseModel(r).WithTitle("About").Empty())
 }
 

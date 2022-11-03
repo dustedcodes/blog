@@ -142,23 +142,6 @@ func (h *Handler) notFound(
 		"Sorry, the page you have requested may have been moved or deleted.")
 }
 
-// func (h *Handler) methodNotAllowed(
-// 	w http.ResponseWriter,
-// 	r *http.Request,
-// ) {
-// 	server.ClearHeaders(w)
-// 	err := server.WritePlaintext(
-// 		w,
-// 		http.StatusMethodNotAllowed,
-// 		fmt.Sprintf("The HTTP method '%s' is not allowed on this path.", r.Method))
-// 	if err != nil {
-// 		dlog.New(r.Context()).
-// 			Err(err).
-// 			Critical().
-// 			Msg("Error sending 'Method Not Allowed' response.")
-// 	}
-// }
-
 func (h *Handler) Recover(recovered any, stackTrace stack.Trace) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		msg := fmt.Sprintf("%v\n\n%v", recovered, stackTrace.String())
