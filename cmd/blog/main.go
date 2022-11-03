@@ -105,7 +105,7 @@ func main() {
 		redirect.ForceHTTPS(
 			settings.IsProduction(),
 			settings.PublicHosts()...),
-		headers.Security(60*60*24*14),
+		headers.Security(60*60*24*30),
 		assetMiddleware,
 	)
 	webApp := middleware.Next(webHandler)
