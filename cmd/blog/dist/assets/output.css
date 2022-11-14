@@ -734,6 +734,10 @@ video {
   display: inline-block;
 }
 
+.inline {
+  display: inline;
+}
+
 .flex {
   display: flex;
 }
@@ -1742,10 +1746,10 @@ Hamburger menu icon
 }
 
 .ham-line {
-  fill:none;
+  fill: none;
   transition: stroke-dasharray 400ms, stroke-dashoffset 400ms;
-  stroke-width:5.5;
-  stroke-linecap:round;
+  stroke-width: 5;
+  /* stroke-linecap: round; */
 }
 
 .ham-burger .ham-top {
@@ -1773,7 +1777,7 @@ Hamburger menu icon
 }
 
 .ham-line {
-  stroke: #d4d4d8;
+  stroke: #a1a1aa;
 }
 
 .ham-burger:hover .ham-line {

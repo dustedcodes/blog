@@ -24,6 +24,10 @@ func cancelledByPeer(err error) bool {
 		errors.Is(err, syscall.ECONNRESET) {
 		return true
 	}
+	if errors.Is(err, context.Canceled) ||
+		errors.Is(err, syscall.EPIPE) {
+		return true
+	}
 	if grpcStatus, ok := fault.As(err, status.FromError); ok {
 		if grpcStatus != nil && grpcStatus.Code() == codes.Canceled {
 			return true
@@ -150,6 +154,16 @@ func (h *Handler) notFound(
 		http.StatusNotFound,
 		"Page not found",
 		"Sorry, the page you have requested may have been moved or deleted.")
+}
+
+func (h *Handler) setCacheDirective(
+	w http.ResponseWriter,
+	cacheDuration int,
+	eTag string,
+) {
+	cacheDirective := fmt.Sprintf("public, max-age=%d", cacheDuration)
+	w.Header().Add("Cache-Control", cacheDirective)
+	w.Header().Add("ETag", fmt.Sprintf("\"%s\"", eTag))
 }
 
 func (h *Handler) Recover(recovered any, stackTrace stack.Trace) http.HandlerFunc {

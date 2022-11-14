@@ -15,16 +15,6 @@ import (
 	"github.com/dustedcodes/blog/cmd/blog/site"
 )
 
-func (h *Handler) setCacheDirective(
-	w http.ResponseWriter,
-	cacheDuration int,
-	eTag string,
-) {
-	cacheDirective := fmt.Sprintf("public, max-age=%d", cacheDuration)
-	w.Header().Add("Cache-Control", cacheDirective)
-	w.Header().Add("ETag", fmt.Sprintf("\"%s\"", eTag))
-}
-
 func (h *Handler) panic(
 	_ http.ResponseWriter,
 	_ *http.Request,
