@@ -2,7 +2,7 @@
     Tags: aspnet-core dotnet-core csharp
 -->
 
-# How fast is really ASP.NET Core?
+# How fast is ASP.NET Core?
 
 In recent years the .NET Team has been heavily advertising ASP.NET Core as one of the fastest web frameworks on the market. The source of those claims has always been the [TechEmpower Framework Benchmarks](https://www.techempower.com/benchmarks).
 
@@ -391,4 +391,4 @@ I wish Scott Hunter and the rest of the ASP.NET Core Team didn't feel the need t
 
 #### Sidenotes
 
-One final interesting thing that came up during my research is TechEmpower [switched its cloud hosting environment from AWS to Azure](https://www.techempower.com/benchmarks/#section=environment) around the time when Microsoft got interested in the tests. TechEmpower also receives its physical hardware for all their on-premise tests by Microsoft today.
+One final interesting thing which came up during my research is that TechEmpower [switched their cloud hosting environment from AWS to Azure](https://www.techempower.com/benchmarks/#section=environment) around the time when Microsoft got interested in the tests. TechEmpower also receives its physical hardware for all their on-premise tests by Microsoft today.
