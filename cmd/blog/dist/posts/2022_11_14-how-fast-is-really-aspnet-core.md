@@ -392,3 +392,23 @@ I wish Scott Hunter and the rest of the ASP.NET Core Team didn't feel the need t
 #### Sidenotes
 
 One final interesting thing which came up during my research is that TechEmpower [switched their cloud hosting environment from AWS to Azure](https://www.techempower.com/benchmarks/#section=environment) around the time when Microsoft got interested in the tests. TechEmpower also receives its physical hardware for all their on-premise tests by Microsoft today.
+
+## Update after Twitter storm (15/11/2022)
+
+### Bad Microsoft?
+
+No, I don't think the .NET Team had any malice in mind. I am confident the engineers were simply geeking out over performance improvements and then the marketing department probably got wind of it and started to conveniently cherry pick comparisons. It happens, but [David Fowler from the ASP.NET Core team confirmed they will be more mindful]() about this going forward.
+
+### Fair comparisons?
+
+The TechEmpower Framework Benchmarks run over 300 different frameworks. Web frameworks consist of **many layers with a huge variety of functionality**. It's going to be impossible to have a 100% fair comparison when these web frameworks don't even have feature parity. I think there is still some value in having basic ground rules on the big things (e.g. db, templating engine, etc.) and accepting that those benchmarks won't be perfect without any flaws. A [Redditer perfectly pointed out all the other things](https://www.reddit.com/r/dotnet/comments/yuxkk7/comment/iwcaa5q/?utm_source=share&utm_medium=web2x&context=3) that one has to take into account. Has the garbage collector been turned off for the benchmarks? Are they using a fully HTTP compliant router? Should frameworks use the same templating engine? It's complicated and hence why I personally think it was quite unfair by Microsoft to "smear" other frameworks as being slow based on cherry picked results from greatly inconsistent implementations. This was precisely the whole point of me writing this post.
+
+### ASP.NET Core Platform Benchmark
+
+The .NET Team pointed out on Twitter that the "Platform" benchmark is the lowest level of the "Platform" where some parts were used by Kestrel and others not. I don't have an issue with that personally, but it seems the .NET Team cannot really articulate what "Platform" means. The Platform of what? It is not ASP.NET Core, so perhaps they mean the ".NET Platform" or maybe "Platform" is just a conveniently chosen name to label a random collection of low level APIs bundled together into a benchmark application. The point is it is not ASP.NET Core as far as I know and therefore labelling the test as "ASP.NET Core Platform" so "ASP.NET Core" shows up at the top of the benchmark table is slightly disingenuous.
+
+### Postgres Pipelining
+
+The [developer behind Just(js)](https://twitter.com/justjs14/status/1592189097782960133?s=20&t=YLN5ldr4cC00jXoc4PhesA) pointed me towards [an issue](https://github.com/TechEmpower/FrameworkBenchmarks/issues/7019) where "the ASP.NET team made a big collective (successful) effort to force the removal of postgres pipelining from the benchmarks for no particularly good reason". Honestly I don't know enough about it, but it made me look into [other GitHub issues](https://github.com/TechEmpower/FrameworkBenchmarks/issues/7402) and there is certainly an interest at Microsoft to [keep other frameworks in check](https://github.com/TechEmpower/FrameworkBenchmarks/issues/4769).
+
+There is also [another issue from 2019](https://github.com/TechEmpower/FrameworkBenchmarks/issues/4727) where someone pointed out that **concatenating hardcoded strings is cheating** and after [Ben Adams](https://twitter.com/ben_a_adams) tried to defend the ASP.NET Core benchmark it was finally [ruled that it is indeed against the rules](https://github.com/TechEmpower/FrameworkBenchmarks/issues/4727#issuecomment-489388402). The Rust framework which was  part of that discussion [made the necessary changes](https://github.com/TechEmpower/FrameworkBenchmarks/pull/4729) afterwards, but Ben and the .NET Team never adjusted theirs.
