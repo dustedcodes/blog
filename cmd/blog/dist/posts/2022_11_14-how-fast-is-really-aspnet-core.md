@@ -397,7 +397,7 @@ One final interesting thing which came up during my research is that TechEmpower
 
 ### Bad Microsoft?
 
-No, I don't think the .NET Team had any malice in mind. I am confident the engineers were simply geeking out over performance improvements and then the marketing department probably got wind of it and started to conveniently cherry pick comparisons. It happens, but [David Fowler from the ASP.NET Core team confirmed they will be more mindful]() about this going forward.
+No, I don't think the .NET Team had any malice in mind. I am confident the engineers were simply geeking out over performance improvements and then the marketing department probably got wind of it and started to conveniently cherry pick comparisons. It happens, but [David Fowler from the ASP.NET Core team confirmed they will be more mindful](https://twitter.com/davidfowl/status/1592311942005542912?s=20&t=YLN5ldr4cC00jXoc4PhesA) about this going forward.
 
 ### Fair comparisons?
 
