@@ -39,7 +39,7 @@ jobs:
       GITHUB_SHA: ${{ github.sha }}
       IMAGE: dustedcodes
       REGISTRY_HOSTNAME: eu.gcr.io
-      NODE_ENV: production
+      NODE_ENV: development
     steps:
       - name: Checkout
         uses: actions/checkout@v2

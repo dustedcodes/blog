@@ -40,7 +40,7 @@
 }
 
 #socialLinks svg {
-    @apply w-5 sm:w-7 fill-zinc-500 hover:fill-cyan-300;
+    @apply w-5 sm:w-7 fill-zinc-400 hover:fill-cyan-300;
 }
 
 a {
