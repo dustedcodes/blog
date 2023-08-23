@@ -32,7 +32,7 @@ I'll start with a basic `main.go` file which yields a typical "hello world" mess
 
 #### main.go:
 
-```
+```go
 package main
 
 import "fmt"
@@ -44,7 +44,7 @@ func main() {
 
 #### Terminal:
 
-```
+```go
 go mod init github.com/dustinmoris/self-destruct-notes
 go mod tidy
 ```
@@ -55,7 +55,7 @@ For the people who are new to Go (my main readership comes from .NET), the `go m
 
 #### go.mod:
 
-```
+```go
 module github.com/dustinmoris/self-destruct-notes
 
 go 1.17
@@ -67,7 +67,7 @@ Next I’m going to change the `main` function from a `hello world` console appl
 
 The “web server” itself will be a basic HTTP handler of the form `func (http.ResponseWriter, *http.Request)`:
 
-```
+```go
 package main
 
 import (
@@ -113,7 +113,7 @@ So far our web server is just a singe function and we had to use the `http.Handl
 
 Below I have refactored the `webServer` function into a `Server` struct and added some basic routing to it:
 
-```
+```go
 type Server struct{}
 
 func (s *Server) ServeHTTP(
@@ -145,7 +145,7 @@ As you can see I didn’t use any third party packages to add more complex routi
 
 Additionally I have also changed the `http.ListenAndServe` function call to accept a new `Server` object:
 
-```
+```go
 http.ListenAndServe(addr, &Server{})
 ```
 
@@ -153,7 +153,7 @@ Next I'm splitting the web server code into smaller functions. I am creating a n
 
 After this refactoring the `ServeHTTP` function serves as the main routing handler and nothing else:
 
-```
+```go
 func (s *Server) ServeHTTP(w http.ResponseWriter, r *http.Request) {
     if r.Method == "GET" || r.Method == "HEAD" {
         s.handleGET(w, r)
@@ -202,7 +202,7 @@ In order to respond with a HTML template on the index (`/`) route I added one he
 
 #### Helper function:
 
-```
+```go
 func (s *Server) renderTemplate(
 	w http.ResponseWriter,
 	r *http.Request,
@@ -228,7 +228,7 @@ Using the `renderTemplate` function from within the `handleGET` method looks lik
 
 #### handleGET:
 
-```
+```go
 func (s *Server) handleGET(
 	w http.ResponseWriter,
 	r *http.Request,
@@ -263,7 +263,7 @@ First I'll add the required dependencies to the `go.mod` file and also reference
 
 #### go.mod
 
-```
+```go
 module github.com/dustinmoris/self-destruct-notes
 
 go 1.17
@@ -276,7 +276,7 @@ require (
 
 #### main.go
 
-```
+```go
 import (
 	"fmt"
 	"net/http"
@@ -290,7 +290,7 @@ import (
 
 In order to access the Redis cache from our `Server` struct we also need to add a reference in the struct declaration itself:
 
-```
+```go
 type Server struct {
 	RedisCache *cache.Cache
 }
@@ -298,7 +298,7 @@ type Server struct {
 
 Finally we can initialise a Redis cache object from within the application's `main` function and subsequently pass it into the `server` object before launching the service:
 
-```
+```go
 redisURL := os.Getenv("REDIS_URL")
 if len(redisURL) == 0 {
     redisURL = "redis://:@localhost:6379/1"
@@ -320,7 +320,7 @@ server := &Server{
 
 The code is mostly self explanatory but I'll do a quick run through anyway. Similar to the port we also read the Redis URL (connection string) from an environment variable which I chose to call `REDIS_URL`. If none was provided then we assume a default Redis instance to run behind the default port `6370`. Using the `redis.ParseURL` function we can convert the "magic" string variable into a strongly typed object which encapsulates all the Redis options. Using the `redisOptions` object we can then initialise a Redis client. Go has a neat way of deferring the closure of the connection to the end of the function using the `defer` keyword:
 
-```
+```go
 defer redisClient.Close()
 ```
 
@@ -334,7 +334,7 @@ Now that the `Server` struct has everything it needs we can implement the actual
 
 For good measure let's run some basic validation first:
 
-```
+```go
 func (s *Server) handlePOST(
 	w http.ResponseWriter,
 	r *http.Request,
@@ -367,7 +367,7 @@ If everything was okay then we can access the posted form data via the `r.PostFo
 
 Next I'll attempt to read the `message` and `ttl` (time to live) fields from the form and initialise matching variables to hold their values:
 
-```
+```go
 message := form.Get("message")
 destruct := false
 ttl := time.Hour * 24
@@ -381,7 +381,7 @@ A note will either persist for 24 hours or until read (but no longer than a maxi
 
 Using the initialised data we can create a `note` object of type `Note`:
 
-```
+```go
 type Note struct {
 	Data     []byte
 	Destruct bool
@@ -390,7 +390,7 @@ type Note struct {
 
 ... then inside `handlePOST` prepare a `note` which will be subsequently stored in a db:
 
-```
+```go
 note := &Note{
     Data:     []byte(message),
     Destruct: destruct,
@@ -399,7 +399,7 @@ note := &Note{
 
 The last step before completing the request is to actually write the note to Redis:
 
-```
+```go
 key := uuid.NewString()
 err = s.RedisCache.Set(
     &cache.Item{
@@ -420,7 +420,7 @@ The `RedisCache` object which our `Server` is holding makes the storing of the n
 
 By the way, the `s.badRequest(...)` and `s.serverError(...)` functions are further two small convenience methods which I've added to the `Server` struct to make error responses slightly easier:
 
-```
+```go
 func (s *Server) badRequest(
 	w http.ResponseWriter,
 	r *http.Request,
@@ -442,7 +442,7 @@ func (s *Server) serverError(
 
 Anyhow, coming back to `handlePOST` the last remaining job is to print a friendly message with a link to the newly created note at the end of a successful POST:
 
-```
+```go
 noteURL := fmt.Sprintf("%s/%s", s.BaseURL, key)
 w.WriteHeader(http.StatusOK)
 s.renderMessage(
@@ -458,7 +458,7 @@ The other thing is the `renderMessage` method, which is another helper function 
 
 #### renderMessage
 
-```
+```go
 func (s *Server) renderMessage(
 	w http.ResponseWriter,
 	r *http.Request,
@@ -483,7 +483,7 @@ func (s *Server) renderMessage(
 
 #### message.html
 
-```
+```handlebars
 {{ define "header" }}
 <style>
     h3 {
@@ -506,7 +506,7 @@ func (s *Server) renderMessage(
 
 Thanks to Docker we can easily spin up a new instance of Redis and try out the app so far:
 
-```
+```bash
 docker run -p 6379:6379 redis:latest
 ```
 
@@ -520,13 +520,13 @@ At last we need to implement the logic to retrieve a previously saved note. This
 
 Reading a note from Redis is very easy using its key. In order to get the key we assume that everything that follows the forward slash in the URL will be part of the note ID:
 
-```
+```go
 noteID := strings.TrimPrefix(path, "/")
 ```
 
 Then we can try to find the note inside Redis using its ID:
 
-```
+```go
 ctx := r.Context()
 note := &Note{}
 err := s.RedisCache.GetSkippingLocalCache(
@@ -544,7 +544,7 @@ if err != nil {
 
 If the user desired the note to be destroyed after it was opened then we should honour their request as well:
 
-```
+```go
 if note.Destruct {
     err := s.RedisCache.Delete(ctx, noteID)
     if err != nil {
@@ -557,14 +557,14 @@ if note.Destruct {
 
 If everything was fine so far then we finish the request by outputting the contents of the note itself:
 
-```
+```go
 w.WriteHeader(http.StatusOK)
 w.Write(note.Data)
 ```
 
 Voila, this completes the `handleGET` method and the application itself:
 
-```
+```go
 func (s *Server) handleGET(
 	w http.ResponseWriter,
 	r *http.Request,
@@ -625,7 +625,7 @@ The easiest way to start the public Docker image is by running this docker-compo
 
 #### docker-compose.yml
 
-```
+```yaml
 version: "3.9"
 
 services:
@@ -646,7 +646,7 @@ services:
 
 #### Terminal
 
-```
+```bash
 docker compose up
 ```
 

@@ -96,15 +96,11 @@ Blog Posts
 }
 
 .blogPostContent pre {
-    @apply mt-5 mb-10;
+    @apply mt-5 mb-10 w-auto overflow-x-auto rounded;
 }
 
 .blogPostContent code {
-    @apply inline-block px-1 rounded font-mono text-left text-lg whitespace-pre-wrap break-words bg-zinc-800 text-orange-300 leading-snug;
-}
-
-.blogPostContent pre {
-    @apply w-auto overflow-x-auto;
+    @apply inline-block px-1 rounded font-mono text-left text-lg whitespace-pre-wrap break-words bg-zinc-800 text-[#ffd2b4] leading-snug;
 }
 
 .blogPostContent pre > code {

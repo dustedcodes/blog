@@ -56,7 +56,7 @@ For the purpose of this blog post I am calling this package `prettylog` but you 
 
 Let's start with the function that will add color to the console output:
 
-```
+```go
 package prettylog
 
 import (
@@ -94,7 +94,7 @@ That's all that's required for straightforward coloured output, avoiding the nee
 
 Moving forward, we'll create a struct called `Handler` (later used as `prettylog.Handler`):
 
-```
+```go
 type Handler struct {
 	h slog.Handler
 	b *bytes.Buffer
@@ -121,7 +121,7 @@ The `Enabled` method denotes whether a given handler handles a `slog.Record` of 
 
 For all three methods we can use the implementation of our nested handler:
 
-```
+```go
 func (h *Handler) Enabled(ctx context.Context, level slog.Level) bool {
 	return h.h.Enabled(ctx, level)
 }
@@ -139,7 +139,7 @@ The `Handle` method is where things get interesting.
 
 Writing a log line is actually remarkably easy if one completely ignores groups and attributes to begin with:
 
-```
+```go
 const (
 	timeFormat = "[15:04:05.000]"
 )
@@ -176,7 +176,7 @@ We'll invoke the `Handle` function of the nested handler, but have it write to t
 
 Let's encapsulate this behaviour in a function called `computeAttrs`:
 
-```
+```go
 func (h *Handler) computeAttrs(
 	ctx context.Context,
 	r slog.Record,
@@ -208,7 +208,7 @@ The `computeAttrs` works as following:
 
 Now, let's revisit our own `Handle` function and integrate the following code:
 
-```
+```go
 attrs, err := h.computeAttrs(ctx, r)
 if err != nil {
     return err
@@ -224,7 +224,7 @@ Through invoking `computeAttrs`, we can obtain the `attrs` map, which we subsequ
 
 Finally, we attach the formatted JSON string in a dark gray hue to our "pretty" log entry:
 
-```
+```go
 fmt.Println(
     colorize(lightGray, r.Time.Format(timeFormat)),
     level,
@@ -235,7 +235,7 @@ fmt.Println(
 
 The final `Handle` method looks as following:
 
-```
+```go
 func (h *Handler) Handle(ctx context.Context, r slog.Record) error {
 
 	level := r.Level.String() + ":"
@@ -276,7 +276,7 @@ Only one last task remains. Currently, the nested `slog.Handler` writes the time
 
 The most straightforward approach is to provide a function to the `ReplaceAttr` property of the `slog.HandlerOptions`. However, we wish to preserve the ability for an application to specify its individual `ReplaceAttr` function and `slog.HandlerOptions`. Therefore we must apply a final touch of trickery to "merge" a custom `ReplaceAttr` function with our own requirements:
 
-```
+```go
 func suppressDefaults(
 	next func([]string, slog.Attr) slog.Attr,
 ) func([]string, slog.Attr) slog.Attr {
@@ -298,7 +298,7 @@ A helpful analogy for understanding the `suppressDefaults` function is to compar
 
 With this in place, we're ready to create a constructor for our `prettylog.Handler` and assemble everything together:
 
-```
+```go
 func NewHandler(opts *slog.HandlerOptions) *Handler {
 	if opts == nil {
 		opts = &slog.HandlerOptions{}

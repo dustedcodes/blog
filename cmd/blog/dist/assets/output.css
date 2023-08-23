@@ -900,9 +900,9 @@ video {
   border-top-color: rgb(38 38 38 / var(--tw-border-opacity));
 }
 
-.bg-\[\#0c2434\] {
+.bg-\[\#091f2f\] {
   --tw-bg-opacity: 1;
-  background-color: rgb(12 36 52 / var(--tw-bg-opacity));
+  background-color: rgb(9 31 47 / var(--tw-bg-opacity));
 }
 
 .bg-gray-700 {
@@ -928,16 +928,6 @@ video {
 .bg-zinc-900 {
   --tw-bg-opacity: 1;
   background-color: rgb(24 24 27 / var(--tw-bg-opacity));
-}
-
-.bg-\[\#0a2131\] {
-  --tw-bg-opacity: 1;
-  background-color: rgb(10 33 49 / var(--tw-bg-opacity));
-}
-
-.bg-\[\#091f2f\] {
-  --tw-bg-opacity: 1;
-  background-color: rgb(9 31 47 / var(--tw-bg-opacity));
 }
 
 .p-5 {
@@ -1561,6 +1551,9 @@ Blog Posts
 .blogPostContent pre {
   margin-top: 1.25rem;
   margin-bottom: 2.5rem;
+  width: auto;
+  overflow-x: auto;
+  border-radius: 0.25rem;
 }
 
 .blogPostContent code {
@@ -1578,12 +1571,7 @@ Blog Posts
   line-height: 1.75rem;
   line-height: 1.375;
   --tw-text-opacity: 1;
-  color: rgb(253 186 116 / var(--tw-text-opacity));
-}
-
-.blogPostContent pre {
-  width: auto;
-  overflow-x: auto;
+  color: rgb(255 210 180 / var(--tw-text-opacity));
 }
 
 .blogPostContent pre > code {

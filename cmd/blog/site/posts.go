@@ -11,9 +11,11 @@ import (
 	"strings"
 	"time"
 
+	chromahtml "github.com/alecthomas/chroma/v2/formatters/html"
 	"github.com/dusted-go/diagnostic/v3/dlog"
 	"github.com/dusted-go/fault/fault"
 	"github.com/yuin/goldmark"
+	syntax "github.com/yuin/goldmark-highlighting/v2"
 	"github.com/yuin/goldmark/extension"
 	"github.com/yuin/goldmark/parser"
 	"github.com/yuin/goldmark/renderer/html"
@@ -54,7 +56,16 @@ func (b *BlogPost) HTML() (template.HTML, error) {
 	parser := goldmark.New(
 		goldmark.WithExtensions(
 			extension.Table,
-			extension.Strikethrough),
+			extension.Strikethrough,
+			syntax.NewHighlighting(
+				syntax.WithStyle("gruvbox"),
+				syntax.WithFormatOptions(
+					chromahtml.TabWidth(4),
+					chromahtml.WithLineNumbers(false),
+					chromahtml.PreventSurroundingPre(false),
+				),
+			),
+		),
 		goldmark.WithRendererOptions(
 			html.WithUnsafe(),
 		), goldmark.WithParserOptions(

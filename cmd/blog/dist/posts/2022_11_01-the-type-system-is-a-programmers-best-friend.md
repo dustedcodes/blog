@@ -40,7 +40,7 @@ As if this was not already complicated enough countries have different currency 
 
 Additionally a dedicated `Money` type could include many more features which would make working with monetary values a breeze:
 
-```
+```csharp
 var gbp = Currency.Parse("GBP");
 var loc = Locale.Parse("Europe/London");
 
@@ -61,7 +61,7 @@ Every codebase that I've ever worked with had something like a `string secretKey
 
 Imagine you have this (pseudo-)code:
 
-```
+```csharp
 try
 {
     var userLogin = new UserLogin
@@ -91,7 +91,7 @@ However this bug could have been easily prevented with the introduction of a ded
 
 In C# (using this as my example language) the `.ToString()` method gets automatically called when an object gets written to a log (or anywhere else for that matter). Having this knowledge one could design a `Password` type like this:
 
-```
+```csharp
 public readonly record struct Password()
 {
     // implementation goes here
@@ -127,7 +127,7 @@ Passwords get hashed before being stored in the database, right? Sure thing, but
 The recommended way of checking the equality of two password hashes is by doing it in a non-optimised way:
 
 
-```
+```csharp
 // Compares two byte arrays for equality. The method is specifically written so that the loop is not optimized.
 [MethodImpl(MethodImplOptions.NoInlining | MethodImplOptions.NoOptimization)]
 private static bool ByteArraysEqual(byte[] a, byte[] b)
@@ -153,7 +153,7 @@ private static bool ByteArraysEqual(byte[] a, byte[] b)
 
 So it would only make sense to encode this particular functionality into a dedicated type:
 
-```
+```csharp
 public readonly record struct PasswordHash
 {
     // Implementation goes here

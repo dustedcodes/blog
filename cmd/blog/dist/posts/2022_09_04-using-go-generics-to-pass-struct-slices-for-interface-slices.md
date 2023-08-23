@@ -8,7 +8,7 @@ Have you ever tried to pass a struct slice into a function which accepts a slice
 
 Let's have a quick look at an example. Let's assume we have an interface called `Human` and a function called `GreetHumans` which accepts a slice of humans and prints their names:
 
-```
+```go
 package main
 
 import "fmt"
@@ -26,7 +26,7 @@ func GreetHumans(humans []Human) {
 
 Then we have a separate struct which implements the `Human` interface:
 
-```
+```go
 type Hero struct {
 	FirstName string
 	LastName  string
@@ -45,7 +45,7 @@ However, the issue occurs when one deals with a slice of `Hero` and a function a
 
 This code won't compile:
 
-```
+```go
 func main() {
 	heroes := []Hero{
 		{FirstName: "Peter", LastName: "Parker"},
@@ -80,7 +80,7 @@ Since Go 1.18 one can use [Generics](https://go.dev/blog/intro-generics) to tack
 
 First we can modify the `GreetHumans` function to use Generics and therefore not require any casting at all:
 
-```
+```go
 func GreetHumans[T Human](humans []T) {
 	for _, h := range humans {
 		fmt.Println("Hello " + h.Name())
@@ -94,7 +94,7 @@ However, sometimes it's not possible to make a function generic. Methods (functi
 
 The good news is that even in this case Generics can help to provide a much better conversion function then the previously listed options:
 
-```
+```go
 func CastToHumans[T Human](humans []T) []Human {
 	result := []Human{}
 	for _, h := range humans {
