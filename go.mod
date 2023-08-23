@@ -1,6 +1,6 @@
 module github.com/dustedcodes/blog
 
-go 1.19
+go 1.21
 
 require (
 	github.com/dusted-go/config v1.0.0

@@ -111,6 +111,7 @@ func main() {
 	webApp := middleware.Next(webHandler)
 
 	dlog.New(ctx).Notice().Fmt("Starting web server on %s", settings.ServerAddress())
+	dlog.New(ctx).Notice().Fmt("Base URL: %s", settings.BaseURL)
 
 	httpServer := &http.Server{
 		Addr:              settings.ServerAddress(),

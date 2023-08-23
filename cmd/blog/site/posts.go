@@ -159,7 +159,8 @@ func parseBlogPost(
 	return blogPost, nil
 }
 
-func ReadBlogPost(ctx context.Context, path string, blogPostID string) (*BlogPost, error) {
+func ReadBlogPost(path string, blogPostID string) (*BlogPost, error) {
+
 	files, err := os.ReadDir(path)
 	if err != nil {
 		return nil, fault.SystemWrapf(err, "error reading files from directory '%s'", path)

@@ -96,7 +96,7 @@ func (h *Handler) blogPost(
 	blogPostID := strings.TrimPrefix(r.URL.Path, "/")
 
 	if !h.settings.IsProduction() {
-		blogPost, err := site.ReadBlogPost(r.Context(), site.DefaultBlogPostPath, blogPostID)
+		blogPost, err := site.ReadBlogPost(site.DefaultBlogPostPath, blogPostID)
 		if h.handleErr(w, r, err) {
 			return
 		}
