@@ -1,4 +1,4 @@
-package site
+package blog
 
 import (
 	"bufio"
@@ -6,14 +6,16 @@ import (
 	"context"
 	"crypto/sha1" // nolint: gosec // used for cache invalidation
 	"encoding/hex"
+	"errors"
+	"fmt"
 	"html/template"
 	"os"
 	"strings"
 	"time"
 
+	"github.com/dusted-go/logging/stackdriver"
+
 	chromahtml "github.com/alecthomas/chroma/v2/formatters/html"
-	"github.com/dusted-go/diagnostic/v3/dlog"
-	"github.com/dusted-go/fault/fault"
 	"github.com/yuin/goldmark"
 	syntax "github.com/yuin/goldmark-highlighting/v2"
 	"github.com/yuin/goldmark/extension"
@@ -25,7 +27,7 @@ const (
 	DefaultBlogPostPath = "dist/posts"
 )
 
-type BlogPost struct {
+type Post struct {
 	ID          string
 	Title       string
 	PublishDate time.Time
@@ -35,22 +37,14 @@ type BlogPost struct {
 	html        string
 }
 
-func (b *BlogPost) Validate() error {
-	return nil
+func (p *Post) Year() int {
+	return p.PublishDate.Year()
 }
 
-func (b *BlogPost) Year() int {
-	return b.PublishDate.Year()
-}
-
-func (b *BlogPost) Excerpt() string {
-	return "ToDo"
-}
-
-func (b *BlogPost) HTML() (template.HTML, error) {
-	if len(b.html) > 0 {
+func (p *Post) HTML() (template.HTML, error) {
+	if len(p.html) > 0 {
 		// nolint: gosec // This is safe content
-		return template.HTML(b.html), nil
+		return template.HTML(p.html), nil
 	}
 
 	parser := goldmark.New(
@@ -73,21 +67,21 @@ func (b *BlogPost) HTML() (template.HTML, error) {
 		))
 
 	var buf bytes.Buffer
-	if err := parser.Convert([]byte(b.markdown), &buf); err != nil {
+	if err := parser.Convert([]byte(p.markdown), &buf); err != nil {
 		return template.HTML(""),
-			fault.SystemWrap(err, "error converting Markdown into HTML")
+			fmt.Errorf("error converting Markdown into HTML: %w", err)
 	}
 
 	// nolint: gosec // string was already escaped before
 	return template.HTML(buf.Bytes()), nil
 }
 
-func parseBlogPost(
+func parsePost(
 	blogPostID string,
 	publishDate time.Time,
 	buffer []byte,
 ) (
-	*BlogPost,
+	*Post,
 	error,
 ) {
 	bufferWithoutBOM := bytes.TrimLeft(buffer, "\xef\xbb\xbf")
@@ -126,7 +120,7 @@ func parseBlogPost(
 	}
 
 	if len(title) == 0 {
-		return nil, fault.System("blog post title is missing")
+		return nil, errors.New("blog post title is missing")
 	}
 	content := body.String()
 
@@ -140,7 +134,7 @@ func parseBlogPost(
 		} else if key == "type" {
 			isHTML = strings.ToLower(strings.TrimSpace(metaParts[1])) == "html"
 		} else {
-			return nil, fault.Systemf("unknown blog post metadata key: %s", key)
+			return nil, fmt.Errorf("unknown blog post metadata key: %s", key)
 		}
 	}
 
@@ -154,7 +148,7 @@ func parseBlogPost(
 	hash.Write([]byte(valueToHash))
 	hashCode := hex.EncodeToString(hash.Sum(nil))
 
-	blogPost := &BlogPost{
+	blogPost := &Post{
 		ID:          blogPostID,
 		Title:       title,
 		PublishDate: publishDate,
@@ -170,11 +164,11 @@ func parseBlogPost(
 	return blogPost, nil
 }
 
-func ReadBlogPost(path string, blogPostID string) (*BlogPost, error) {
+func ReadPost(path string, blogPostID string) (*Post, error) {
 
 	files, err := os.ReadDir(path)
 	if err != nil {
-		return nil, fault.SystemWrapf(err, "error reading files from directory '%s'", path)
+		return nil, fmt.Errorf("error reading files from directory '%s': %w", path, err)
 	}
 
 	fileName := ""
@@ -187,69 +181,77 @@ func ReadBlogPost(path string, blogPostID string) (*BlogPost, error) {
 	}
 
 	if len(fileName) == 0 {
-		return nil, fault.Systemf("blog post with ID '%s' not found", blogPostID)
+		return nil, fmt.Errorf("blog post with ID '%s' not found", blogPostID)
 	}
 
 	fileNameParts := strings.SplitN(fileName, "-", 2)
 	publishDate, err := time.Parse("2006_01_02", fileNameParts[0])
 	if err != nil {
-		return nil, fault.SystemWrapf(err, "error parsing date from file name '%s'", fileName)
+		return nil, fmt.Errorf("error parsing date from file '%s': %w", fileName, err)
 	}
 
 	fileBuffer, err := os.ReadFile(path + "/" + fileName)
 	if err != nil {
-		return nil, fault.SystemWrap(err, "error reading blog post file")
+		return nil, fmt.Errorf("error reading blog post file: %w", err)
 	}
 
-	blogPost, err := parseBlogPost(blogPostID, publishDate, fileBuffer)
+	blogPost, err := parsePost(blogPostID, publishDate, fileBuffer)
 	if err != nil {
-		return nil, fault.SystemWrapf(err, "error parsing blog post '%s'", fileName)
+		return nil, fmt.Errorf("error parsing blog post '%s': %w", fileName, err)
 	}
 
 	return blogPost, nil
 }
 
-func ReadBlogPosts(ctx context.Context, path string) ([]*BlogPost, error) {
+func ReadPosts(ctx context.Context, path string) ([]*Post, error) {
 	files, err := os.ReadDir(path)
 	if err != nil {
-		return nil, fault.SystemWrapf(err, "error reading files from directory '%s'", path)
+		return nil, fmt.Errorf("error reading files from directory '%s': %w", path, err)
 	}
-	blogPosts := []*BlogPost{}
+	blogPosts := []*Post{}
+
+	logger := stackdriver.GetLogger(ctx)
 
 	for _, f := range files {
 		fileName := f.Name()
 		if f.IsDir() {
-			dlog.New(ctx).Warning().Fmt("Cannot read blog post because it is a directory: %s", fileName)
+			logger.Warn("Cannot read blog post because it is a directory.",
+				"filename", fileName)
 			continue
 		}
 		if !strings.HasSuffix(fileName, ".md") {
-			dlog.New(ctx).Warning().Fmt("Skipping file %s because it doesn't appear to be a Markdown file.", fileName)
+			logger.Warn("Skipping file because it doesn't appear to be a Markdown file.",
+				"filename", fileName)
 			continue
 		}
 		fileNameParts := strings.SplitN(fileName, "-", 2)
 		blogPostID := strings.TrimSuffix(fileNameParts[1], ".md")
 		publishDate, err := time.Parse("2006_01_02", fileNameParts[0])
 		if err != nil {
-			dlog.New(ctx).Error().Err(err).Msg("An error occurred when parsing the blog post's date.")
+			logger.Error("An error occurred when parsing the blog post's date.", "error", err)
 			continue
 		}
 
 		fileBuffer, err := os.ReadFile(path + "/" + fileName)
 		if err != nil {
-			dlog.New(ctx).Error().Err(err).Msg("An error occurred when reading a .md file from disk.")
+			logger.Error("An error occurred when reading a .md file from disk.", "error", err)
 			continue
 		}
 
-		blogPost, err := parseBlogPost(blogPostID, publishDate, fileBuffer)
+		blogPost, err := parsePost(blogPostID, publishDate, fileBuffer)
 		if err != nil {
-			dlog.New(ctx).Warning().Fmt("Skipping blog post '%s': %s", fileName, err.Error())
+			logger.Error("Skipping blog post because of parsing error.",
+				"filename", fileName,
+				"error", err)
 			continue
 		}
 
 		blogPosts = append(blogPosts, blogPost)
-		dlog.New(ctx).Info().Fmt("Successfully parsed: %s", fileName)
+		logger.Debug("Successfully parsed blog post.",
+			"filename", fileName)
 	}
 
-	dlog.New(ctx).Info().Fmt("Total blog posts parsed: %d", len(blogPosts))
+	logger.Info("Finished parsing blog posts.",
+		"count", len(blogPosts))
 	return blogPosts, nil
 }

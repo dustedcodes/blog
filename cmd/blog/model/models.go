@@ -6,16 +6,21 @@ import (
 	"sort"
 	"time"
 
-	"github.com/dusted-go/utils/array"
-	"github.com/dustedcodes/blog/cmd/blog/site"
+	"github.com/dustedcodes/blog/internal/array"
+	"github.com/dustedcodes/blog/internal/blog"
 )
+
+type Assets struct {
+	CSSPath string
+	JSPath  string
+}
 
 type Base struct {
 	Title           string
 	SubTitle        string
 	Year            int
-	Assets          *site.Assets
-	URLs            *site.URLs
+	Assets          *Assets
+	URLs            *URLs
 	DisqusShortname string
 }
 
@@ -97,7 +102,7 @@ func (b Base) UserMessages(msgs ...template.HTML) UserMessage {
 	}
 }
 
-func (b Base) Index(blogPosts []*site.BlogPost) Index {
+func (b Base) Index(blogPosts []*blog.Post) Index {
 	catalogue := map[int][]BlogPostLink{}
 	years := []int{}
 
@@ -139,7 +144,7 @@ func (b Base) Index(blogPosts []*site.BlogPost) Index {
 	}
 }
 
-func (b Base) Tagged(blogPosts []*site.BlogPost) Tagged {
+func (b Base) Tagged(blogPosts []*blog.Post) Tagged {
 	blogPostLinks := []BlogPostLink{}
 
 	for _, post := range blogPosts {

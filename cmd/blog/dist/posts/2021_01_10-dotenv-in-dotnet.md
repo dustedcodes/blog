@@ -31,7 +31,7 @@ Before explaining &quot;Dotenv&quot; files let's take a quick look at how config
 
 The framework strongly prescribes developers to create an `appsettings.json` file in the root of their project and configure their application settings in JSON:
 
-```
+```json
 {
     "Logging": {
         "Level": "Debug"
@@ -47,7 +47,7 @@ The framework strongly prescribes developers to create an `appsettings.json` fil
 
 However not every cloud environment makes editing JSON files in a deployed application's directory easy and therefore most .NET developers still end up using environment variables in production. The `ConfigurationBuilder` makes it possible to specify more than one source and load configuration settings from various places:
 
-```
+```csharp
 var config =
     new ConfigurationBuilder()
         .SetBasePath(Directory.GetCurrentDirectory())
@@ -60,7 +60,7 @@ The `AddEnvironmentVariables` instruction comes after `AddJsonFile`, which means
 
 Although one thing which is not obvious from the example above is the unidiomatic way of declaring environment variables in order to make this happen. The .NET configuration architecture has been primarily designed with JSON files in mind, which means that .NET developers have to configure nested settings with a double underscore (`__`) in environment variables:
 
-```
+```ini
 LOGGING__LEVEL=Debug
 FOO=foo
 BAR=bar
@@ -76,7 +76,7 @@ I'd much rather keep my development environment as close to production as possib
 
 What if instead of using a nested JSON document I could configure my application just like in production:
 
-```
+```ini
 LOG_LEVEL=Debug
 FOO=foo
 BAR=bar
@@ -92,7 +92,7 @@ Another benefit is how engineers think of configuration. The `appsettings.json` 
 
 For example take this snippet as an illustration:
 
-```
+```json
 {
     "Databases": {
         "SqlServer": {
@@ -109,7 +109,7 @@ In JSON format this looks totally fine, but in reality it probably isn't. Apart 
 
 Remember in production these will need to get configured as following:
 
-```
+```ini
 DATABASES__SQLSERVER__CONNECTIONSTRING=foo-bar
 DATABASES__REDIS__ENDPOINT=localhost:6379
 ```
@@ -118,7 +118,7 @@ This notion makes it much more obvious that the original configuration structure
 
 If environment variables were the primary configuration strategy during development too, then developers would presumably name them more sensibly:
 
-```
+```ini
 SQL_SERVER_CS=foo-bar
 REDIS_ENDPOINT=localhost:6379
 ```
@@ -131,7 +131,7 @@ The code for loading and parsing a `.env` file is so simple that it hardly warra
 
 Personally I like to create a `DotEnv.cs` file in my C# project and copy the following code into it:
 
-```
+```csharp
 namespace YourApplication
 {
     using System;
@@ -162,7 +162,7 @@ namespace YourApplication
 
 Then I add `DotEnv.Load("..")` at the beginning of the `Main` function inside my `Program.cs` file:
 
-```
+```csharp
 public static class Program
 {
     public static async Task Main(string[] args)
@@ -180,7 +180,7 @@ This makes sure that all environment variables get set before any class or funct
 
 Finally I specify environment variables as the only required configuration provider:
 
-```
+```csharp
 var config =
     new ConfigurationBuilder()
         .AddEnvironmentVariables()
@@ -195,7 +195,7 @@ Of course the file doesn't have to be named `.env` and one can rename it to whic
 
 In F# the implementation is very similar to C#:
 
-```
+```fsharp
 namespace YourApplication
 
 module DotEnv =
@@ -233,7 +233,7 @@ The only main difference is that the `load()` function has been made private and
 
 In functional programming it is very common to make use of static variables and functions. For example I often load my application settings using a static module like this:
 
-```
+```fsharp
 module Config =
     open System
 
@@ -251,7 +251,7 @@ Those static values will get initialised as soon as the assembly loads into the 
 
 Additionally I must also put the `DotEnv.fs` file as the first compilation item in the `.fsproj` file:
 
-```
+```xml
 <ItemGroup>
     <Compile Include="DotEnv.fs" />
     <Compile Include="Other.fs" />

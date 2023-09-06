@@ -2,128 +2,136 @@ package main
 
 import (
 	"context"
+	"log/slog"
 	"net/http"
 	"sort"
 	"time"
 
 	"github.com/dusted-go/config/dotenv"
-	"github.com/dusted-go/diagnostic/v3/dlog"
-	"github.com/dusted-go/http/v3/middleware"
-	"github.com/dusted-go/http/v3/middleware/assets"
-	"github.com/dusted-go/http/v3/middleware/headers"
-	"github.com/dusted-go/http/v3/middleware/httptrace"
-	"github.com/dusted-go/http/v3/middleware/proxy"
-	"github.com/dusted-go/http/v3/middleware/recoverer"
-	"github.com/dusted-go/http/v3/middleware/redirect"
-	"github.com/dustedcodes/blog/cmd/blog/site"
+	"github.com/dusted-go/http/v6/middleware/assets"
+	"github.com/dusted-go/http/v6/middleware/firewall"
+	"github.com/dusted-go/http/v6/middleware/headers"
+	"github.com/dusted-go/http/v6/middleware/healthz"
+	"github.com/dusted-go/http/v6/middleware/mware"
+	"github.com/dusted-go/http/v6/middleware/proxy"
+	"github.com/dusted-go/http/v6/middleware/recoverer"
+	"github.com/dusted-go/http/v6/middleware/redirect"
+	"github.com/dusted-go/logging/prettylog"
+	"github.com/dusted-go/logging/stackdriver"
+
+	"github.com/dustedcodes/blog/cmd/blog/model"
 	"github.com/dustedcodes/blog/cmd/blog/web"
+	"github.com/dustedcodes/blog/internal/blog"
+	"github.com/dustedcodes/blog/internal/cloudtrace"
+	"github.com/dustedcodes/blog/internal/config"
 )
 
-func createLogProvider(settings *site.Settings) httptrace.CreateLogProviderFunc {
-	return func() *dlog.Provider {
-		provider := dlog.
-			NewProvider().
-			SetFilter(assets.LogFilter).
-			SetMinLogLevel(settings.MinLogLevel()).
-			SetServiceName(settings.ApplicationName).
-			SetServiceVersion(settings.ApplicationVersion).
-			AddLabel("appName", settings.ApplicationName).
-			AddLabel("appVersion", settings.ApplicationVersion)
-
-		if settings.IsProduction() {
-			provider.SetFormatter(dlog.NewStackdriverFormatter())
-		}
-		return provider
-	}
-}
-
 func main() {
-	// ----------------------------------------
-	// Bootstrap:
-	// ----------------------------------------
+	// -----------------------------
+	// Load config
+	// -----------------------------
+	ctx, cancel := context.WithCancel(context.Background())
+	defer cancel()
 
-	// Init dotenv
 	err := dotenv.Load(".env", true)
 	if err != nil {
 		panic(err)
 	}
+	config := config.Load()
 
-	// Init settings
-	settings := site.InitSettings()
+	// -----------------------------
+	// Init default logger
+	// -----------------------------
+	var logHandler slog.Handler
+	var loggingMiddleware func(http.Handler) http.Handler
+	if config.IsProduction() {
+		logHandlerOptions := &stackdriver.HandlerOptions{
+			ServiceName:    config.ApplicationName,
+			ServiceVersion: config.ApplicationVersion,
+			MinLevel:       config.MinLogLevel(),
+			AddSource:      config.IsProduction(),
+		}
+		logMiddlewareOptions := &stackdriver.MiddlewareOptions{
+			GCPProjectID:   config.GoogleCloudProjectID,
+			AddTrace:       config.IsProduction(),
+			AddHTTPRequest: config.IsProduction(),
+		}
+		logHandler = stackdriver.NewHandler(logHandlerOptions)
+		loggingMiddleware = stackdriver.Logging(logHandlerOptions, logMiddlewareOptions)
+	} else {
+		logHandler = prettylog.NewHandler(&slog.HandlerOptions{
+			Level:       config.MinLogLevel(),
+			AddSource:   config.IsProduction(),
+			ReplaceAttr: stackdriver.ReplaceLogLevel,
+		})
+	}
+	logger := slog.New(logHandler)
+	slog.SetDefault(logger)
 
-	// Init context
-	ctx, cancel := context.WithCancel(context.Background())
-	defer cancel()
-
-	// Init logger
-	defaultLogProvider := createLogProvider(settings)
-	dlog.Context(ctx, defaultLogProvider())
-
-	// Init public assets
+	// ----------------------------------------
+	// Bootstrap:
+	// ----------------------------------------
 	assetMiddleware, err :=
 		assets.NewMiddleware(
-			ctx,
 			"dist/assets/",
 			"public, max-age=15552000",
-			!settings.IsProduction())
+			!config.IsProduction(),
+			false)
 	if err != nil {
 		panic(err)
 	}
-
-	siteAssets := &site.Assets{
+	siteAssets := &model.Assets{
 		CSSPath: assetMiddleware.CSS.VirtualFileName,
 		JSPath:  assetMiddleware.JS.VirtualFileName,
 	}
-
-	// Init all blog posts
-	blogPosts, err := site.ReadBlogPosts(ctx, site.DefaultBlogPostPath)
+	blogPosts, err := blog.ReadPosts(ctx, blog.DefaultBlogPostPath)
 	if err != nil {
 		panic(err)
 	}
-
 	// Sort blog posts by date (newest first)
 	sort.Slice(blogPosts, func(i, j int) bool {
 		return blogPosts[i].PublishDate.After(blogPosts[j].PublishDate)
 	})
-
-	// Init web handler
 	webHandler := web.NewHandler(
-		settings,
+		config,
 		siteAssets,
 		blogPosts)
 
 	// ----------------------------------------
 	// Web Server:
 	// ----------------------------------------
-
-	middleware := middleware.Chain(
+	middleware := mware.Bind(
 		recoverer.HandlePanics(webHandler.Recover),
-		proxy.ForwardedHeaders(settings.ProxyCount),
-		httptrace.GoogleCloudTrace(createLogProvider(settings)),
-		redirect.TrailingSlash(),
-		redirect.Hosts(settings.DomainRedirects(), true),
+		healthz.LivenessProbe,
+		cloudtrace.Middleware,
+		loggingMiddleware,
+		proxy.ForwardedHeaders(config.ProxyCount),
+		redirect.TrailingSlash,
+		redirect.Hosts(config.DomainRedirects(), true),
 		redirect.ForceHTTPS(
-			settings.IsProduction(),
-			settings.PublicHosts()...),
+			config.IsProduction(),
+			config.PublicHosts()...),
+		assetMiddleware.ServeFiles,
+		firewall.LimitRequestSize(config.MaxRequestSize),
 		headers.Security(60*60*24*30),
-		assetMiddleware,
 	)
-	webApp := middleware.Next(webHandler)
+	webApp := middleware(webHandler)
 
-	dlog.New(ctx).Notice().Fmt("Starting web server on %s", settings.ServerAddress())
-	dlog.New(ctx).Notice().Fmt("Base URL: %s", settings.BaseURL)
-
+	// -----------------------------
+	// Launch web server
+	// -----------------------------
+	logger.Info("Starting server...",
+		"web-server-address", config.ServerAddress(),
+		"base-url", config.BaseURL)
 	httpServer := &http.Server{
-		Addr:              settings.ServerAddress(),
-		ReadTimeout:       5 * time.Second,
-		WriteTimeout:      10 * time.Second,
+		Addr:              config.ServerAddress(),
 		ReadHeaderTimeout: 3 * time.Second,
 		// Google Cloud LoadBalancer has a keepalive timeout of 600s
 		// and recommends to set the backend server to have one of 620s
 		// https://cloud.google.com/load-balancing/docs/https#timeouts_and_retries
 		IdleTimeout:    620 * time.Second,
 		Handler:        webApp,
-		MaxHeaderBytes: int(settings.MaxRequestSize),
+		MaxHeaderBytes: int(config.MaxRequestSize),
 	}
 	err = httpServer.ListenAndServe()
 	if err != nil {

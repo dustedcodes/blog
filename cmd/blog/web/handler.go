@@ -4,22 +4,25 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/dusted-go/http/v3/path"
-	"github.com/dusted-go/http/v3/view"
-	"github.com/dustedcodes/blog/cmd/blog/site"
+	"github.com/dusted-go/http/v5/htmlview"
+	"github.com/dusted-go/http/v5/route"
+
+	"github.com/dustedcodes/blog/cmd/blog/model"
+	"github.com/dustedcodes/blog/internal/blog"
+	"github.com/dustedcodes/blog/internal/config"
 )
 
 type Handler struct {
-	settings    *site.Settings
-	assets      *site.Assets
-	viewHandler *view.Handler
-	blogPosts   []*site.BlogPost
+	config     *config.Config
+	assets     *model.Assets
+	viewWriter *htmlview.Writer
+	blogPosts  []*blog.Post
 }
 
 func NewHandler(
-	settings *site.Settings,
-	assets *site.Assets,
-	blobPosts []*site.BlogPost,
+	config *config.Config,
+	assets *model.Assets,
+	blobPosts []*blog.Post,
 ) *Handler {
 	socialSVGs := []string{
 		"dist/templates/svgs/buymeacoffee.svg",
@@ -71,16 +74,16 @@ func NewHandler(
 			"dist/templates/pages/about.html",
 		),
 	}
-	viewHandler := view.NewHandler(
-		settings.HotReload(),
+	viewWriter := htmlview.NewWriter(
+		config.HotReload(),
 		"layout",
 		templateFiles)
 
 	return &Handler{
-		settings:    settings,
-		assets:      assets,
-		viewHandler: viewHandler,
-		blogPosts:   blobPosts,
+		config:     config,
+		assets:     assets,
+		viewWriter: viewWriter,
+		blogPosts:  blobPosts,
 	}
 }
 
@@ -105,7 +108,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		if p == "/panic" && !h.settings.IsProduction() {
+		if p == "/panic" && !h.config.IsProduction() {
 			h.panic(w, r)
 			return
 		}
@@ -150,7 +153,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		head, tail := path.Shift(p)
+		head, tail := route.ShiftPath(p)
 		if head == "tagged" {
 			tagName := strings.TrimLeft(tail, "/")
 			h.tagged(w, r, tagName)

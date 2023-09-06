@@ -6,13 +6,12 @@ import (
 	"strings"
 	"time"
 
-	"github.com/dusted-go/diagnostic/v3/dlog"
-	"github.com/dusted-go/http/v3/atom"
-	"github.com/dusted-go/http/v3/response"
-	"github.com/dusted-go/http/v3/rss"
-	"github.com/dusted-go/http/v3/sitemap"
-	"github.com/dusted-go/utils/array"
-	"github.com/dustedcodes/blog/cmd/blog/site"
+	"github.com/dusted-go/http/v5/atom"
+	"github.com/dusted-go/http/v5/rss"
+	"github.com/dusted-go/http/v5/sitemap"
+
+	"github.com/dustedcodes/blog/internal/array"
+	"github.com/dustedcodes/blog/internal/blog"
 )
 
 func (h *Handler) panic(
@@ -26,22 +25,20 @@ func (h *Handler) version(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
-	err := response.WritePlaintext(
-		w,
+	h.writeText(
+		w, r,
 		http.StatusOK,
-		h.settings.ApplicationVersion)
-	h.handleErr(w, r, err)
+		h.config.ApplicationVersion)
 }
 
 func (h *Handler) ping(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
-	err := response.WritePlaintext(
-		w,
+	h.writeText(
+		w, r,
 		http.StatusOK,
 		"pong")
-	h.handleErr(w, r, err)
 }
 
 func (h *Handler) index(
@@ -49,7 +46,7 @@ func (h *Handler) index(
 	r *http.Request,
 ) {
 	model := h.newBaseModel(r).Index(h.blogPosts)
-	h.setCacheDirective(w, 60*60, h.settings.ApplicationVersion)
+	h.setCacheDirective(w, 60*60, h.config.ApplicationVersion)
 	h.renderView(w, r, 200, "index", model)
 }
 
@@ -58,21 +55,21 @@ func (h *Handler) tagged(
 	r *http.Request,
 	tagName string,
 ) {
-	filtered := []*site.BlogPost{}
+	filtered := []*blog.Post{}
 	for _, b := range h.blogPosts {
 		if array.Contains(b.Tags, tagName) {
 			filtered = append(filtered, b)
 		}
 	}
 	model := h.newBaseModel(r).WithTitle(fmt.Sprintf("Tagged with '%s'", tagName)).Tagged(filtered)
-	h.setCacheDirective(w, 60*60*4, h.settings.ApplicationVersion)
+	h.setCacheDirective(w, 60*60*4, h.config.ApplicationVersion)
 	h.renderView(w, r, 200, "tagged", model)
 }
 
 func (h *Handler) renderBlogPost(
 	w http.ResponseWriter,
 	r *http.Request,
-	b *site.BlogPost,
+	b *blog.Post,
 ) {
 	// Parse content:
 	// ---
@@ -95,8 +92,8 @@ func (h *Handler) blogPost(
 ) {
 	blogPostID := strings.TrimPrefix(r.URL.Path, "/")
 
-	if !h.settings.IsProduction() {
-		blogPost, err := site.ReadBlogPost(site.DefaultBlogPostPath, blogPostID)
+	if !h.config.IsProduction() {
+		blogPost, err := blog.ReadPost(blog.DefaultBlogPostPath, blogPostID)
 		if h.handleErr(w, r, err) {
 			return
 		}
@@ -118,7 +115,7 @@ func (h *Handler) projects(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
-	h.setCacheDirective(w, 60*60*24, h.settings.ApplicationVersion)
+	h.setCacheDirective(w, 60*60*24, h.config.ApplicationVersion)
 	h.renderView(w, r, 200, "projects", h.newBaseModel(r).WithTitle("Projects").Empty())
 }
 
@@ -126,7 +123,7 @@ func (h *Handler) oss(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
-	h.setCacheDirective(w, 60*60*24, h.settings.ApplicationVersion)
+	h.setCacheDirective(w, 60*60*24, h.config.ApplicationVersion)
 	h.renderView(w, r, 200, "oss", h.newBaseModel(r).WithTitle("Open Source").Empty())
 }
 
@@ -134,7 +131,7 @@ func (h *Handler) hire(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
-	h.setCacheDirective(w, 60*60*24, h.settings.ApplicationVersion)
+	h.setCacheDirective(w, 60*60*24, h.config.ApplicationVersion)
 	h.renderView(w, r, 200, "hire", h.newBaseModel(r).WithTitle("Hire").Empty())
 }
 
@@ -142,7 +139,7 @@ func (h *Handler) about(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
-	h.setCacheDirective(w, 60*60*24, h.settings.ApplicationVersion)
+	h.setCacheDirective(w, 60*60*24, h.config.ApplicationVersion)
 	h.renderView(w, r, 200, "about", h.newBaseModel(r).WithTitle("About").Empty())
 }
 
@@ -154,7 +151,7 @@ func (h *Handler) rss(
 	if h.handleErr(w, r, err) {
 		return
 	}
-	urls := h.settings.URLs(r)
+	urls := h.getURLs(r)
 	latestPost := h.blogPosts[0]
 	rssFeed := rss.NewFeed(
 		rss.NewChannel(
@@ -198,17 +195,14 @@ func (h *Handler) rss(
 
 	w.WriteHeader(http.StatusOK)
 	w.Header().Add("Content-Type", "application/rss+xml")
-	_, err = w.Write(bytes)
-	if err != nil && !cancelledByPeer(err) {
-		dlog.New(r.Context()).Critical().Err(err).Msg("Error writing rss feed to response body.")
-	}
+	_, _ = w.Write(bytes)
 }
 
 func (h *Handler) atom(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
-	urls := h.settings.URLs(r)
+	urls := h.getURLs(r)
 	latestPost := h.blogPosts[0]
 	author := atom.NewPerson(
 		"Dustin Moris Gorski").
@@ -259,17 +253,14 @@ func (h *Handler) atom(
 
 	w.WriteHeader(http.StatusOK)
 	w.Header().Add("Content-Type", "application/atom+xml")
-	_, err = w.Write(bytes)
-	if err != nil && !cancelledByPeer(err) {
-		dlog.New(r.Context()).Critical().Err(err).Msg("Error writing rss feed to response body.")
-	}
+	_, _ = w.Write(bytes)
 }
 
 func (h *Handler) sitemap(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
-	urls := h.settings.URLs(r)
+	urls := h.getURLs(r)
 	urlset := sitemap.NewURLSet().
 		AddURL(
 			sitemap.
@@ -313,20 +304,16 @@ func (h *Handler) sitemap(
 
 	w.WriteHeader(http.StatusOK)
 	w.Header().Add("Content-Type", "application/xml; charset=UTF-8")
-	_, err = w.Write(bytes)
-	if err != nil && !cancelledByPeer(err) {
-		dlog.New(r.Context()).Critical().Err(err).Msg("Error writing sitemap to response body.")
-	}
+	_, _ = w.Write(bytes)
 }
 
 func (h *Handler) robots(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
-	contents := fmt.Sprintf("Sitemap: %s/sitemap.xml\n", h.settings.BaseURL)
-	err := response.WritePlaintext(
-		w,
+	contents := fmt.Sprintf("Sitemap: %s/sitemap.xml\n", h.config.BaseURL)
+	h.writeText(
+		w, r,
 		http.StatusOK,
 		contents)
-	h.handleErr(w, r, err)
 }
