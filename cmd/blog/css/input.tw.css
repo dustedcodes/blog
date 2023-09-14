@@ -1,0 +1,157 @@
+@tailwind base;
+@tailwind components;
+@tailwind utilities;
+@tailwind screens;
+
+/* ----------------
+Defaults
+---------------- */
+
+h1 {
+    @apply text-7xl text-center font-bold text-plum-200 mb-10 leading-normal;
+}
+
+h2 {
+    @apply text-5xl text-left font-bold text-plum-200 my-10 leading-normal;
+}
+
+h3 {
+    @apply text-4xl text-left font-semibold text-plum-200 my-10 leading-normal;
+}
+
+h4 {
+    @apply text-2xl text-left font-bold text-plum-200 my-7 leading-normal;
+}
+
+h5 {
+    @apply text-xl text-left font-semibold text-plum-200 my-7 leading-normal;
+}
+
+h6 {
+    @apply text-base font-bold text-plum-200 my-5 leading-normal;
+}
+
+p {
+    @apply mt-5 leading-relaxed;
+}
+
+a {
+    @apply text-shimmer hover:underline;
+}
+
+pre {
+    @apply mt-5 mb-10 w-auto overflow-x-auto rounded;
+}
+
+code {
+    @apply inline-block px-1 rounded font-mono text-left text-lg whitespace-pre-wrap break-words bg-plum-1400 text-peach-700 leading-snug;
+}
+
+pre > code {
+    @apply block px-3 py-2 text-plum-200 text-lg leading-normal bg-plum-1500;
+}
+
+ul {
+    @apply list-disc ml-12 mt-5 mb-10;
+}
+
+ol {
+    @apply list-decimal ml-12 mt-5 mb-10;
+}
+
+li {
+    @apply leading-relaxed mt-3;
+}
+
+img {
+    @apply mt-5 mb-10 rounded;
+}
+
+strong, b {
+    @apply font-medium text-plum-100;
+}
+
+i, em {
+    @apply italic;
+}
+
+.youTubeVideo {
+    @apply my-10 max-w-3xl;
+}
+
+blockquote {
+    @apply bg-plum-1500 rounded border-l-8 border-l-plum-500 py-4 px-4 mt-5 text-lg text-plum-500;
+}
+
+blockquote > *:first-child {
+    @apply mt-0 pt-0;
+}
+
+blockquote > footer {
+    @apply mt-4 not-italic text-lg text-plum-100;
+}
+
+/* ----------------
+Customs
+---------------- */
+
+.icon svg {
+ @apply w-5 fill-plum-200;
+}
+
+.share-links {
+    @apply flex flex-row flex-wrap justify-center sm:justify-between items-center max-w-2xl mx-auto my-10;
+}
+
+.share-links svg {
+    @apply w-7 mx-5 sm:mx-0 my-3 sm:my-0 fill-plum-400 hover:fill-shimmer;
+}
+
+/* ----------------
+Hamburger menu icon
+---------------- */
+
+.ham-burger {
+    cursor: pointer;
+    -webkit-tap-highlight-color: transparent;
+    transition: transform 400ms;
+    -moz-user-select: none;
+    -webkit-user-select: none;
+    -ms-user-select: none;
+    user-select: none;
+}
+.ham-line {
+    fill: none;
+    transition: stroke-dasharray 400ms, stroke-dashoffset 400ms;
+    stroke-width: 5;
+    /* stroke-linecap: round; */
+}
+.ham-burger .ham-top {
+    stroke-dasharray: 40 172;
+}
+.ham-burger .ham-middle {
+    stroke-dasharray: 40 111;
+}
+.ham-burger .ham-bottom {
+    stroke-dasharray: 40 172;
+}
+.ham-burger.ham-active .ham-top {
+    stroke-dashoffset: -132px;
+}
+.ham-burger.ham-active .ham-middle {
+    stroke-dashoffset: -71px;
+}
+.ham-burger.ham-active .ham-bottom {
+    stroke-dashoffset: -132px;
+}
+.ham-line {
+    @apply stroke-plum-200;
+}
+.ham-burger:hover .ham-line {
+    @apply stroke-plum-200;
+}
+.ham-burger.ham-active .ham-top,
+.ham-burger.ham-active .ham-middle,
+.ham-burger.ham-active .ham-bottom {
+    @apply stroke-peach-800;
+}

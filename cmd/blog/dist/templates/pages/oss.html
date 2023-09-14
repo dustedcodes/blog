@@ -3,13 +3,11 @@
 {{ end }}
 
 {{ define "content" }}
-    <h1 class="pageTitle">{{ .Base.Title }}</h1>
-
-    <div class="text-center text-neutral-400 text-xl leading-normal">
+    <div class="text-center my-10">
         <p></p>
-        <p>I've been contributing to open source since 2013. It didn't take me long before I started to publish occasional work in the open too. Eventually, some years later, I've become an active maintainer of several open source projects myself, some of which are highlighted below.</p>
-        <p class="mt-5">You can find the majority of my open source work spread across these accounts:</p>
-        <div class="grid grid-cols-1 sm:grid-cols-3 gap-x-5 gap-y-2 sm:gap-y-5 my-5 p-5 rounded border border-neutral-700">
+        <p>I started contributing to open source in 2013, and soon after I began publishing my own work in the open too. Over the years, I have become an active maintainer of several open source projects, some of which are listed below.</p>
+        <p class="mt-5">The majority of my OSS work is spread across the following accounts:</p>
+        <div class="grid grid-cols-1 sm:grid-cols-3 gap-x-5 gap-y-2 sm:gap-y-5 my-5 p-5">
             <a class="text-center sm:text-right" href="https://github.com/dustinmoris">GitHub profile:</a>
             <span class="col-span-2 text-center sm:text-left">Home of most personal projects</span>
 
@@ -24,14 +22,14 @@
         </div>
     </div>
 
-    <div class="grid grid-cols-1 gap-10 my-20">
-        <article class="flex flex-col sm:flex-row justify-start items-middle text-neutral-400">
-            <img class="max-h-52 mx-auto sm:mr-10 sm:my-auto mb-10 bg-neutral-100 rounded-lg p-5" src="https://giraffe.wiki/giraffe.png">
+    <div class="grid grid-cols-1 gap-10 my-14">
+        <article class="flex flex-col sm:flex-row justify-start items-middle text-plum-200">
+            <img class="max-h-52 mx-auto sm:mr-10 sm:my-auto mb-10 bg-plum-100 rounded-lg p-5" src="https://giraffe.wiki/giraffe.png">
             <div>
                 <header>
-                    <h2 class="text-neutral-200 font-bold text-5xl mb-3 text-center sm:text-left">Giraffe</h2>
-                    <h3 class="text-neutral-300 text-xl mb-3 text-center sm:text-left">A functional ASP.NET Core micro web framework</h3>
-                    <a class="font-sans text-lg flex flex-row items-center justify-center sm:justify-start" href="https://giraffe.wiki" target="_blank"><span class="icon mr-2">{{ template "link" . }}</span>giraffe.wiki</a>
+                    <h2 class="mt-0 mb-3 py-0 text-center sm:text-left">Giraffe</h2>
+                    <h3 class="text-xl my-0 py-0 text-center sm:text-left">A functional ASP.NET Core micro web framework</h3>
+                    <a class="mt-5 flex flex-row items-center justify-center sm:justify-start" href="https://giraffe.wiki" target="_blank"><span class="icon mr-2">{{ template "link" . }}</span>giraffe.wiki</a>
                 </header>
                 <main class="mt-5 text-lg">
                     <p>Giraffe is an F# micro web framework for building rich web applications. It has been heavily inspired and is similar to <a href="https://suave.io/" target="_blank">Suave</a>, but has been specifically designed with <a href="https://www.asp.net/core" target="_blank">ASP.NET Core</a> in mind and can be plugged into the ASP.NET Core pipeline via middleware. Giraffe applications are composed by so called HttpHandler functions which can be thought of a lighter and more functional form of ASP.NET Core's middleware.</p>
@@ -40,13 +38,12 @@
             </div>
         </article>
 
-        <article class="mt-10 border-t-2 border-t-neutral-800 pt-16 flex flex-col sm:flex-row justify-start items-middle text-neutral-400">
+        <article class="mt-10 border-t-2 border-t-plum-1400 pt-14 flex flex-col sm:flex-row justify-start items-middle text-plum-200">
             <div class="order-2 sm:order-1">
                 <header>
-                    <h2 class="text-neutral-200 font-bold text-5xl mb-3 text-center sm:text-left
-                    ">BuildStats.info</h2>
-                    <h3 class="text-neutral-300 text-xl mb-3 text-center sm:text-left">SVG widgets to display build history charts and more</h3>
-                    <a class="font-sans text-lg flex flex-row items-center justify-center sm:justify-start" href="https://buildstats.info" target="_blank"><span class="icon mr-2">{{ template "link" . }}</span>buildstats.info</a>
+                    <h2 class="mt-0 mb-3 py-0 text-center sm:text-left">BuildStats.info</h2>
+                    <h3 class="text-xl my-0 py-0 text-center sm:text-left">SVG widgets to display build history charts and more</h3>
+                    <a class="mt-5 flex flex-row items-center justify-center sm:justify-start" href="https://buildstats.info" target="_blank"><span class="icon mr-2">{{ template "link" . }}</span>buildstats.info</a>
                 </header>
                 <main class="mt-5 text-lg">
                     <p>BuildStats.info is a tiny F# API which produces little build charts for AppVeyor, TravisCI, CircleCI, GitHub Actions or Azure Pipelines build histories. Those widgets can be used to decorate a public open source repository to indicate the health of a project.</p>
@@ -56,15 +53,15 @@
             <img class="order-1 sm:order-2 max-h-52 mx-auto sm:ml-10 sm:my-auto mb-10 rounded bg-gray-700 p-5" src="https://buildstats.info/github/chart/dustinmoris/CI-BuildStats?branch=develop">
         </article>
 
-        <article class="mt-10 border-t-2 border-t-neutral-800 pt-16 flex flex-col sm:flex-row justify-start items-middle text-neutral-400">
-            <div class="w-1/5 mx-auto sm:mr-10 sm:my-auto mb-10 svg-light">
+        <article class="mt-10 border-t-2 border-t-plum-1400 pt-14 flex flex-col sm:flex-row justify-start items-middle text-plum-200">
+            <div class="w-1/5 mx-auto sm:mr-10 sm:my-auto mb-10">
                 {{ template "github" . }}
             </div>
             <div class="w-full sm:w-4/5">
                 <header>
-                    <h2 class="text-neutral-200 font-bold text-5xl mb-3 text-center sm:text-left">self-destruct-notes</h2>
-                    <h3 class="text-neutral-300 text-xl mb-3 text-center sm:text-left">Go web service to create and read self destructing notes.</h3>
-                    <a class="font-sans text-lg flex flex-row items-center justify-center sm:justify-start" href="https://github.com/dustinmoris/self-destruct-notes" target="_blank"><span class="icon mr-2">{{ template "link" . }}</span>github.com/dustinmoris/self-destruct-notes</a>
+                    <h2 class="mt-0 mb-3 py-0 text-center sm:text-left">self-destruct-notes</h2>
+                    <h3 class="text-xl my-0 py-0 text-center sm:text-left">Go web service to create and read self destructing notes.</h3>
+                    <a class="mt-5 flex flex-row items-center justify-center sm:justify-start" href="https://github.com/dustinmoris/self-destruct-notes" target="_blank"><span class="icon mr-2">{{ template "link" . }}</span>github.com/dustinmoris/self-destruct-notes</a>
                 </header>
                 <main class="mt-5 text-lg">
                     <p>Self-destruct-notes is a tiny web service written in Go which allows the secure sharing of secrets in a corporate environment. Instead of sharing sensitive information like user credentials or a user's PII directly in internal chats one can use this web service to create a unique one-time note that will automatically destroy after being read. This has the benefit that secret or sensitive data doesn't preserve in the history of a chat. Self-destruct-notes is an open source project which organisations must self host in their corporate environment. Find out more in my blog post on <a href="/building-a-secure-note-sharing-service-in-go">&quot;Building a secure note sharing service in Go&quot;</a>.</p>

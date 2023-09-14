@@ -3,27 +3,25 @@
 {{ end }}
 
 {{ define "content" }}
-    <h1 class="pageTitle">{{ .Base.Title }}</h1>
-
-    <div class="text-center text-neutral-400 text-xl leading-normal mb-20">
-        <p>Here is a list of some free and paid-for services which I have built over the years and which are now maintained under the guardianship of Dusted Codes Limited:</p>
+    <div class="text-center my-10">
+        <p>Below is a list of some free and paid services which I have created and continue to maintain through Dusted Codes Limited:</p>
     </div>
 
     <div class="my-10">
-        <article class="flex flex-col sm:flex-row justify-start items-middle text-neutral-400 mb-20">
+        <article class="flex flex-col sm:flex-row justify-start items-middle text-plum-200 mb-20">
             <img class="w-52 mb-10 sm:mb-0 mx-auto sm:w-1/4 sm:mr-5 rounded" src="https://keyboardjobs.com/images/logo.svg">
             <div class="w-full">
                 <header>
-                    <h2 class="text-neutral-200 leading-snug font-bold text-5xl uppercase mb-3 text-center sm:text-left">Keyboard Jobs</h2>
-                    <h3 class="text-emerald-200 font-mono text-xl mb-3 text-center sm:text-left">Jobs for software developers, geeks and cyborgs</h3>
-                    <a class="font-sans text-lg flex flex-row items-center justify-center sm:justify-start" href="https://keyboardjobs.com" target="_blank"><span class="icon mr-2">{{ template "link" . }}</span>keyboardjobs.com</a>
+                    <h2 class="uppercase mt-5 mb-3 py-0 text-center sm:text-left">Keyboard Jobs</h2>
+                    <h3 class="font-mono font-medium my-0 py-0 text-xl text-plum-400 text-center sm:text-left">Jobs for software developers, geeks and cyborgs</h3>
+                    <a class="mt-5 text-lg flex flex-row items-center justify-center sm:justify-start" href="https://keyboardjobs.com" target="_blank"><span class="icon mr-2">{{ template "link" . }}</span>keyboardjobs.com</a>
                 </header>
                 <main class="mt-5 text-xl sm:text-lg">
-                    <p>Keyboard Jobs is a <a class="text-neutral-400" href="https://keyboardjobs.com" target="_blank">job board for software developers, computer programmers and IT personnel</a>. It is optimised for mobile devices, speed and efficiency. Keyboard Jobs captures and delivers the information which software developers care about the most and presents it in the most beautiful way. It is loved by software developers around the world and a favourite job board where engineers come back to check for a new opportunity.</p>
+                    <p>Keyboard Jobs is a <a href="https://keyboardjobs.com" target="_blank">job board for software developers, computer programmers and IT personnel</a>. It is optimised for mobile devices, speed and efficiency. Keyboard Jobs captures and delivers the information which software developers care about the most and presents it in the most beautiful way. It is loved by software developers around the world and a favourite job board where engineers come back to check for a new opportunity.</p>
                     <p class="mt-5">Read more about why <a href="https://keyboardjobs.com/why-keyboard-jobs" target="_blank">Keyboard Jobs it is a great place to advertise software development jobs</a> and how to reach the best talent worldwide.</p>
                 </main>
                 <aside class="mt-5 text-xl sm:text-lg">
-                    <h4 class="font-bold text-neutral-200 mb-2">Quick links:</h4>
+                    <h4 class="text-xl font-medium mb-2">Links:</h4>
                     <div class="grid grid-cols-1 gap-2 sm:flex sm:flex-row sm:justify-between">
                         <a href="https://keyboardjobs.com/jobs/tagged/dotnet" target="_blank">.NET Jobs</a>
                         <a href="https://keyboardjobs.com/jobs/tagged/java" target="_blank">Java Jobs</a>
@@ -36,19 +34,19 @@
             </div>
         </article>
 
-        <article class="mt-10 mb-20 border-t-2 border-t-neutral-800 pt-16 flex flex-col sm:flex-row justify-start items-middle text-neutral-400">
+        <article class="mt-10 mb-20 border-t-2 border-t-plum-1400 pt-16 flex flex-col sm:flex-row justify-start items-middle text-plum-200">
             <div class="order-2 sm:order-1">
                 <header>
-                    <h2 class="text-neutral-200 leading-snug font-bold text-5xl mb-3 text-center sm:text-left">.NET Ketchup</h2>
-                    <h3 class="text-neutral-300 text-xl mb-3 text-center sm:text-left">Catch up on the latest .NET news from around the world</h3>
-                    <a class="font-sans text-lg flex flex-row items-center justify-center sm:justify-start" href="https://dotnetketchup.com" target="_blank"><span class="icon mr-2">{{ template "link" . }}</span>dotnetketchup.com</a>
+                    <h2 class="mt-0 mb-3 py-0 text-center sm:text-left">.NET Ketchup</h2>
+                    <h3 class="font-medium my-0 py-0 text-xl text-plum-400 text-center sm:text-left">Catch up on the latest .NET news from around the world</h3>
+                    <a class="mt-5 text-lg flex flex-row items-center justify-center sm:justify-start" href="https://dotnetketchup.com" target="_blank"><span class="icon mr-2">{{ template "link" . }}</span>dotnetketchup.com</a>
                 </header>
                 <main class="mt-5 text-xl sm:text-lg">
                     <p>.NET Ketchup is an automated news aggregator for all things .NET. It is different to other news aggregators in that it collects a vast amount of different &quot;trending&quot; content such as blog posts, podcasts, tweets, GitHub repositories and more which match relevant .NET topics.</p>
                     <p class="mt-5">Find out more on <a href="https://dotnetketchup.com/about" target="_blank">how .NET Ketchup works</a>.</p>
                 </main>
                 <aside class="mt-5 text-xl sm:text-lg">
-                    <h4 class="font-bold text-neutral-200 mb-2">Quick links:</h4>
+                    <h4 class="text-xl font-medium mb-2">Links:</h4>
                     <div class="grid grid-cols-1 gap-2 sm:flex sm:flex-row sm:justify-between">
                         <a href="https://dotnetketchup.com/?hide=fsharp,vbnet,aspnet,blazor,apps,tools,platform,random" target="_blank">C# news</a>
                         <a href="https://dotnetketchup.com/?hide=csharp,vbnet,aspnet,blazor,apps,tools,platform,random" target="_blank">F# news</a>
@@ -61,41 +59,41 @@
             <img class="w-52 mb-10 sm:mb-0 mx-auto sm:w-1/4 sm:ml-10 order-1 sm:order-2" src="https://cdn.dotnetketchup.com/images/logo.svg">
         </article>
 
-        <article class="mt-10 mb-20 border-t-2 border-t-neutral-800 pt-16 flex flex-col sm:flex-row justify-start items-middle text-neutral-400">
+        <article class="mt-10 mb-20 border-t-2 border-t-plum-1400 pt-16 flex flex-col sm:flex-row justify-start items-middle text-plum-200">
             <img class="w-52 mb-10 sm:mb-0 mx-auto sm:w-1/4 sm:mr-10" src="https://cdn.golang.christmas/images/golang-2.svg">
             <div>
                 <header>
-                    <h2 class="text-neutral-200 leading-snug font-bold text-5xl mb-3 text-center sm:text-left">Go Advent Calendar</h2>
-                    <h3 class="text-neutral-300 text-xl mb-3 text-center sm:text-left">One blog post every day until Christmas</h3>
-                    <a class="text-cyan-200 font-sans text-lg flex flex-row items-center justify-center sm:justify-start" href="https://golang.christmas" target="_blank"><span class="icon mr-2">{{ template "link" . }}</span>golang.christmas</a>
+                    <h2 class="mt-0 mb-3 py-0 text-center sm:text-left">Go Advent Calendar</h2>
+                    <h3 class="font-medium my-0 py-0 text-xl text-plum-400 text-center sm:text-left">One blog post every day until Christmas</h3>
+                    <a class="mt-5 text-lg flex flex-row items-center justify-center sm:justify-start" href="https://golang.christmas" target="_blank"><span class="icon mr-2">{{ template "link" . }}</span>golang.christmas</a>
                 </header>
                 <main class="mt-5 text-xl sm:text-lg">
                     <p>The Go Advent Calendar was inspired by the original (japanese) F# Advent Calendar. It is an Advent Calendar filled with blog posts leading up to Christmas. Go developers, who like to blog, can reserve a slot in advance and subsequently submit their contribution before their selected window is expected to open. Traditionally December is a very quiet period where companies slow down and developers get time to spend on things other than just work. It's a great time to explore new tech or pick up a new skill. The Go Advent Calendar is an initiative to make this time more fun!</p>
                 </main>
                 <aside class="mt-5 text-xl sm:text-lg">
-                    <h4 class="font-bold text-neutral-200 mb-2">Quick links:</h4>
+                    <h4 class="text-xl font-medium mb-2">Links:</h4>
                     <div class="grid grid-cols-1 gap-2 sm:flex sm:flex-row sm:justify-between">
-                        <a class="text-cyan-200" href="https://golang.christmas/book" target="_blank">Call for bloggers</a>
-                        <a class="text-cyan-200" href="https://golang.christmas/about" target="_blank">About</a>
-                        <a class="text-cyan-200" href="https://golang.christmas/2022" target="_blank">2022 Calendar</a>
-                        <a class="text-cyan-200" href="https://golang.christmas/2021" target="_blank">2021 Calendar</a>
+                        <a class="" href="https://golang.christmas/book" target="_blank">Call for bloggers</a>
+                        <a class="" href="https://golang.christmas/about" target="_blank">About</a>
+                        <a class="" href="https://golang.christmas/2022" target="_blank">2022 Calendar</a>
+                        <a class="" href="https://golang.christmas/2021" target="_blank">2021 Calendar</a>
                     </div>
                 </aside>
             </div>
         </article>
 
-        <article class="my-10 mb-20 border-t-2 border-t-neutral-800 pt-16 flex flex-col sm:flex-row justify-start items-middle text-neutral-400">
+        <article class="my-10 mb-20 border-t-2 border-t-plum-1400 pt-16 flex flex-col sm:flex-row justify-start items-middle text-plum-200">
             <div class="order-2 sm:order-1">
                 <header>
-                    <h2 class="text-neutral-200 leading-snug font-bold text-5xl mb-3 text-center sm:text-left">.NET Advent Calendar</h2>
-                    <h3 class="text-neutral-300 text-xl mb-3 text-center sm:text-left">One blog post every day until Christmas</h3>
-                    <a class="font-sans text-lg text-purple-200 flex flex-row items-center justify-center sm:justify-start" href="https://dotnet.christmas" target="_blank"><span class="icon mr-2">{{ template "link" . }}</span>dotnet.christmas</a>
+                    <h2 class="mt-0 mb-3 py-0 text-center sm:text-left">.NET Advent Calendar</h2>
+                    <h3 class="font-medium my-0 py-0 text-xl text-plum-400 text-center sm:text-left">One blog post every day until Christmas</h3>
+                    <a class="mt-5 text-lg flex flex-row items-center justify-center sm:justify-start" href="https://dotnet.christmas" target="_blank"><span class="icon mr-2">{{ template "link" . }}</span>dotnet.christmas</a>
                 </header>
                 <main class="mt-5 text-xl sm:text-lg">
                     <p>The .NET Advent Calendar was inspired by the original (japanese) F# Advent Calendar. It is an Advent Calendar filled with blog posts leading up to Christmas. .NET developers, who like to blog, can reserve a slot in advance and subsequently submit their contribution before their selected window is expected to open. Traditionally December is a very quiet period where companies slow down and developers get time to spend on things other than just work. It's a great time to explore new tech or pick up a new skill. The .NET Advent Calendar is an initiative to make this time more fun!</p>
                 </main>
                 <aside class="mt-5 text-xl sm:text-lg">
-                    <h4 class="font-bold text-neutral-200 mb-2">Quick links:</h4>
+                    <h4 class="text-xl font-medium mb-2">Links:</h4>
                     <div class="grid grid-cols-1 gap-2 sm:flex sm:flex-row sm:justify-between">
                         <a class="text-purple-200" href="https://dotnet.christmas/book" target="_blank">Call for bloggers</a>
                         <a class="text-purple-200" href="https://dotnet.christmas/about" target="_blank">About</a>
@@ -108,15 +106,15 @@
         </article>
     </div>
 
-    <h2 class="pageTitle border-t-4 border-dashed border-t-neutral-700 pt-16">Archived Projects</h2>
+    <h2 class="border-y-4 border-dashed border-y-plum-1100 py-5 my-14 text-center">Archived Projects</h2>
 
-    <article class="mt-10 mb-20 flex flex-col sm:flex-row justify-start items-middle text-neutral-400">
+    <article class="mt-10 mb-20 flex flex-col sm:flex-row justify-start items-middle text-plum-200">
         <img class="w-52 mb-10 sm:mb-0 mx-auto sm:w-1/4 sm:mr-10" src="https://storage.googleapis.com/top-10-london/images/logo.svg">
         <div>
             <header>
-                <h2 class="text-neutral-200 leading-snug font-bold text-5xl mb-3 text-center sm:text-left">Top 10 London</h2>
-                <h3 class="text-neutral-300 text-xl mb-3 text-center sm:text-left">Local guide to London's best places</h3>
-                <a class="font-sans text-lg flex flex-row items-center justify-center sm:justify-start" href="https://top10.london" target="_blank"><span class="icon mr-2">{{ template "link" . }}</span>https://top10.london</a>
+                <h2 class="mt-0 mb-3 py-0 text-center sm:text-left">Top 10 London</h2>
+                <h3 class="font-medium my-0 py-0 text-xl text-plum-400 text-center sm:text-left">Local guide to London's best places</h3>
+                <a class="mt-5 text-lg flex flex-row items-center justify-center sm:justify-start" href="https://top10.london" target="_blank"><span class="icon mr-2">{{ template "link" . }}</span>https://top10.london</a>
             </header>
             <main class="mt-5 text-xl sm:text-lg">
                 <p>Top 10 London was a city guide to the best dining, leisure and entertainment scene in London. Top 10 London offered readers carefully selected and independently reviewed recommendations of the top 10 best things of what one can do, see, eat and drink in London. Whether a person fancied the juiciest burger, an authentic Neapolitan pizza or if someone was after the most romantic setting for a date, Top 10 London would have provided an answer to all of these questions.</p>
@@ -124,27 +122,27 @@
         </div>
     </article>
 
-    <article class="mt-10 border-t-2 border-t-neutral-800 pt-16 flex flex-col sm:flex-row justify-start items-middle text-neutral-400">
+    <article class="mt-10 border-t-2 border-t-plum-1400 pt-16 flex flex-col sm:flex-row justify-start items-middle text-plum-200">
         <div class="order-2 sm:order-1">
             <header>
-                <h2 class="text-neutral-200 leading-snug font-bold text-5xl mb-3 text-center sm:text-left">Junior Doctors Strike</h2>
-                <h3 class="text-neutral-300 text-xl mb-3 text-center sm:text-left">Doctors fighting to save the NHS</h3>
-                <a class="font-sans text-lg flex flex-row items-center justify-center sm:justify-start" href="https://juniordoctorsstrike.azurewebsites.net" target="_blank"><span class="icon mr-2">{{ template "link" . }}</span>https://juniordoctorsstrike.azurewebsites.net</a>
+                <h2 class="mt-0 mb-3 py-0 text-center sm:text-left">Junior Doctors Strike</h2>
+                <h3 class="font-medium my-0 py-0 text-xl text-plum-400 text-center sm:text-left">Doctors fighting to save the NHS</h3>
+                <a class="mt-5 text-lg flex flex-row items-center justify-center sm:justify-start" href="https://juniordoctorsstrike.azurewebsites.net" target="_blank"><span class="icon mr-2">{{ template "link" . }}</span>https://juniordoctorsstrike.azurewebsites.net</a>
             </header>
             <main class="mt-5 text-xl sm:text-lg">
-                <p>Previously <code class="text-neutral-100 font-mono">https://juniordoctorsstrike.co.uk</code> (domain has been retired).</p>
+                <p>Previously <code>https://juniordoctorsstrike.co.uk</code> (domain has been retired).</p>
                 <p class="mt-5">#JuniorDoctorsStrike collects messages from various social media platforms such as Twitter, Instagram or Facebook and displays them in one centralised place to give junior doctors a public stage and support the fight against an usafe contract and unsafe NHS conditions.</p>
             </main>
         </div>
-        <img class="order-1 sm:order-2 w-52 mb-10 sm:mb-0 mx-auto sm:w-1/4 h-1/4 sm:my-auto sm:ml-10 bg-neutral-200 rounded p-5" src="https://juniordoctorsstrike.azurewebsites.net/Assets/junior-doctors-strike.png">
+        <img class="order-1 sm:order-2 w-52 mb-10 sm:mb-0 mx-auto sm:w-1/4 h-1/4 sm:my-auto sm:ml-10 bg-plum-200 rounded p-5" src="https://juniordoctorsstrike.azurewebsites.net/Assets/junior-doctors-strike.png">
     </article>
 
-    <article class="mt-10 border-t-2 border-t-neutral-800 pt-16 mb-20 flex flex-col sm:flex-row justify-start items-middle text-neutral-400">
+    <article class="mt-10 border-t-2 border-t-plum-1400 pt-16 mb-20 flex flex-col sm:flex-row justify-start items-middle text-plum-200">
         <div>
             <header>
-                <h2 class="text-neutral-200 leading-snug font-bold text-5xl mb-3 text-center sm:text-left">Elevation of Privilege (EoP)</h2>
-                <h3 class="text-neutral-300 text-xl mb-3 text-center sm:text-left">Online Threat Modelling Card Game</h3>
-                <a class="font-sans text-lg flex flex-row items-center justify-center sm:justify-start" href="http://eopgame.azurewebsites.net" target="_blank"><span class="icon mr-2">{{ template "link" . }}</span>http://eopgame.azurewebsites.net</a>
+                <h2 class="mt-0 mb-3 py-0 text-center sm:text-left">Elevation of Privilege (EoP)</h2>
+                <h3 class="font-medium my-0 py-0 text-xl text-plum-400 text-center sm:text-left">Online Threat Modelling Card Game</h3>
+                <a class="mt-5 text-lg flex flex-row items-center justify-center sm:justify-start" href="http://eopgame.azurewebsites.net" target="_blank"><span class="icon mr-2">{{ template "link" . }}</span>http://eopgame.azurewebsites.net</a>
             </header>
             <main class="mt-5 text-xl sm:text-lg">
                 <p>The Elevation of Privilege (EoP) Card Game for remote teams. The <a href="http://www.microsoft.com/security/sdl/adopt/eop.aspx" target="_blank">original game</a> has been created by Microsoft and is given away by Microsoft at trade shows or other events and as a <a href="http://www.microsoft.com/en-us/download/details.aspx?id=20303" target="_blank">PDF download</a> of the Adobe Illustrator source files.</p>

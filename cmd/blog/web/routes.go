@@ -93,12 +93,14 @@ func (h *Handler) blogPost(
 	blogPostID := strings.TrimPrefix(r.URL.Path, "/")
 
 	if !h.config.IsProduction() {
-		blogPost, err := blog.ReadPost(blog.DefaultBlogPostPath, blogPostID)
+		blogPost, err := blog.ReadPost(r.Context(), blog.DefaultBlogPostPath, blogPostID)
 		if h.handleErr(w, r, err) {
 			return
 		}
-		h.renderBlogPost(w, r, blogPost)
-		return
+		if blogPost != nil {
+			h.renderBlogPost(w, r, blogPost)
+			return
+		}
 	}
 
 	for _, blogPost := range h.blogPosts {

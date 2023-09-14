@@ -164,7 +164,7 @@ func parsePost(
 	return blogPost, nil
 }
 
-func ReadPost(path string, blogPostID string) (*Post, error) {
+func ReadPost(ctx context.Context, path string, blogPostID string) (*Post, error) {
 
 	files, err := os.ReadDir(path)
 	if err != nil {
@@ -181,7 +181,8 @@ func ReadPost(path string, blogPostID string) (*Post, error) {
 	}
 
 	if len(fileName) == 0 {
-		return nil, fmt.Errorf("blog post with ID '%s' not found", blogPostID)
+		stackdriver.GetLogger(ctx).Warn("Blog post not found.", "blogPostID", blogPostID)
+		return nil, nil
 	}
 
 	fileNameParts := strings.SplitN(fileName, "-", 2)

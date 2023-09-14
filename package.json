@@ -1,6 +1,6 @@
 {
   "scripts": {
-    "build:css": "tailwind build -i cmd/blog/css/input.css -o cmd/blog/dist/assets/output.css"
+    "build:css": "tailwind build -i cmd/blog/css/input.tw.css -o cmd/blog/dist/assets/output.css"
   },
   "devDependencies": {
     "tailwindcss": "^3.2.6"
