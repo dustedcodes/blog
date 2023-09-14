@@ -25,7 +25,7 @@ import (
 )
 
 const (
-	DefaultBlogPostPath = "dist/posts"
+	DefaultBlogPostPath = "dist/articles"
 )
 
 var (

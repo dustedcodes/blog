@@ -54,7 +54,7 @@ func NewHandler(
 		),
 		"blogPost": append(socialSVGs,
 			"dist/templates/pages/_layout.html",
-			"dist/templates/pages/blogPost.html",
+			"dist/templates/pages/article.html",
 			"dist/templates/components/tags.html",
 		),
 		"projects": append(socialSVGs,
