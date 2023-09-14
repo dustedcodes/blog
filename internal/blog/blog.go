@@ -15,6 +15,7 @@ import (
 
 	"github.com/dusted-go/logging/stackdriver"
 
+	"github.com/alecthomas/chroma/v2"
 	chromahtml "github.com/alecthomas/chroma/v2/formatters/html"
 	"github.com/yuin/goldmark"
 	syntax "github.com/yuin/goldmark-highlighting/v2"
@@ -25,6 +26,42 @@ import (
 
 const (
 	DefaultBlogPostPath = "dist/posts"
+)
+
+var (
+	syntaxStyle = chroma.MustNewStyle(
+		"custom",
+		chroma.StyleEntries{
+			chroma.Background:           "#cccccc bg:#1d1d1d",
+			chroma.Comment:              "#8f8f8f",
+			chroma.CommentSpecial:       "#8f8f8f",
+			chroma.Keyword:              "#d179a3",
+			chroma.KeywordDeclaration:   "#d179a3",
+			chroma.KeywordNamespace:     "#d179a3",
+			chroma.KeywordType:          "#d179a3",
+			chroma.Operator:             "#d179a3",
+			chroma.OperatorWord:         "#d179a3",
+			chroma.NameClass:            "#c2d975",
+			chroma.NameBuiltin:          "#b4ddff",
+			chroma.NameFunction:         "#ecc77d",
+			chroma.NameException:        "#c2d975",
+			chroma.NameVariable:         "#dedede",
+			chroma.LiteralString:        "#ffa08f",
+			chroma.LiteralNumber:        "#abfebc",
+			chroma.LiteralStringBoolean: "#abfebc",
+			chroma.GenericHeading:       "#dedede",
+			chroma.GenericSubheading:    "#dedede",
+			chroma.GenericDeleted:       "#dedede",
+			chroma.GenericInserted:      "#dedede",
+			chroma.GenericError:         "#dedede",
+			chroma.GenericEmph:          "#dedede",
+			chroma.GenericStrong:        "#dedede",
+			chroma.GenericPrompt:        "#dedede",
+			chroma.GenericOutput:        "#dedede",
+			chroma.GenericTraceback:     "#dedede",
+			chroma.GenericUnderline:     "#dedede",
+			chroma.Error:                "#dedede",
+		})
 )
 
 type Post struct {
@@ -52,7 +89,7 @@ func (p *Post) HTML() (template.HTML, error) {
 			extension.Table,
 			extension.Strikethrough,
 			syntax.NewHighlighting(
-				syntax.WithStyle("gruvbox"),
+				syntax.WithCustomStyle(syntaxStyle),
 				syntax.WithFormatOptions(
 					chromahtml.TabWidth(4),
 					chromahtml.WithLineNumbers(false),
