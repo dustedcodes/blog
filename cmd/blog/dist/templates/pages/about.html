@@ -3,11 +3,12 @@
 {{ end }}
 
 {{ define "content" }}
-<article class="text-plum-200 text-xl leading-normal">
-    <div class="mt-10 flex flex-col sm:flex-row justify-start items-stretch">
-        <img class="sm:max-h-60 sm:mr-10 mb-10 sm:mb-0 rounded" src="{{ .Base.URLs.CDN }}/images/public/dustin-gorski-2.jpg" alt="Dustin Gorski"/>
-        <div class="flex flex-col justify-between">
-            <h2 class="mb-5 mt-0">About me</h2>
+<article class="text-center sm:text-left">
+    <div class="grid grid-cols-1 sm:grid-cols-3 gap-10 items-center mt-5 sm:mt-10">
+        <img class="rounded m-0 p-0" src="{{ .Base.URLs.CDN }}/images/public/dustin-gorski-2.jpg" alt="Dustin Gorski"/>
+
+        <div class="sm:col-span-2">
+            <h2 class="m-0 p-0 text-center sm:text-left">About me</h2>
             <p>Hi, welcome to my personal website, software development blog and the official home of <strong>Dusted Codes Limited</strong>, a UK registered company. I'm Dustin, a software engineer, entrepreneur and open source contributor who's originally from Vienna, Austria but living in the UK now.</p>
         </div>
     </div>
