@@ -22,8 +22,8 @@ import (
 	"github.com/dustedcodes/blog/cmd/blog/model"
 	"github.com/dustedcodes/blog/cmd/blog/web"
 	"github.com/dustedcodes/blog/internal/blog"
-	"github.com/dustedcodes/blog/internal/cloudtrace"
 	"github.com/dustedcodes/blog/internal/config"
+	"github.com/dustedcodes/blog/internal/tracing"
 )
 
 func main() {
@@ -69,6 +69,22 @@ func main() {
 	slog.SetDefault(logger)
 
 	// ----------------------------------------
+	// Init tracing:
+	// ----------------------------------------
+	tracingOptions := &tracing.Options{
+		InitForGCP:      config.IsProduction(),
+		GCPProjectID:    config.GoogleCloudProjectID,
+		ServiceName:     config.ApplicationName,
+		ServiceVersion:  config.ApplicationVersion,
+		EnvironmentName: config.EnvironmentName,
+	}
+	shutdown, err := tracing.Init(ctx, tracingOptions)
+	if err != nil {
+		panic(err)
+	}
+	defer shutdown()
+
+	// ----------------------------------------
 	// Bootstrap:
 	// ----------------------------------------
 	assetMiddleware, err :=
@@ -103,7 +119,7 @@ func main() {
 	middleware := mware.Bind(
 		recoverer.HandlePanics(webHandler.Recover),
 		healthz.LivenessProbe,
-		cloudtrace.Middleware,
+		tracing.Middleware,
 		loggingMiddleware,
 		proxy.ForwardedHeaders(config.ProxyCount),
 		redirect.TrailingSlash,

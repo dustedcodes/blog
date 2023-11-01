@@ -1,16 +1,33 @@
-package cloudtrace
+package tracing
 
 import (
 	"fmt"
 	"net/http"
 	"strings"
 
-	"github.com/dustedcodes/blog/internal/scrub"
-
 	"go.opentelemetry.io/contrib/instrumentation/net/http/otelhttp"
 	"go.opentelemetry.io/otel/attribute"
 	"go.opentelemetry.io/otel/trace"
 )
+
+func scrub(s string) string {
+	const mask = "********"
+
+	l := len(s)
+	if l <= 8 {
+		return mask
+	}
+	if l > 8 && l <= 10 {
+		return s[:2] + mask + s[l-2:]
+	}
+	if l > 10 && l < 20 {
+		return s[:3] + mask + s[l-3:]
+	}
+	if l >= 20 && l < 30 {
+		return s[:5] + mask + s[l-5:]
+	}
+	return s[:10] + mask + s[l-10:]
+}
 
 var Middleware = func(next http.Handler) http.Handler {
 	return otelhttp.NewHandler(
@@ -46,7 +63,7 @@ var Middleware = func(next http.Handler) http.Handler {
 				for k, v := range r.Header {
 					value := strings.Join(v, ",")
 					if k == "Authorization" || k == "Cookie" {
-						value = scrub.Middle(value)
+						value = scrub(value)
 					}
 					headers = append(headers, fmt.Sprintf("%s: %s", k, value))
 				}

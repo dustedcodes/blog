@@ -1,4 +1,4 @@
-package cloudtrace
+package tracing
 
 import (
 	"context"
@@ -18,10 +18,11 @@ import (
 	"go.opentelemetry.io/otel/sdk/resource"
 	sdktrace "go.opentelemetry.io/otel/sdk/trace"
 	semconv "go.opentelemetry.io/otel/semconv/v1.17.0"
+	"google.golang.org/api/option"
 )
 
 const (
-	tracerName = "github.com/dustedcodes/msgdrop/internal/thirdparty/cloudtrace"
+	tracerName = "github.com/dustedcodes/tracing"
 )
 
 type Options struct {
@@ -55,7 +56,17 @@ func getOTLPExporter(ctx context.Context) (sdktrace.SpanExporter, error) {
 }
 
 func getGoogleCloudExporter(googleProjectID string) (sdktrace.SpanExporter, error) {
-	exporter, err := gcpexporter.New(gcpexporter.WithProjectID(googleProjectID))
+	exporter, err := gcpexporter.New(
+		gcpexporter.WithProjectID(googleProjectID),
+		gcpexporter.WithTraceClientOptions(
+			[]option.ClientOption{
+				// Disable the cloud tracing client to avoid sending OpenCensus traces
+				// to prevent this issue which I observed in my own project:
+				// https://github.com/open-telemetry/opentelemetry-go/issues/1928
+				option.WithTelemetryDisabled(),
+			},
+		),
+	)
 	if err != nil {
 		return nil, fmt.Errorf("error creating GCP trace exporter: %w", err)
 	}
