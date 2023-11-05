@@ -149,10 +149,6 @@ func (h *Handler) rss(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
-	loc, err := time.LoadLocation("Europe/London")
-	if h.handleErr(w, r, err) {
-		return
-	}
 	urls := h.getURLs(r)
 	latestPost := h.blogPosts[0]
 	rssFeed := rss.NewFeed(
@@ -164,8 +160,8 @@ func (h *Handler) rss(
 			SetWebMaster("dustin@dusted.codes", "Dustin Moris Gorski").
 			SetManagingEditor("dustin@dusted.codes", "Dustin Moris Gorski").
 			SetCopyright(fmt.Sprintf("Copyright %d, Dustin Moris Gorski", time.Now().Year())).
-			SetLastBuildDate(latestPost.PublishDate, loc).
-			SetPubDate(latestPost.PublishDate, loc).
+			SetLastBuildDate(latestPost.PublishDate, time.UTC).
+			SetPubDate(latestPost.PublishDate, time.UTC).
 			SetImage(rss.NewImage(urls.Logo(), "Dusted Codes", urls.BaseURL)),
 	)
 
@@ -179,7 +175,7 @@ func (h *Handler) rss(
 		rssItem := rss.NewItemWithTitle(b.Title).
 			SetLink(permalink).
 			SetGUID(permalink, true).
-			SetPubDate(b.PublishDate, loc).
+			SetPubDate(b.PublishDate, time.UTC).
 			SetAuthor("dustin@dusted.codes", "Dustin Moris Gorski").
 			SetComments(comments).
 			SetDescription(string(htmlContent)).
