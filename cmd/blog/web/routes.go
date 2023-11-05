@@ -71,16 +71,9 @@ func (h *Handler) renderBlogPost(
 	r *http.Request,
 	b *blog.Post,
 ) {
-	// Parse content:
-	// ---
-	content, err := b.HTML()
-	if h.handleErr(w, r, err) {
-		return
-	}
-
 	// Respond with view:
 	// ---
-	m := h.newBaseModel(r).WithTitle(b.Title).BlogPost(b.ID, content, b.PublishDate, b.Tags)
+	m := h.newBaseModel(r).WithTitle(b.Title).BlogPost(b.ID, b.HTML, b.PublishDate, b.Tags)
 	h.setCacheDirective(w, 60*60*4, b.HashCode)
 	h.renderView(
 		w, r, 200, "blogPost", m)
@@ -168,17 +161,14 @@ func (h *Handler) rss(
 	for _, b := range h.blogPosts {
 		permalink := urls.BlogPostURL(b.ID)
 		comments := urls.BlogPostCommentsURL(b.ID)
-		htmlContent, err := b.HTML()
-		if h.handleErr(w, r, err) {
-			return
-		}
+
 		rssItem := rss.NewItemWithTitle(b.Title).
 			SetLink(permalink).
 			SetGUID(permalink, true).
 			SetPubDate(b.PublishDate, time.UTC).
 			SetAuthor("dustin@dusted.codes", "Dustin Moris Gorski").
 			SetComments(comments).
-			SetDescription(string(htmlContent)).
+			SetDescription(string(b.HTML)).
 			SetEnclosure(urls.OpenGraphImage(), 28*1024, "image/png")
 		for _, t := range b.Tags {
 			rssItem.AddCategory(t, urls.TagURL(t))
@@ -221,10 +211,6 @@ func (h *Handler) atom(
 
 	for _, b := range h.blogPosts {
 		permalink := urls.BlogPostURL(b.ID)
-		htmlContent, err := b.HTML()
-		if h.handleErr(w, r, err) {
-			return
-		}
 		entry := atom.NewEntry(
 			permalink,
 			atom.NewText(b.Title),
@@ -234,7 +220,7 @@ func (h *Handler) atom(
 			AddLink(atom.NewLink(urls.BlogPostCommentsURL(b.ID)).SetRel("related")).
 			AddLink(atom.NewLink(urls.OpenGraphImage()).SetRel("enclosure").SetLength(28 * 1024)).
 			SetPublished(b.PublishDate).
-			SetContent(atom.NewHTML(string(htmlContent)))
+			SetContent(atom.NewHTML(string(b.HTML)))
 
 		for _, t := range b.Tags {
 			entry.AddCategory(atom.NewCategory(t).

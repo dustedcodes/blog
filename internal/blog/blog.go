@@ -70,20 +70,16 @@ type Post struct {
 	PublishDate time.Time
 	Tags        []string
 	HashCode    string
-	markdown    string
-	html        string
+	content     string
+	isHTML      bool
+	HTML        template.HTML
 }
 
 func (p *Post) Year() int {
 	return p.PublishDate.Year()
 }
 
-func (p *Post) HTML() (template.HTML, error) {
-	if len(p.html) > 0 {
-		// nolint: gosec // This is safe content
-		return template.HTML(p.html), nil
-	}
-
+func computeTemplate(markdown string) (template.HTML, error) {
 	parser := goldmark.New(
 		goldmark.WithExtensions(
 			extension.Table,
@@ -104,7 +100,7 @@ func (p *Post) HTML() (template.HTML, error) {
 		))
 
 	var buf bytes.Buffer
-	if err := parser.Convert([]byte(p.markdown), &buf); err != nil {
+	if err := parser.Convert([]byte(markdown), &buf); err != nil {
 		return template.HTML(""),
 			fmt.Errorf("error converting Markdown into HTML: %w", err)
 	}
@@ -191,11 +187,19 @@ func parsePost(
 		PublishDate: publishDate,
 		Tags:        tags,
 		HashCode:    hashCode,
+		content:     content,
+		isHTML:      isHTML,
 	}
+
 	if isHTML {
-		blogPost.html = content
+		// nolint: gosec // This is safe content
+		blogPost.HTML = template.HTML(content)
 	} else {
-		blogPost.markdown = content
+		html, err := computeTemplate(content)
+		if err != nil {
+			return nil, fmt.Errorf("error computing template: %w", err)
+		}
+		blogPost.HTML = html
 	}
 
 	return blogPost, nil
