@@ -1,6 +1,7 @@
 {
   "scripts": {
-    "build:css": "tailwind build -i cmd/blog/css/input.tw.css -o cmd/blog/dist/assets/output.css"
+    "build-css": "tailwind build -i ./cmd/blog/css/input.tw.css -o ./cmd/blog/dist/assets/output.css --minify",
+    "debug-css": "tailwind build -i ./cmd/blog/css/input.tw.css -o ./cmd/blog/dist/assets/output.css --watch"
   },
   "devDependencies": {
     "tailwindcss": "^3.2.6"
