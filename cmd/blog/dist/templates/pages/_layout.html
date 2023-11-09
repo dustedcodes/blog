@@ -9,9 +9,11 @@
     <meta name="author" content="Dustin Moris Gorski">
 
     <!-- Twitter Cards -->
-    <meta name="twitter:card" content="summary" />
+    <meta name="twitter:card" content="summary_large_image" />
     <meta name="twitter:site" content="@dustinmoris" />
     <meta name="twitter:creator" content="@dustinmoris" />
+    <meta name="twitter:title" content="{{ .Base.Title }}" />
+    <meta name="twitter:image" content="{{ .Base.URLs.OpenGraphImage }}" />
 
     <!-- Open Graph -->
     <meta property="og:url" content="{{ .Base.URLs.RequestURL }}" />
@@ -79,7 +81,7 @@
         <h2 class="text-center text-plum-200 uppercase text-base sm:text-xl font-display font-light tracking-widest my-0 sm:my-5">
             Programming Adventures
         </h2>
-        <div class="grid grid-cols-5 gap-y-6 place-items-center sm:flex sm:flex-row sm:flex-wrap sm:justify-between sm:items-center max-w-[70%] sm:max-w-lg mx-auto my-7 sm:my-10 [&>a]:text-plum-400 [&>a]:w-5 [&>a]:sm:w-7 [&>a:hover]:text-shimmer">
+        <div class="flex flex-row flex-wrap justify-between items-center max-w-[90%] xs:max-w-[80%] sm:max-w-lg mx-auto my-7 sm:my-10 [&>a]:text-plum-400 [&>a]:w-5 [&>a]:sm:w-7 [&>a:hover]:text-shimmer">
             <a href="https://twitter.com/dustinmoris" target="_blank" title="Follow on Twitter">{{ template "twitter" }}</a>
             <a href="https://www.linkedin.com/in/dustinmoris/" target="_blank" title="Follow on LinkedIn">{{ template "linkedin" }}</a>
             <a href="https://www.instagram.com/dustedtravels/" target="_blank" title="Follow on Instagram">{{ template "instagram" }}</a>

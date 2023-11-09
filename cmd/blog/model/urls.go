@@ -50,7 +50,7 @@ func (u *URLs) DisqusCountScript() string {
 }
 
 func (u *URLs) OpenGraphImage() string {
-	return fmt.Sprintf("%s/images/public/dusted-codes-open-graph-banner.jpg", u.CDN)
+	return fmt.Sprintf("%s/images/public/dusted-codes-banner.png", u.CDN)
 }
 
 func (u *URLs) Logo() string {

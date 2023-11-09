@@ -6,8 +6,8 @@
 <article class="mt-10">
     <header class="pb-10">
         <h1 class="text-5xl sm:text-7xl text-center font-bold text-plum-200 mb-10 leading-snug sm:leading-normal">{{ .Base.Title }}</h1>
-        <p class="text-center text-lg my-3 text-plum-400 font-mono">Published <time datetime="{{ .PublishedOnMachineReadable }}">{{ .PublishedOn }}</time></p>
-        <p class="text-center text-lg my-3 text-plum-400 font-mono">
+        <p class="text-center text-lg my-3 text-plum-200 font-mono">Published <time datetime="{{ .PublishedOnMachineReadable }}">{{ .PublishedOn }}</time></p>
+        <p class="text-center text-lg my-3 text-plum-200 font-mono">
             <a class="text-plum-400 hover:text-shimmer" href="#disqus_thread" data-disqus-identifier="{{ .ID }}">Comments</a>
         </p>
         {{ template "tags" .Tags }}
