@@ -68,7 +68,7 @@ img {
 }
 
 strong, b {
-    @apply font-medium text-plum-100;
+    @apply font-semibold text-white;
 }
 
 i, em {
