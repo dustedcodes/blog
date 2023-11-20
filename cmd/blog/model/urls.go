@@ -49,10 +49,6 @@ func (u *URLs) DisqusCountScript() string {
 	return fmt.Sprintf("//%s.disqus.com/count.js", u.DisqusShortname)
 }
 
-func (u *URLs) OpenGraphImage() string {
-	return fmt.Sprintf("%s/images/public/dusted-codes-banner.png", u.CDN)
-}
-
 func (u *URLs) Logo() string {
 	return fmt.Sprintf("%s/images/public/logo.png", u.CDN)
 }

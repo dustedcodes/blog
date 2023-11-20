@@ -9,6 +9,17 @@ import (
 	"github.com/dusted-go/logging/stackdriver"
 
 	"github.com/dustedcodes/blog/cmd/blog/model"
+	"github.com/dustedcodes/blog/internal/blog"
+)
+
+var (
+	defaultOpenGraphImage = blog.OpenGraphImage{
+		URL:      "https://cdn.dusted.codes/images/public/dusted-codes-banner.png",
+		Width:    1792,
+		Height:   1024,
+		Size:     1700 * 1024,
+		MimeType: "image/png",
+	}
 )
 
 func (h *Handler) getURLs(r *http.Request) *model.URLs {
@@ -28,6 +39,7 @@ func (h *Handler) newBaseModel(r *http.Request) model.Base {
 		Assets:          h.assets,
 		URLs:            h.getURLs(r),
 		DisqusShortname: h.config.DisqusShortname,
+		OpenGraphImage:  defaultOpenGraphImage,
 	}
 }
 

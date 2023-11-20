@@ -10,6 +10,7 @@ import (
 	"fmt"
 	"html/template"
 	"os"
+	"strconv"
 	"strings"
 	"time"
 
@@ -64,15 +65,32 @@ var (
 		})
 )
 
+type OpenGraphImage struct {
+	URL      string
+	Width    int
+	Height   int
+	Size     int
+	MimeType string
+}
+
+func (img OpenGraphImage) Complete() bool {
+	return len(img.URL) > 0 &&
+		img.Width > 0 &&
+		img.Height > 0 &&
+		img.Size > 0 &&
+		len(img.MimeType) > 0
+}
+
 type Post struct {
-	ID          string
-	Title       string
-	PublishDate time.Time
-	Tags        []string
-	HashCode    string
-	content     string
-	isHTML      bool
-	HTML        template.HTML
+	ID             string
+	Title          string
+	PublishDate    time.Time
+	Tags           []string
+	HashCode       string
+	OpenGraphImage OpenGraphImage
+	content        string
+	isHTML         bool
+	HTML           template.HTML
 }
 
 func (p *Post) Year() int {
@@ -159,6 +177,7 @@ func parsePost(
 
 	isHTML := false
 	var tags []string
+	var ogImage OpenGraphImage
 	for _, meta := range metadata {
 		metaParts := strings.SplitN(meta, ":", 2)
 		key := strings.ToLower(strings.TrimSpace(metaParts[0]))
@@ -166,6 +185,25 @@ func parsePost(
 			tags = strings.Split(strings.TrimSpace(metaParts[1]), " ")
 		} else if key == "type" {
 			isHTML = strings.ToLower(strings.TrimSpace(metaParts[1])) == "html"
+		} else if key == "image.url" {
+			ogImage.URL = strings.TrimSpace(metaParts[1])
+		} else if key == "image.width" {
+			width, err := strconv.Atoi(strings.TrimSpace(metaParts[1]))
+			if err == nil {
+				ogImage.Width = width
+			}
+		} else if key == "image.height" {
+			height, err := strconv.Atoi(strings.TrimSpace(metaParts[1]))
+			if err == nil {
+				ogImage.Height = height
+			}
+		} else if key == "image.size" {
+			size, err := strconv.Atoi(strings.TrimSpace(metaParts[1]))
+			if err == nil {
+				ogImage.Size = size
+			}
+		} else if key == "image.mimetype" {
+			ogImage.MimeType = strings.TrimSpace(metaParts[1])
 		} else {
 			return nil, fmt.Errorf("unknown blog post metadata key: %s", key)
 		}
@@ -182,13 +220,14 @@ func parsePost(
 	hashCode := hex.EncodeToString(hash.Sum(nil))
 
 	blogPost := &Post{
-		ID:          blogPostID,
-		Title:       title,
-		PublishDate: publishDate,
-		Tags:        tags,
-		HashCode:    hashCode,
-		content:     content,
-		isHTML:      isHTML,
+		ID:             blogPostID,
+		Title:          title,
+		PublishDate:    publishDate,
+		Tags:           tags,
+		HashCode:       hashCode,
+		OpenGraphImage: ogImage,
+		content:        content,
+		isHTML:         isHTML,
 	}
 
 	if isHTML {

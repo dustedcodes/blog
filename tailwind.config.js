@@ -16,6 +16,7 @@ module.exports = {
     colors: {
       transparent: 'transparent',
       current: 'currentColor',
+      white: '#ffffff',
       'plum': {
         100: '#efedf2',
         200: '#dfdce5',

@@ -6,9 +6,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/dusted-go/http/v5/atom"
-	"github.com/dusted-go/http/v5/rss"
-	"github.com/dusted-go/http/v5/sitemap"
+	"github.com/dusted-go/http/v6/atom"
+	"github.com/dusted-go/http/v6/rss"
+	"github.com/dusted-go/http/v6/sitemap"
 
 	"github.com/dustedcodes/blog/internal/array"
 	"github.com/dustedcodes/blog/internal/blog"
@@ -73,7 +73,11 @@ func (h *Handler) renderBlogPost(
 ) {
 	// Respond with view:
 	// ---
-	m := h.newBaseModel(r).WithTitle(b.Title).BlogPost(b.ID, b.HTML, b.PublishDate, b.Tags)
+	m := h.
+		newBaseModel(r).
+		WithTitle(b.Title).
+		WithOpenGraphImage(b.OpenGraphImage).
+		BlogPost(b.ID, b.HTML, b.PublishDate, b.Tags)
 	h.setCacheDirective(w, 60*60*4, b.HashCode)
 	h.renderView(
 		w, r, 200, "blogPost", m)
@@ -161,6 +165,10 @@ func (h *Handler) rss(
 	for _, b := range h.blogPosts {
 		permalink := urls.BlogPostURL(b.ID)
 		comments := urls.BlogPostCommentsURL(b.ID)
+		ogImage := defaultOpenGraphImage
+		if b.OpenGraphImage.Complete() {
+			ogImage = b.OpenGraphImage
+		}
 
 		rssItem := rss.NewItemWithTitle(b.Title).
 			SetLink(permalink).
@@ -169,7 +177,7 @@ func (h *Handler) rss(
 			SetAuthor("dustin@dusted.codes", "Dustin Moris Gorski").
 			SetComments(comments).
 			SetDescription(string(b.HTML)).
-			SetEnclosure(urls.OpenGraphImage(), 28*1024, "image/png")
+			SetEnclosure(ogImage.URL, ogImage.Size, ogImage.MimeType)
 		for _, t := range b.Tags {
 			rssItem.AddCategory(t, urls.TagURL(t))
 		}
@@ -211,6 +219,10 @@ func (h *Handler) atom(
 
 	for _, b := range h.blogPosts {
 		permalink := urls.BlogPostURL(b.ID)
+		ogImage := defaultOpenGraphImage
+		if b.OpenGraphImage.Complete() {
+			ogImage = b.OpenGraphImage
+		}
 		entry := atom.NewEntry(
 			permalink,
 			atom.NewText(b.Title),
@@ -218,7 +230,7 @@ func (h *Handler) atom(
 			SetAuthor(author).
 			AddLink(atom.NewLink(permalink).SetRel("alternate")).
 			AddLink(atom.NewLink(urls.BlogPostCommentsURL(b.ID)).SetRel("related")).
-			AddLink(atom.NewLink(urls.OpenGraphImage()).SetRel("enclosure").SetLength(28 * 1024)).
+			AddLink(atom.NewLink(ogImage.URL).SetRel("enclosure").SetLength(ogImage.Size)).
 			SetPublished(b.PublishDate).
 			SetContent(atom.NewHTML(string(b.HTML)))
 

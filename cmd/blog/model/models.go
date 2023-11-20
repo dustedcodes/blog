@@ -22,10 +22,19 @@ type Base struct {
 	Assets          *Assets
 	URLs            *URLs
 	DisqusShortname string
+	OpenGraphImage  blog.OpenGraphImage
 }
 
 func (b Base) WithTitle(title string) Base {
 	b.Title = title
+	return b
+}
+
+func (b Base) WithOpenGraphImage(img blog.OpenGraphImage) Base {
+	if !img.Complete() {
+		return b
+	}
+	b.OpenGraphImage = img
 	return b
 }
 

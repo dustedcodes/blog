@@ -4,8 +4,8 @@ import (
 	"net/http"
 	"strings"
 
-	"github.com/dusted-go/http/v5/htmlview"
-	"github.com/dusted-go/http/v5/route"
+	"github.com/dusted-go/http/v6/htmlview"
+	"github.com/dusted-go/http/v6/route"
 
 	"github.com/dustedcodes/blog/cmd/blog/model"
 	"github.com/dustedcodes/blog/internal/blog"

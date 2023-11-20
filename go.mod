@@ -7,7 +7,6 @@ require (
 	github.com/GoogleCloudPlatform/opentelemetry-operations-go/propagator v0.44.0
 	github.com/alecthomas/chroma/v2 v2.9.1
 	github.com/dusted-go/config v1.0.0
-	github.com/dusted-go/http/v5 v5.0.0
 	github.com/dusted-go/http/v6 v6.1.0
 	github.com/dusted-go/logging v1.1.3
 	github.com/yuin/goldmark v1.5.6
