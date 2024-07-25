@@ -56,18 +56,8 @@
     <!-- Custom JavaScript -->
     <script src="{{ .Base.Assets.JSPath }}" defer async></script>
 
-    <!-- Plausible Analytics -->
-    <script defer data-domain="dusted.codes" src="https://plausible.io/js/script.js"></script>
-
-    <!-- Google Analytics -->
-    <script async src="https://www.googletagmanager.com/gtag/js?id=G-EERBW7KV67"></script>
-    <script>
-        window.dataLayer = window.dataLayer || [];
-        function gtag(){dataLayer.push(arguments);}
-        gtag('js', new Date());
-
-        gtag('config', 'G-EERBW7KV67');
-    </script>
+    <!-- Analytics -->
+    <script defer src="https://stats.dusted.codes/script.js"></script>
 
     {{ template "header" . }}
 </head>
