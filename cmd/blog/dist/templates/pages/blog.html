@@ -1,0 +1,19 @@
+{{ define "header" }}
+{{ end }}
+
+{{ define "content" }}
+
+<div class="mb-10">
+{{ range $i, $year := .SortedYears }}
+    <h2 class="text-center text-plum-100 uppercase font-bold text-4xl my-5">{{ $year }}</h2>
+    <ul class="text-center text-xl my-10 font-normal list-none mx-0">
+        {{ with $posts := index $.Catalogue $year }}
+            {{ range $i, $post := $posts }}
+                <li class="my-5"><a href="{{ $post.Permalink }}" class="text-plum-300 hover:text-shimmer hover:no-underline">{{ $post.Title }}</a></li>
+            {{ end }}
+        {{ end }}
+    </ul>
+{{ end }}
+</div>
+
+{{ end }}

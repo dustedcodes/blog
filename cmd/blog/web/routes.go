@@ -131,7 +131,7 @@ func (h *Handler) hire(
 	r *http.Request,
 ) {
 	h.setCacheDirective(w, 60*60*24, h.config.ApplicationVersion)
-	h.renderView(w, r, 200, "hire", h.newBaseModel(r).WithTitle("Hire").Empty())
+	h.renderView(w, r, 200, "hire2", h.newBaseModel(r).WithTitle("Hire").Empty())
 }
 
 func (h *Handler) about(
@@ -152,7 +152,7 @@ func (h *Handler) rss(
 		rss.NewChannel(
 			"Dusted Codes",
 			urls.BaseURL,
-			"Programming Adventures").
+			"Programming, Coffee and Indie Hacking").
 			SetLanguage("en-gb").
 			SetWebMaster("dustin@dusted.codes", "Dustin Moris Gorski").
 			SetManagingEditor("dustin@dusted.codes", "Dustin Moris Gorski").
@@ -208,7 +208,7 @@ func (h *Handler) atom(
 		urls.BaseURL,
 		atom.NewText("Dusted Codes"),
 		latestPost.PublishDate).
-		SetSubtitle(atom.NewText("Programming Adventures")).
+		SetSubtitle(atom.NewText("Programming, Coffee and Indie Hacking")).
 		SetIcon(urls.Logo()).
 		SetAuthor(author).
 		AddLink(atom.NewLink(urls.AtomFeed()).SetRel("self")).

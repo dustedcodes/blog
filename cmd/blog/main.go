@@ -23,7 +23,6 @@ import (
 	"github.com/dustedcodes/blog/cmd/blog/web"
 	"github.com/dustedcodes/blog/internal/blog"
 	"github.com/dustedcodes/blog/internal/config"
-	"github.com/dustedcodes/blog/internal/tracing"
 )
 
 func main() {
@@ -44,45 +43,29 @@ func main() {
 	// -----------------------------
 	var logHandler slog.Handler
 	var loggingMiddleware func(http.Handler) http.Handler
-	if config.IsProduction() {
-		logHandlerOptions := &stackdriver.HandlerOptions{
-			ServiceName:    config.ApplicationName,
-			ServiceVersion: config.ApplicationVersion,
-			MinLevel:       config.MinLogLevel(),
-			AddSource:      config.IsProduction(),
-		}
-		logMiddlewareOptions := &stackdriver.MiddlewareOptions{
-			GCPProjectID:   config.GoogleCloudProjectID,
-			AddTrace:       config.IsProduction(),
-			AddHTTPRequest: config.IsProduction(),
-		}
-		logHandler = stackdriver.NewHandler(logHandlerOptions)
-		loggingMiddleware = stackdriver.Logging(logHandlerOptions, logMiddlewareOptions)
-	} else {
-		logHandler = prettylog.NewHandler(&slog.HandlerOptions{
-			Level:       config.MinLogLevel(),
-			AddSource:   config.IsProduction(),
-			ReplaceAttr: stackdriver.ReplaceLogLevel,
-		})
-	}
+	// if config.IsProduction() {
+	// 	logHandlerOptions := &stackdriver.HandlerOptions{
+	// 		ServiceName:    config.ApplicationName,
+	// 		ServiceVersion: config.ApplicationVersion,
+	// 		MinLevel:       config.MinLogLevel(),
+	// 		AddSource:      config.IsProduction(),
+	// 	}
+	// 	logMiddlewareOptions := &stackdriver.MiddlewareOptions{
+	// 		GCPProjectID:   config.GoogleCloudProjectID,
+	// 		AddTrace:       config.IsProduction(),
+	// 		AddHTTPRequest: config.IsProduction(),
+	// 	}
+	// 	logHandler = stackdriver.NewHandler(logHandlerOptions)
+	// 	loggingMiddleware = stackdriver.Logging(logHandlerOptions, logMiddlewareOptions)
+	// } else {
+	logHandler = prettylog.NewHandler(&slog.HandlerOptions{
+		Level:       config.MinLogLevel(),
+		AddSource:   config.IsProduction(),
+		ReplaceAttr: stackdriver.ReplaceLogLevel,
+	})
+	// }
 	logger := slog.New(logHandler)
 	slog.SetDefault(logger)
-
-	// ----------------------------------------
-	// Init tracing:
-	// ----------------------------------------
-	tracingOptions := &tracing.Options{
-		InitForGCP:      config.IsProduction(),
-		GCPProjectID:    config.GoogleCloudProjectID,
-		ServiceName:     config.ApplicationName,
-		ServiceVersion:  config.ApplicationVersion,
-		EnvironmentName: config.EnvironmentName,
-	}
-	shutdown, err := tracing.Init(ctx, tracingOptions)
-	if err != nil {
-		panic(err)
-	}
-	defer shutdown()
 
 	// ----------------------------------------
 	// Bootstrap:
@@ -119,7 +102,6 @@ func main() {
 	middleware := mware.Bind(
 		recoverer.HandlePanics(webHandler.Recover),
 		healthz.LivenessProbe,
-		tracing.Middleware,
 		loggingMiddleware,
 		proxy.ForwardedHeaders(config.ProxyCount),
 		redirect.TrailingSlash,

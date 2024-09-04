@@ -34,7 +34,7 @@ func (h *Handler) getURLs(r *http.Request) *model.URLs {
 func (h *Handler) newBaseModel(r *http.Request) model.Base {
 	return model.Base{
 		Title:           "Dusted Codes",
-		SubTitle:        "Programming Adventures",
+		SubTitle:        "Programming, Coffee and Indie Hacking",
 		Year:            time.Now().Year(),
 		Assets:          h.assets,
 		URLs:            h.getURLs(r),

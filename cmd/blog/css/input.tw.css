@@ -7,71 +7,75 @@
 Defaults
 ---------------- */
 
-h1 {
+.h1, .article h1 {
     @apply text-7xl text-center font-bold text-plum-200 mb-10 leading-normal;
 }
 
-h2 {
-    @apply text-5xl text-left font-bold text-plum-200 my-10 leading-normal;
+.h2, .article h2 {
+    @apply text-4xl text-left font-bold text-ink-6 my-5 leading-snug;
 }
 
-h3 {
+.h3, .article h3 {
     @apply text-4xl text-left font-semibold text-plum-200 my-10 leading-normal;
 }
 
-h4 {
+.h4, .article h4 {
     @apply text-2xl text-left font-bold text-plum-200 my-7 leading-normal;
 }
 
-h5 {
+.h5, .article h5 {
     @apply text-xl text-left font-semibold text-plum-200 my-7 leading-normal;
 }
 
-h6 {
+.h6, .article h6 {
     @apply text-base font-bold text-plum-200 my-5 leading-normal;
 }
 
-p {
+.p, .article p {
     @apply mt-5 leading-relaxed;
 }
 
-a {
-    @apply text-shimmer hover:underline;
+.a, .article a {
+    @apply text-accent hover:underline;
 }
 
-pre {
+.link {
+    @apply hover:text-accent;
+}
+
+.pre, .article pre {
     @apply mt-5 mb-10 w-auto overflow-x-auto rounded;
 }
 
-code {
+.code, .article code {
     @apply inline-block px-1 rounded font-mono text-left text-lg whitespace-pre-wrap break-words bg-plum-1400 text-peach-700 leading-snug;
 }
 
-pre > code {
+.pre > .code, .article pre > code {
     @apply block px-3 py-2 text-plum-200 text-lg leading-normal bg-plum-1500;
 }
 
-ul {
+.ul, .article ul {
     @apply list-disc ml-12 mt-5 mb-10;
 }
 
-ol {
+.ol, .article ol {
     @apply list-decimal ml-12 mt-5 mb-10;
 }
 
-li {
-    @apply leading-relaxed mt-3;
+.li, .article li {
+    @apply leading-relaxed mt-2;
 }
 
-img {
+.img, .article img {
     @apply mt-5 mb-10 rounded;
 }
 
-strong, b {
-    @apply font-semibold text-white;
+.strong, .article strong, .article b {
+    @apply font-medium text-ink-8;
 }
 
-i, em {
+.article i, .article em {
     @apply italic;
 }
 
@@ -79,15 +83,15 @@ i, em {
     @apply my-10 max-w-3xl;
 }
 
-blockquote {
+.blockquote, .article blockquote {
     @apply bg-plum-1500 rounded border-l-8 border-l-plum-500 py-4 px-4 mt-5 text-lg text-plum-500;
 }
 
-blockquote > *:first-child {
+.blockquote > *:first-child, .article blockquote > *:first-child {
     @apply mt-0 pt-0;
 }
 
-blockquote > footer {
+.blockquote > footer, .article blockquote > footer {
     @apply mt-4 not-italic text-lg text-plum-100;
 }
 
@@ -124,7 +128,6 @@ Hamburger menu icon
     fill: none;
     transition: stroke-dasharray 400ms, stroke-dashoffset 400ms;
     stroke-width: 5;
-    /* stroke-linecap: round; */
 }
 .ham-burger .ham-top {
     stroke-dasharray: 40 172;
@@ -145,10 +148,10 @@ Hamburger menu icon
     stroke-dashoffset: -132px;
 }
 .ham-line {
-    @apply stroke-plum-200;
+    @apply stroke-ink-3;
 }
 .ham-burger:hover .ham-line {
-    @apply stroke-plum-200;
+    @apply stroke-ink-3;
 }
 .ham-burger.ham-active .ham-top,
 .ham-burger.ham-active .ham-middle,

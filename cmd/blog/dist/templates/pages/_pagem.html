@@ -1,0 +1,15 @@
+{{ define "content" }}
+
+<div class="flex w-full min-h-screen items-center justify-center">
+
+    <div class="grid grid-cols-1 justify-items-stretch max-w-3xl">
+        <div class="flex justify-center">
+            {{ template "branding" }}
+        </div>
+        {{ template "nav" }}
+        {{ template "main" . }}
+        {{ template "footer" }}
+    </div>
+</div>
+
+{{ end }}

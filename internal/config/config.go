@@ -11,19 +11,18 @@ import (
 )
 
 type Config struct {
-	EnvironmentName      string
-	LogLevel             slog.Leveler
-	ApplicationName      string
-	ApplicationVersion   string
-	HTTPPort             int
-	ProxyCount           int
-	PublicHost           string
-	BaseURL              string
-	RedirectWWW          bool
-	CDN                  string
-	MaxRequestSize       int64
-	DisqusShortname      string
-	GoogleCloudProjectID string
+	EnvironmentName    string
+	LogLevel           slog.Leveler
+	ApplicationName    string
+	ApplicationVersion string
+	HTTPPort           int
+	ProxyCount         int
+	PublicHost         string
+	BaseURL            string
+	RedirectWWW        bool
+	CDN                string
+	MaxRequestSize     int64
+	DisqusShortname    string
 }
 
 func (c *Config) MinLogLevel() slog.Leveler {
@@ -59,18 +58,17 @@ func (c *Config) DomainRedirects() map[string]string {
 
 func Load() *Config {
 	return &Config{
-		EnvironmentName:      env.GetOrDefault("ENV_NAME", "Development"),
-		LogLevel:             stackdriver.ParseLogLevel(env.GetOrDefault("LOG_LEVEL", "Debug")),
-		ApplicationName:      env.GetOrDefault("APP_NAME", "dustedcodes"),
-		ApplicationVersion:   env.GetOrDefault("APP_VERSION", "0.1.0"),
-		HTTPPort:             env.GetIntOrDefault("HTTP_PORT", 3000),
-		ProxyCount:           env.GetIntOrDefault("PROXY_COUNT", 0),
-		PublicHost:           env.GetOrDefault("PUBLIC_HOST", "dusted.codes"),
-		BaseURL:              env.GetOrDefault("BASE_URL", "https://dusted.codes"),
-		RedirectWWW:          env.GetBoolOrDefault("REDIRECT_WWW", false),
-		CDN:                  env.GetOrDefault("CDN", "https://cdn.dusted.codes"),
-		MaxRequestSize:       int64(env.GetIntOrDefault("MAX_REQUEST_SIZE", 500000)),
-		DisqusShortname:      env.GetOrDefault("DISQUS_SHORTNAME", ""),
-		GoogleCloudProjectID: env.GetOrDefault("GOOGLE_CLOUD_PROJECT_ID", "dusted-codes"),
+		EnvironmentName:    env.GetOrDefault("ENV_NAME", "Development"),
+		LogLevel:           stackdriver.ParseLogLevel(env.GetOrDefault("LOG_LEVEL", "Debug")),
+		ApplicationName:    env.GetOrDefault("APP_NAME", "dustedcodes"),
+		ApplicationVersion: env.GetOrDefault("APP_VERSION", "0.1.0"),
+		HTTPPort:           env.GetIntOrDefault("HTTP_PORT", 3000),
+		ProxyCount:         env.GetIntOrDefault("PROXY_COUNT", 0),
+		PublicHost:         env.GetOrDefault("PUBLIC_HOST", "dusted.codes"),
+		BaseURL:            env.GetOrDefault("BASE_URL", "https://dusted.codes"),
+		RedirectWWW:        env.GetBoolOrDefault("REDIRECT_WWW", false),
+		CDN:                env.GetOrDefault("CDN", "https://cdn.dusted.codes"),
+		MaxRequestSize:     int64(env.GetIntOrDefault("MAX_REQUEST_SIZE", 500000)),
+		DisqusShortname:    env.GetOrDefault("DISQUS_SHORTNAME", ""),
 	}
 }

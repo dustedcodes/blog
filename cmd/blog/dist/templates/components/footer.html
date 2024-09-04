@@ -1,0 +1,68 @@
+{{ define "footer" }}
+<div class="border-t border-ink-1 mt-5 py-5 grid grid-cols-2 sm:grid-cols-3 gap-y-5 sm:gap-y-0 text-base">
+    <div>
+        <h3 class="font-display font-bold uppercase">Socials</h3>
+        <ul class="list-none m-0 py-5 grid grid-cols-1 gap-3">
+            <li>
+                <a href="https://twitter.com/dustinmoris" target="_blank" title="Follow me on X" class="flex flex-row flex-nowrap justify-start items-center link">
+                    <span class="w-5 mr-2">{{ template "x" }}</span>
+                    <span>Follow</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.linkedin.com/in/dustinmoris" target="_blank" title="Connect on LinkedIn" class="flex flex-row flex-nowrap justify-start items-center link">
+                    <span class="w-5 mr-2">{{ template "linkedin" }}</span>
+                    <span>Connect</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.youtube.com/channel/UCtoObQtHY0TjIXwz9Ipmq7g" target="_blank" title="Check out my YouTube" class="flex flex-row flex-nowrap justify-start items-center link">
+                    <span class="w-5 mr-2">{{ template "youtube" }}</span>
+                    <span>Watch</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.instagram.com/dustedtravels" target="_blank" title="Stalk me on Instagram" class="flex flex-row flex-nowrap justify-start items-center link">
+                    <span class="w-5 mr-2">{{ template "instagram" }}</span>
+                    <span>Stalk</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div>
+        <h3 class="font-display font-bold uppercase">Links</h3>
+        <ul class="list-none m-0 py-5 grid grid-cols-1 gap-3">
+            <li>
+                <a href="/feed/rss" target="_blank" title="Subscribe to my RSS feed" class="flex flex-row flex-nowrap justify-start items-center link">
+                    <span class="w-5 mr-2">{{ template "rssfeed" }}</span>
+                    <span>Subscribe</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://github.com/dustinmoris" target="_blank" title="Personal GitHub" class="flex flex-row flex-nowrap justify-start items-center link">
+                    <span class="w-5 mr-2">{{ template "github" }}</span>
+                    <span>Collaborate</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.buymeacoffee.com/dustinmoris" target="_blank" title="Buy me a coffee" class="flex flex-row flex-nowrap justify-start items-center link">
+                    <span class="w-5 mr-2">{{ template "buymeacoffee" }}</span>
+                    <span>Treat</span>
+                </a>
+            </li>
+            <li>
+                <a href="https://www.paypal.me/dustinmoris" target="_blank" title="Pay me via PayPal" class="flex flex-row flex-nowrap justify-start items-center link">
+                    <span class="w-5 mr-2">{{ template "paypal" }}</span>
+                    <span>Pay</span>
+                </a>
+            </li>
+        </ul>
+    </div>
+    <div class="col-span-2 sm:col-span-1">
+        <h3 class="font-display font-bold uppercase">Copyright © 2024</h3>
+        <div class="py-5">
+            <p class="text-sm text-justify">All content on this website, such as text, graphics, logos and images is the property of Dusted Codes Limited.</p>
+        </div>
+    </div>
+</div>
+{{ end }}
