@@ -8,7 +8,7 @@ Defaults
 ---------------- */
 
 .h1, .article h1 {
-    @apply text-7xl text-center font-bold text-plum-200 mb-10 leading-normal;
+    @apply text-6xl text-center font-bold text-ink-6 mb-10 leading-normal;
 }
 
 .h2, .article h2 {
@@ -16,11 +16,11 @@ Defaults
 }
 
 .h3, .article h3 {
-    @apply text-4xl text-left font-semibold text-plum-200 my-10 leading-normal;
+    @apply text-3xl text-left font-bold text-ink-6 my-5 leading-normal;
 }
 
 .h4, .article h4 {
-    @apply text-2xl text-left font-bold text-plum-200 my-7 leading-normal;
+    @apply text-2xl text-left font-semibold text-ink-6 my-5 leading-normal;
 }
 
 .h5, .article h5 {
@@ -32,7 +32,7 @@ Defaults
 }
 
 .p, .article p {
-    @apply mt-5 leading-relaxed;
+    @apply mt-5 leading-relaxed text-justify;
 }
 
 .a, .article a {
@@ -100,7 +100,7 @@ Customs
 ---------------- */
 
 .icon svg {
- @apply w-5 fill-plum-200;
+ @apply w-5 fill-ink-6;
 }
 
 .share-links {

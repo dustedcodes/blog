@@ -1,53 +1,57 @@
 {{ define "header" }}
-
 {{ end }}
 
-{{ define "content" }}
-<article>
-    <div class="mt-5 sm:mt-10 flex flex-col sm:flex-row justify-start items-center">
-        <img class="w-full sm:w-1/4 mt-0 sm:mr-10 mb-10 sm:mb-0 rounded" src="{{ .Base.URLs.CDN }}/images/public/dustin-gorski-2.jpg"/>
-        <p class="my-0">Since 2018 I have been working as an independent software engineer operating under my own Limited Company from beautiful South West London in the UK. If I'm not busy working with a client then I'm usually available for time- and/or project based contracts lasting for only a few days or up to multiple months. I offer a wide range of services which include, but are not limited to the ones listed below. If you would like to work together then please do not hesitate to contact me on <strong>dustin[at]dusted.codes</strong>.</p>
-    </div>
+{{ define "main" }}
+<article class="article">
+    <div class="grid grid-flow-dense grid-cols-1 md:grid-cols-3 gap-10 items-center [&_h2]:py-0 [&_p]:text-justify [&_svg]:max-h-48 md:[&>div:nth-child(even)]:col-span-2 md:[&>div:nth-child(4n-1)]:col-start-3 [&>div:nth-child(odd)]:hidden md:[&>div:nth-child(odd)]:block [&>div>*]:!mt-0">
+        <div>
+            {{ template "dustin-macbook" }}
+        </div>
+        <div>
+            <p>Since 2018 I have been working as an independent software engineer operating under my own Limited Company from beautiful South West London, UK. If I'm not busy working with a client then I'm usually available for time- and/or project based contracts lasting for only a few days or up to multiple months. I offer a wide range of services which include, but are not limited to the ones listed below. If you would like to work together then please do not hesitate to contact me on <strong>dustin[at]dusted.codes</strong>.</p>
+        </div>
 
-    <div class="border-t-2 border-t-plum-1400 mt-14 flex flex-row justify-start items-center">
+        <div>
+            {{ template "tea" }}
+        </div>
         <div>
             <h2>Software Development</h2>
             <p>I can build a huge variety of web-based software. Having over a decade of product development experience, I can help you develop anything from an e-commerce website to a highly scalable backend system. I have extensive knowledge and hands-on experience with all three major cloud providers (AWS, Azure, Google Cloud) and many other cutting edge technologies, such as Docker, Kubernetes, Serverless FaaS, distributed systems and many more. One of my defining qualities is that I'm extremely delivery focused, striking the right balance between building a feature rich product, meeting important project timelines and keeping development complexity low. As a result you can expect maximum value and minimal cost, thus ensuring a good return on investment.</p>
         </div>
-        <img class="hidden sm:block w-1/3 ml-10" src="{{ .Base.URLs.CDN }}/images/public/software-development.svg"/>
-    </div>
 
-    <div class="border-t-2 border-t-plum-1400 mt-14 flex flex-row justify-start items-center">
-        <img class="hidden sm:block w-1/3 mr-10" src="{{ .Base.URLs.CDN }}/images/public/architecture.svg"/>
+        <div>
+            {{ template "collaboration" }}
+        </div>
         <div>
             <h2>Software Architecture</h2>
             <p>Good software architecture is not about drawing fancy UML diagrams, but about understanding the special requirements of a business, the unique needs of a software development department and the subtle expectations of a customer. By taking all these factors into account I can help you make smart technological choices and help you design (and implement) a flexible and future proof architecture.</p>
         </div>
-    </div>
 
-    <div class="border-t-2 border-t-plum-1400 mt-14 flex flex-row justify-start items-center">
+        <div>
+            {{ template "devops" }}
+        </div>
         <div>
             <h2>DevOps</h2>
             <p>Building, testing, releasing and monitoring cloud based applications has never been easier than today. However, DevOps is more than just a bunch of YAML files. DevOps means that your teams have the autonomy, tools and the necessary sense of ownership to deal with production issues. It requires trust, technical leadership and well defined protocols to enable a successful DevOps culture in your organisation.</p>
-            <p class="mt-5">Whether you are just starting out with DevOps or you are looking for help with a specific problem, I can help you implement a successful DevOps strategy that will reduce maintenance costs and allow you to focus on delivering customer value.</p>
+            <p>Whether you are just starting out with DevOps or you are looking for help with a specific problem, I can help you implement a successful DevOps strategy that will reduce maintenance costs and allow you to focus on delivering customer value.</p>
         </div>
-        <img class="hidden sm:block w-1/3 ml-10" src="{{ .Base.URLs.CDN }}/images/public/devops.svg"/>
-    </div>
 
-    <div class="border-t-2 border-t-plum-1400 mt-14 flex flex-row justify-start items-center">
-        <img class="hidden sm:block w-1/3 mr-10" src="{{ .Base.URLs.CDN }}/images/public/security.svg"/>
+        <div>
+            {{ template "security" }}
+        </div>
         <div>
             <h2>Security</h2>
             <p>Software security is one of the most important aspects of any business, but it is often overlooked. A single security vulnerability can expose your entire system to attack, resulting in data breaches, financial losses, and reputational damage. It is a topic which is very dear to my heart, as it is the main reason why I have become a software engineer in the first place.</p>
-            <p class="mt-5">Helping teams to implement secure solutions is something I've always enjoyed the most. I offer a variety of services, such as security code reviews, threat modelling your product, teaching defensive coding practices, implementing security related features or securely integrating third party systems with critical parts of your software.</p>
+            <p>Helping teams to implement secure solutions is something I've always enjoyed the most. I offer a variety of services, such as security code reviews, threat modelling your product, teaching defensive coding practices, implementing security related features or securely integrating third party systems with critical parts of your software.</p>
         </div>
-    </div>
 
-    <div class="border-t-2 border-t-plum-1400 mt-14 flex flex-row justify-start items-center">
+        <div>
+            {{ template "training" }}
+        </div>
         <div>
             <h2>Training</h2>
             <p>I can provide personalised hands-on training on the following topics:</p>
-            <ul class="list-disc pl-5 mt-5 mb-0 pb-0">
+            <ul class="list-disc pl-5 mt-5 !mb-0 !pb-0">
                 <li class="mt-1">SOLID design patterns</li>
                 <li class="mt-1">TDD, BDD, DDD</li>
                 <li class="mt-1">Automation Testing</li>
@@ -59,17 +63,16 @@
                 <li class="mt-1">DevOps</li>
             </ul>
         </div>
-        <img class="hidden sm:block w-1/3 ml-10" src="{{ .Base.URLs.CDN }}/images/public/training.svg"/>
-    </div>
 
-    <div class="border-t-2 border-t-plum-1400 mt-14 flex flex-row justify-start items-center">
-        <img class="hidden sm:block w-1/3 mr-10" src="{{ .Base.URLs.CDN }}/images/public/oss-development.svg"/>
+        <div>
+            {{ template "opensource" }}
+        </div>
         <div>
             <h2>Open Source Development</h2>
             <p>If your business heavily relies on one of my <a href="https://github.com/dustinmoris" target="_blank">open source projects</a> or you simply want to support the advancement of any of my open source work then you can hire me to work on a specific issue, expedite a feature or help you with a custom integration tailored to your needs.</p>
-            <p class="mt-5">For further information or to discuss any of my propositions please feel free to <a href="https://www.linkedin.com/in/dustinmoris/" target="_blank">connect with me on LinkedIn</a> or message me via <string class="text-plum-200">dustin[at]dusted.codes</string>.</p>
+            <p>For further information or to discuss any of my propositions please feel free to <a href="https://www.linkedin.com/in/dustinmoris/" target="_blank">connect with me on LinkedIn</a> or message me via <strong>dustin[at]dusted.codes</strong>.</p>
         </div>
     </div>
-    <p class="text-center my-20">I look forward to hearing from you!</p>
+    <p class="!text-center !my-0 py-10">I look forward to hearing from you!</p>
 </article>
 {{ end }}

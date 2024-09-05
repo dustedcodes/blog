@@ -131,7 +131,7 @@ func (h *Handler) hire(
 	r *http.Request,
 ) {
 	h.setCacheDirective(w, 60*60*24, h.config.ApplicationVersion)
-	h.renderView(w, r, 200, "hire2", h.newBaseModel(r).WithTitle("Hire").Empty())
+	h.renderView(w, r, 200, "hire", h.newBaseModel(r).WithTitle("Hire").Empty())
 }
 
 func (h *Handler) about(
