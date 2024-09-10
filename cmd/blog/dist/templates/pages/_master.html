@@ -63,8 +63,10 @@
     {{ template "header" . }}
 </head>
 
-<body class="bg-paper text-ink-6 text-lg font-sans p-5 xs:p-10">
-    {{ template "content" . }}
+<body class="bg-paper text-ink-6 text-lg font-sans px-5 xs:px-10">
+    <div class="flex w-full min-h-screen items-center justify-center py-5 xs:py-10">
+        {{ template "content" . }}
+    </div>
 </body>
 </html>
 {{ end }}

@@ -46,29 +46,32 @@ func NewHandler(
 			"dist/templates/svgs/illustrations/dustin-tshirt.svg",
 			"dist/templates/pages/index.html",
 		),
-		// "blog": append(socialSVGs,
-		// 	"dist/templates/pages/_page.html",
-		// 	"dist/templates/pages/blog.html",
-		// ),
+		"blog": append(masterFiles,
+			"dist/templates/pages/_page.html",
+			"dist/templates/svgs/illustrations/blogging.svg",
+			"dist/templates/pages/blog.html",
+		),
 		// "tagged": append(socialSVGs,
 		// 	"dist/templates/pages/_page.html",
 		// 	"dist/templates/pages/tagged.html",
 		// 	"dist/templates/components/tags.html",
 		// ),
-		// "message": append(socialSVGs,
-		// 	"dist/templates/pages/_page.html",
-		// 	"dist/templates/pages/message.html",
-		// ),
+		"404": append(masterFiles,
+			"dist/templates/svgs/illustrations/404.svg",
+			"dist/templates/pages/404.html",
+		),
 		// "blogPost": append(socialSVGs,
 		// 	"dist/templates/pages/_page.html",
 		// 	"dist/templates/pages/article.html",
 		// 	"dist/templates/components/tags.html",
 		// ),
-		// "projects": append(socialSVGs,
-		// 	"dist/templates/pages/_page.html",
-		// 	"dist/templates/svgs/illustrations/link.svg",
-		// 	"dist/templates/pages/projects.html",
-		// ),
+		"products": append(masterFiles,
+			"dist/templates/pages/_page.html",
+			"dist/templates/svgs/illustrations/link.svg",
+			"dist/templates/svgs/logos/msgdrop.svg",
+			"dist/templates/svgs/logos/dotnet-ketchup.svg",
+			"dist/templates/pages/products.html",
+		),
 		"oss": append(masterFiles,
 			"dist/templates/pages/_page.html",
 			"dist/templates/svgs/illustrations/link.svg",
@@ -129,8 +132,13 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		if p == "/projects" {
-			h.projects(w, r)
+		if p == "/blog" {
+			h.blog(w, r)
+			return
+		}
+
+		if p == "/products" {
+			h.products(w, r)
 			return
 		}
 

@@ -2,7 +2,8 @@
 {{ end }}
 
 {{ define "main" }}
-<article class="article [&_p]:text-justify">
+<div class="article [&_p]:text-justify mb-10">
+    <h1 class="h2 !text-center !mt-0">Open source</h1>
     <p class="!mt-0">I started contributing to open source in 2013, and soon after I began publishing my own work in the open too. Over the years, I have become an active maintainer of several open source projects, some of which are listed below.</p>
 
     <p>The majority of my OSS work is spread across the following accounts:</p>
@@ -21,12 +22,12 @@
         <span>Projects owned by Dusted Codes Limited</span>
     </div>
 
-    <h2 class="!text-center">OSS Spotlight</h2>
+    <h2 class="!text-center">OSS spotlight</h2>
 
     <article class="mt-10">
-        <header class="grid grid-cols-1 sm:grid-cols-4 gap-10 items-center">
-            <img class="hidden sm:block !my-0 p-5 bg-ink-0 rounded" src="https://giraffe.wiki/giraffe.png">
-            <div class="sm:col-span-3">
+        <header class="grid grid-cols-1 xs:grid-cols-4 gap-5 sm:gap-10 items-center">
+            <img class="hidden xs:block !my-0 sm:p-5 sm:bg-ink-0 sm:bg-opacity-50 sm:rounded" src="https://giraffe.wiki/giraffe.png">
+            <div class="xs:col-span-3">
                 <h3 class="!my-0 !py-0">Giraffe</h3>
                 <h4 class="!my-3">A functional ASP.NET Core web framework</h4>
                 <a class="flex flex-row items-center justify-start" href="https://giraffe.wiki" target="_blank"><span class="icon mr-2">{{ template "link" . }}</span>giraffe.wiki</a>
@@ -39,11 +40,11 @@
     </article>
 
     <article class="mt-10">
-        <header class="grid grid-cols-1 sm:grid-cols-4 gap-10 items-center">
-            <div class="hidden sm:block !my-0 p-5 bg-ink-0 rounded">
+        <header class="grid grid-cols-1 xs:grid-cols-4 gap-5 sm:gap-10 items-center">
+            <div class="hidden xs:block !my-0 sm:p-5 sm:bg-ink-0 sm:bg-opacity-50 sm:rounded">
                 {{ template "github" . }}
             </div>
-            <div class="sm:col-span-3">
+            <div class="xs:col-span-3">
                 <h3 class="!my-0 !py-0">Self Destruct Notes</h3>
                 <h4 class="!my-3">Create and read self destructing notes</h4>
                 <a class="flex flex-row items-center justify-start" href="https://github.com/dustinmoris/self-destruct-notes" target="_blank"><span class="icon mr-2">{{ template "link" . }}</span>self-destruct-notes</a>
@@ -55,5 +56,5 @@
         </main>
     </article>
 
-</article>
+</div>
 {{ end }}

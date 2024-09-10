@@ -9,8 +9,8 @@ type URLs struct {
 	DisqusShortname string
 }
 
-func (u *URLs) Projects() string {
-	return fmt.Sprintf("%s/projects", u.BaseURL)
+func (u *URLs) Products() string {
+	return fmt.Sprintf("%s/products", u.BaseURL)
 }
 
 func (u *URLs) OpenSource() string {

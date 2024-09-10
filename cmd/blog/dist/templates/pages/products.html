@@ -1,0 +1,62 @@
+{{ define "header" }}
+{{ end }}
+
+{{ define "main" }}
+<div class="article [&_p]:text-justify mb-10">
+
+    <h1 class="h2 !text-center !mt-0">Products</h1>
+    <p>Below is a list of some free and paid services which I have created and continue to maintain through Dusted Codes Limited:</p>
+
+    <article class="my-14">
+        <header class="grid grid-cols-1 xs:grid-cols-4 gap-5 sm:gap-10 items-center">
+            <div class="hidden xs:block !my-0 sm:p-5 sm:bg-ink-0 sm:bg-opacity-50 sm:rounded [&_svg]:fill-[#E5AA06]">
+                {{ template "msgdrop" }}
+            </div>
+            <div class="xs:col-span-3">
+                <h2 class="!my-0 !py-0">Msgdrop</h2>
+                <h4 class="!my-3">Test Emails, Webhooks and 2FA</h4>
+                <a class="flex flex-row items-center justify-start" href="https://msgdrop.io" target="_blank"><span class="icon mr-2">{{ template "link" . }}</span>msgdrop.io</a>
+            </div>
+        </header>
+        <main>
+            <p>Msgdrop.io is a powerful RESTful API designed to streamline the <strong>testing of Email, Webhooks, and Two-Factor Authentication</strong> in your automation workflows. It allows a QA engineer to create disposable email addresses, access inboxes, and verify every detail of an email including spam scores and metrics, all from a single API. Additionally, Msgdrop can simulate OTP authenticators like Google Authenticator, enabling one to generate 2FA codes on demand. This eliminates the need for unreliable or makeshift testing solutions, ensuring that automation tests are robust, accurate and reproducible.</p>
+        </main>
+        <aside>
+            <h5>Additional resources:</h5>
+            <p class="!my-0">
+                <a href="https://msgdrop.io/faq" target="_blank">FAQ</a>,
+                <a href="https://docs.msgdrop.io" target="_blank">Documentation</a>
+            </p>
+        </aside>
+    </article>
+
+    <article class="mt-14">
+        <header class="grid grid-cols-1 xs:grid-cols-4 gap-5 sm:gap-10 items-center">
+            <div class="hidden xs:block !my-0 sm:p-5 sm:bg-ink-0 sm:bg-opacity-50 sm:rounded">
+                {{ template "dotnet-ketchup" }}
+            </div>
+            <div class="xs:col-span-3">
+                <h2 class="!my-0 !py-0">.NET Ketchup</h2>
+                <h4 class="!my-3">Catch up on the latest news for .NET</h4>
+                <a class="flex flex-row items-center justify-start" href="https://dotnetketchup.com" target="_blank"><span class="icon mr-2">{{ template "link" . }}</span>dotnetketchup.com</a>
+            </div>
+        </header>
+        <main>
+            <p>.NET Ketchup is an automated news aggregator for all things .NET. It is different to other news aggregators in that it collects a vast amount of different &quot;trending&quot; content such as blog posts, podcasts, YouTube videos, tweets, GitHub repositories, Reddit threads and much more which feature relevant .NET topics.</p>
+            <p class="mt-5">Find out more on <a href="https://dotnetketchup.com/about" target="_blank">how .NET Ketchup works</a>.</p>
+        </main>
+        <aside>
+            <h5>.NET news:</h5>
+            <p class="!my-0">
+                <a href="https://dotnetketchup.com/?hide=fsharp,vbnet,aspnet,blazor,apps,tools,platform,random" target="_blank">C# news</a>,
+                <a href="https://dotnetketchup.com/?hide=csharp,vbnet,aspnet,blazor,apps,tools,platform,random" target="_blank">F# news</a>,
+                <a href="https://dotnetketchup.com/?hide=csharp,fsharp,aspnet,blazor,apps,tools,platform,random" target="_blank">VB.NET news</a>,
+                <a href="https://dotnetketchup.com/?hide=csharp,fsharp,vbnet,blazor,apps,tools,platform,random" target="_blank">ASP.NET news</a>,
+                <a href="https://dotnetketchup.com/?hide=csharp,fsharp,vbnet,aspnet,apps,tools,platform,random" target="_blank">Blazor news</a>
+            </p>
+        </aside>
+    </article>
+
+</div>
+
+{{ end }}

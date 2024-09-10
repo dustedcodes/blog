@@ -11,7 +11,7 @@ Defaults
     @apply text-6xl text-center font-bold text-ink-6 mb-10 leading-normal;
 }
 
-.h2, .article h2 {
+.h2, .article h2, .article h1.h2 {
     @apply text-4xl text-left font-bold text-ink-6 my-5 leading-snug;
 }
 
@@ -24,11 +24,11 @@ Defaults
 }
 
 .h5, .article h5 {
-    @apply text-xl text-left font-semibold text-plum-200 my-7 leading-normal;
+    @apply text-xl text-left font-semibold text-ink-6 mt-5 mb-3 leading-normal;
 }
 
 .h6, .article h6 {
-    @apply text-base font-bold text-plum-200 my-5 leading-normal;
+    @apply text-lg font-bold text-ink-6 my-5 leading-normal;
 }
 
 .p, .article p {
@@ -64,7 +64,7 @@ Defaults
 }
 
 .li, .article li {
-    @apply leading-relaxed mt-2;
+    @apply leading-relaxed mt-2 first-of-type:mt-0;
 }
 
 .img, .article img {

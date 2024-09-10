@@ -2,12 +2,14 @@
 {{ end }}
 
 {{ define "main" }}
-<article class="article">
-    <div class="grid grid-flow-dense grid-cols-1 md:grid-cols-3 gap-10 items-center [&_h2]:py-0 [&_p]:text-justify [&_svg]:max-h-48 md:[&>div:nth-child(even)]:col-span-2 md:[&>div:nth-child(4n-1)]:col-start-3 [&>div:nth-child(odd)]:hidden md:[&>div:nth-child(odd)]:block [&>div>*]:!mt-0">
+<article class="article mb-10">
+
+    <div class="grid grid-flow-dense grid-cols-1 sm:grid-cols-3 gap-10 items-center [&_h2]:py-0 [&_p]:text-justify [&_svg]:max-h-48 sm:[&>div:nth-child(even)]:col-span-2 sm:[&>div:nth-child(4n-1)]:col-start-3 [&>div:nth-child(odd)]:hidden sm:[&>div:nth-child(odd)]:block [&>div>*]:!mt-0">
         <div>
             {{ template "dustin-macbook" }}
         </div>
         <div>
+            <h1 class="h2">Hire me</h1>
             <p>Since 2018 I have been working as an independent software engineer operating under my own Limited Company from beautiful South West London, UK. If I'm not busy working with a client then I'm usually available for time- and/or project based contracts lasting for only a few days or up to multiple months. I offer a wide range of services which include, but are not limited to the ones listed below. If you would like to work together then please do not hesitate to contact me on <strong>dustin[at]dusted.codes</strong>.</p>
         </div>
 
@@ -73,6 +75,6 @@
             <p>For further information or to discuss any of my propositions please feel free to <a href="https://www.linkedin.com/in/dustinmoris/" target="_blank">connect with me on LinkedIn</a> or message me via <strong>dustin[at]dusted.codes</strong>.</p>
         </div>
     </div>
-    <p class="!text-center !my-0 py-10">I look forward to hearing from you!</p>
+    <p class="!text-center !my-0 pt-10">I look forward to hearing from you!</p>
 </article>
 {{ end }}

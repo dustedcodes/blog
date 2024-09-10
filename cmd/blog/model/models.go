@@ -63,7 +63,7 @@ func (b BlogPostLink) PublishedOn() string {
 	return b.PublishDate.Format("02 Jan 2006")
 }
 
-type Index struct {
+type Blog struct {
 	Base        Base
 	Catalogue   map[int][]BlogPostLink
 	SortedYears []int
@@ -111,7 +111,7 @@ func (b Base) UserMessages(msgs ...template.HTML) UserMessage {
 	}
 }
 
-func (b Base) Index(blogPosts []*blog.Post) Index {
+func (b Base) Blog(blogPosts []*blog.Post) Blog {
 	catalogue := map[int][]BlogPostLink{}
 	years := []int{}
 
@@ -146,7 +146,7 @@ func (b Base) Index(blogPosts []*blog.Post) Index {
 		})
 	}
 
-	return Index{
+	return Blog{
 		Base:        b,
 		Catalogue:   catalogue,
 		SortedYears: years,

@@ -1,19 +1,32 @@
 {{ define "header" }}
 {{ end }}
 
-{{ define "content" }}
+{{ define "main" }}
 
-<div class="mb-10">
-{{ range $i, $year := .SortedYears }}
-    <h2 class="text-center text-plum-100 uppercase font-bold text-4xl my-5">{{ $year }}</h2>
-    <ul class="text-center text-xl my-10 font-normal list-none mx-0">
-        {{ with $posts := index $.Catalogue $year }}
-            {{ range $i, $post := $posts }}
-                <li class="my-5"><a href="{{ $post.Permalink }}" class="text-plum-300 hover:text-shimmer hover:no-underline">{{ $post.Title }}</a></li>
+<article class="article">
+    <div class="grid grid-cols-1 md:grid-cols-3 gap-10 items-center">
+        <div class="hidden md:block">
+            {{ template "blogging" }}
+        </div>
+        <div class="col-span-2">
+            <p class="!mt-0">I primarily blog about programming topics that are either close to my heart or related to projects which I'm currently working on. The subjects I cover include, but are not limited to, Go, .NET, C#, F#, DevOps, and software security. Although I don't post as often as I used to, when I do, I invest the time to write with a level of care and details which you won't find on Medium or dev.to 😁.</p>
+            <p>Thank you for reading my ramblings!</p>
+        </div>
+    </div>
+    <h1 class="h2 !text-center !mt-10">Latest articles</h1>
+
+    {{ range $i, $year := .SortedYears }}
+    <div class="grid grid-cols-1 gap-0 md:grid-cols-4 items-stretch md:my-10">
+        <h2 class="h3 md:border-r-2 md:border-ink-0 mb-5 md:!my-0 md:p-5 md:flex md:flex-row md:items-center md:justify-end">{{ $year }}</h2>
+        <ul class="md:col-span-3 ul !my-0 !py-0 self-center">
+            {{ with $posts := index $.Catalogue $year }}
+                {{ range $i, $post := $posts }}
+                    <li class="li"><a href="{{ $post.Permalink }}">{{ $post.Title }}</a></li>
+                {{ end }}
             {{ end }}
-        {{ end }}
-    </ul>
-{{ end }}
-</div>
+        </ul>
+    </div>
+    {{ end }}
+</article>
 
 {{ end }}

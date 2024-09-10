@@ -45,9 +45,18 @@ func (h *Handler) index(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
-	model := h.newBaseModel(r).Index(h.blogPosts)
-	h.setCacheDirective(w, 60*60, h.config.ApplicationVersion)
+	model := h.newBaseModel(r).Empty()
+	h.setCacheDirective(w, 60*60*24, h.config.ApplicationVersion)
 	h.renderView(w, r, 200, "index", model)
+}
+
+func (h *Handler) blog(
+	w http.ResponseWriter,
+	r *http.Request,
+) {
+	model := h.newBaseModel(r).Blog(h.blogPosts)
+	h.setCacheDirective(w, 60*60, h.config.ApplicationVersion)
+	h.renderView(w, r, 200, "blog", model)
 }
 
 func (h *Handler) tagged(
@@ -110,12 +119,12 @@ func (h *Handler) blogPost(
 	h.notFound(w, r)
 }
 
-func (h *Handler) projects(
+func (h *Handler) products(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
 	h.setCacheDirective(w, 60*60*24, h.config.ApplicationVersion)
-	h.renderView(w, r, 200, "projects", h.newBaseModel(r).WithTitle("Projects").Empty())
+	h.renderView(w, r, 200, "products", h.newBaseModel(r).WithTitle("Products").Empty())
 }
 
 func (h *Handler) oss(
@@ -265,7 +274,7 @@ func (h *Handler) sitemap(
 				SetChangeFreq("monthly")).
 		AddURL(
 			sitemap.
-				NewURL(urls.Projects()).
+				NewURL(urls.Products()).
 				SetPriority("0.9").
 				SetChangeFreq("monthly")).
 		AddURL(

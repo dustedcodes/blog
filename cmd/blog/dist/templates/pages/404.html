@@ -1,0 +1,13 @@
+{{ define "header" }}
+{{ end }}
+
+{{ define "content" }}
+<div class="grid grid-cols-1 justify-items-stretch max-w-2xl">
+    <div class="w-72 mx-auto">
+        {{ template "404" }}
+    </div>
+    <h1 class="h1 !mt-5 !mb-5">Page not found</h1>
+    <p class="p !text-center">Sorry, the page you have requested may have been moved or deleted.</p>
+    <p class="p !text-center">Return to the <a class="a" href="/">home page</a>.</p>
+</div>
+{{ end }}

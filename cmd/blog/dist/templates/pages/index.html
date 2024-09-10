@@ -3,22 +3,18 @@
 
 {{ define "content" }}
 
-<div class="flex w-full min-h-screen items-center justify-center">
-
-    <div class="grid grid-cols-1 justify-items-stretch max-w-2xl">
-        <div class="flex justify-center">
-            {{ template "branding" }}
-        </div>
-        {{ template "nav" }}
-        <div class="grid grid-cols-1 sm:grid-cols-12 gap-5">
-            <!-- <img src="dustin-gorski.jpg" class="w-full xs:w-1/2 mx-auto sm:w-full sm:col-span-4 rounded"> -->
-            <div class="w-full xs:w-1/2 xs:mx-auto sm:mx-0 sm:w-full sm:col-span-4 text-ink-7 [&>svg]:max-h-48">
-                {{ template "dustin-tshirt" }}
-            </div>
-            <p class="sm:col-span-8 text-base text-justify">Hi, I’m Dustin, a seasoned polyglot programmer with over 20 years of experience in both functional and object-oriented programming. My journey into coding began as a child eager to learn how to hack computer games and the web. Today, I specialize in building secure, highly scalable distributed backend systems. Indie hacking is my second job and whilst I've spent many years working with F#, C#, and .NET, I currently focus on Go and Svelte for my SaaS. <a href="/about" class="a">Read more...</a></p>
-        </div>
-        {{ template "footer" }}
+<div class="grid grid-cols-1 justify-items-stretch max-w-2xl">
+    <div class="flex justify-center">
+        {{ template "branding" }}
     </div>
+    {{ template "nav" }}
+    <div class="grid grid-cols-1 sm:grid-cols-12 gap-5">
+        <div class="w-full xs:w-1/2 xs:mx-auto sm:mx-0 sm:w-full sm:col-span-4 text-ink-7 [&>svg]:max-h-48">
+            {{ template "dustin-tshirt" }}
+        </div>
+        <p class="sm:col-span-8 text-base text-justify">Hi, I’m Dustin, a seasoned polyglot programmer with over 20 years of experience in both functional and object-oriented programming. My journey into coding began as a child eager to learn how to hack computer games and the web. Today, I specialize in building secure, highly scalable distributed backend systems. Indie hacking is my second job and whilst I've spent many years working with F#, C#, and .NET, I currently focus on Go and Svelte for my SaaS. <a href="/about" class="a">Read more...</a></p>
+    </div>
+    {{ template "footer" }}
 </div>
 
 {{ end }}

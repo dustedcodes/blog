@@ -2,7 +2,6 @@ package web
 
 import (
 	"fmt"
-	"html/template"
 	"net/http"
 	"time"
 
@@ -85,21 +84,6 @@ func (h *Handler) renderView(
 	}
 }
 
-func (h *Handler) renderUserMessages(
-	w http.ResponseWriter,
-	r *http.Request,
-	statusCode int,
-	title string,
-	messages ...template.HTML,
-) {
-	model := h.newBaseModel(r).WithTitle(title).UserMessages(messages...)
-	h.renderView(
-		w, r,
-		statusCode,
-		"message",
-		model)
-}
-
 func (h *Handler) handleErr(
 	w http.ResponseWriter,
 	r *http.Request,
@@ -119,11 +103,11 @@ func (h *Handler) notFound(
 	w http.ResponseWriter,
 	r *http.Request,
 ) {
-	h.renderUserMessages(
+	h.renderView(
 		w, r,
 		http.StatusNotFound,
-		"Page not found",
-		"Sorry, the page you have requested may have been moved or deleted.")
+		"404",
+		h.newBaseModel(r).WithTitle("Page not found").Empty())
 }
 
 func (h *Handler) setCacheDirective(
