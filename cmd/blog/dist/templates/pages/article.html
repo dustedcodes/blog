@@ -2,21 +2,19 @@
 
 {{ end }}
 
-{{ define "content" }}
-<article class="mt-10">
-    <header class="pb-10">
-        <h1 class="text-5xl sm:text-7xl text-center font-bold text-plum-200 mb-10 leading-snug sm:leading-normal">{{ .Base.Title }}</h1>
-        <p class="text-center text-lg my-3 text-plum-200 font-mono">Published <time datetime="{{ .PublishedOnMachineReadable }}">{{ .PublishedOn }}</time></p>
-        <p class="text-center text-lg my-3 text-plum-200 font-mono">
-            <a class="text-plum-400 hover:text-shimmer" href="#disqus_thread" data-disqus-identifier="{{ .ID }}">Comments</a>
-        </p>
+{{ define "main" }}
+<article class="article mb-10">
+    <header class="grid grid-cols-1 place-items-center gap-2 mb-10">
+        <h1 class="!mb-5">{{ .Base.Title }}</h1>
+        <p class="!my-0 text-ink-5 italic">Published <time datetime="{{ .PublishedOnMachineReadable }}">{{ .PublishedOn }}</time></p>
+        <p class="!my-0"><a href="#disqus_thread" data-disqus-identifier="{{ .ID }}">Comments</a></p>
         {{ template "tags" .Tags }}
     </header>
     <main>
         {{ .Content }}
     </main>
-    <footer class="mt-20 mb-10">
-        <h6 class="text-center uppercase font-medium">Share this post:</h6>
+    <footer class="my-10">
+        <h6 class="text-center uppercase font-medium font-display">Share this post:</h6>
         <div class="share-links">
             <a href="mailto:?subject={{ .Base.Title }}&amp;body=Hi,%0D%0A%0D%0AI saw this article and thought you might find it interesting too:%0D%0A%0D%0A{{ .Base.Title }} - {{ .Permalink }}" target="_blank" rel="nofollow, noopener" title="Share by Email">
                 <svg version="1.0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 612.074000 612.074000"><path d="M612.074,132.141v-2.38c0-8.849-4.016-19.26-11.229-26.473l-0.818-0.818c0,0-0.818,0-0.818-0.818   c-1.636-1.636-3.198-2.38-4.833-4.016c-0.818,0-0.818-0.818-1.636-0.818c-1.636-0.818-4.016-1.636-5.652-2.38   c-0.818,0-0.818-0.818-1.636-0.818c-2.38-0.818-4.833-1.636-7.213-1.636c-0.818,0-0.818,0-1.636,0c-2.38,0-5.651-0.818-8.849-0.818   H43.427c-3.198,0-6.395,0-9.667,0.818c-0.818,0-1.636,0-2.38,0.818c-2.38,0.818-4.834,0.818-6.395,1.636   c-0.818,0-0.818,0.818-1.636,0.818c-1.636,0.818-4.016,1.636-5.652,2.38l-0.818,0.818c-1.636,0.818-3.198,2.38-4.834,3.198   c-0.818,0.818-1.636,1.636-2.38,2.38C4.016,110.428,0.818,117.715,0,125.746c0,0.818,0,0.818,0,1.636v357.384   c0,0.818,0,0.818,0,1.636c1.636,11.229,7.213,20.896,15.244,26.473c7.213,4.833,16.062,8.031,26.473,8.031H569.39c0,0,0,0,0.818,0   l0,0c2.38,0,5.651,0,8.031-0.818c0.818,0,0.818,0,1.636,0c2.38-0.818,4.834-0.818,6.395-1.636h0.818   c17.698-6.395,24.911-21.714,24.911-36.14v-2.38v-0.818v-0.818V134.521c0-0.818,0-0.818,0-1.636   C612.074,132.959,612.074,132.959,612.074,132.141z M560.69,120.913l-252.98,246.51l-57.854-56.218l0,0L51.459,120.838H560.69   V120.913z M29.819,475.099V140.991l187.095,179.882L29.819,475.099z M299.679,491.905H56.292l182.336-149.393l58.597,57.036   c2.38,2.38,4.834,3.198,7.213,4.016h0.818c0.818,0,0.818,0,1.636,0l0,0c0.818,0,1.636,0,1.636,0h0.818   c2.38-0.818,5.651-1.636,7.213-4.016l55.4-53.838l183.079,146.196H299.679z M582.329,475.843L394.417,324.07L582.329,140.99   V475.843z"></path></svg>
@@ -48,9 +46,9 @@
                 <svg stroke="#222222" version="1.0" xmlns="http://www.w3.org/2000/svg" viewBox="0 0 24.000000 24.000000"><path d="M9.028 20.837c-.714 0-.593-.271-.839-.949l-2.103-6.92L22.263 3.37"></path><path d="M9.028 20.837c.552 0 .795-.252 1.105-.553l2.941-2.857-3.671-2.214"></path><path d="M9.403 15.213l8.89 6.568c1.015.56 1.748.271 2-.942l3.62-17.053c.372-1.487-.564-2.159-1.534-1.72L1.125 10.263c-1.45.582-1.443 1.392-.264 1.753l5.455 1.7L18.94 5.753c.595-.36 1.143-.167.694.232"></path></svg>
             </a>
         </div>
-        <p class="text-center mt-16 text-lg"><a href="" onclick="document.body.scrollTop = 0; document.documentElement.scrollTop = 0;">Back to top</a></p>
+        <p class="!text-center mt-16 text-lg"><a href="" onclick="document.body.scrollTop = 0; document.documentElement.scrollTop = 0;">Back to top</a></p>
     </footer>
-    <aside id="comments" class="border-t-4 border-dashed border-plum-1400 my-16 pt-16">
+    <aside id="comments" class="my-10">
         <div id="disqus_thread"></div>
         <script type="text/javascript">
             var disqus_shortname = '{{ .Base.DisqusShortname }}';

@@ -1,16 +1,18 @@
 {{ define "header" }}
 {{ end }}
 
-{{ define "content" }}
+{{ define "main" }}
 
-<div class="text-center">
-    <h2 class="text-center mt-10">{{ .Base.Title }}</h2>
-    <ul class="text-center mx-0 px-0">
+<div class="text-center mb-10">
+    <h1 class="h2 !text-center !mt-0 !mb-10">{{ .Base.Title }}</h1>
+    <ul class="m-0 p-0 grid grid-cols-1 gap-10">
         {{ range $i, $post := .BlogPosts }}
-            <li class="my-10 pt-10 mx-0 px-0 border-t-2 border-plum-1400 list-none">
-                <a href="{{ $post.Permalink }}" class="text-plum-200 text-3xl hover:text-shimmer hover:no-underline">{{ $post.Title }}</a>
-                <p class="text-plum-600 text-lg">{{ $post.PublishedOn }}</p>
-                <p>{{ template "tags" .Tags }}</p>
+            <li class="m-0 p-0">
+                <a href="{{ $post.Permalink }}" class="block text-2xl font-semibold my-2 hover:text-accent">{{ $post.Title }}</a>
+                <p class="italic text-ink-5 text-base my-2">{{ $post.PublishedOn }}</p>
+                <div class="my-2">
+                    {{ template "tags" .Tags }}
+                </div>
             </li>
         {{ end }}
     </ul>

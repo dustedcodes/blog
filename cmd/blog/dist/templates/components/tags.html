@@ -1,8 +1,8 @@
 {{ define "tags" }}
-{{ if . }}
-    <p class="flex flex-row flex-wrap justify-center items-center font-medium text-base my-3">
+    {{ if . }}
+    <p class="!my-0 flex flex-row flex-wrap justify-center items-center gap-3 font-medium text-base">
         {{ range $i, $t := . }}
-        <a class="mx-2 my-2 sm:my-0 px-4 py-1 rounded-2xl bg-plum-1500 text-plum-200 text-base font-mono font-medium tracking-wider hover:bg-plum-1400 hover:text-shimmer hover:no-underline" href="{{ $t.URL }}">{{ $t.Value }}</a>
+        <a class="px-3 py-1 rounded bg-ink-1 !text-ink-6 text-sm font-medium tracking-wider hover:bg-accent hover:!text-ink-0 hover:!no-underline" href="{{ $t.URL }}">{{ $t.Value }}</a>
         {{ end }}
     </p>
     {{ end }}

@@ -51,20 +51,20 @@ func NewHandler(
 			"dist/templates/svgs/illustrations/blogging.svg",
 			"dist/templates/pages/blog.html",
 		),
-		// "tagged": append(socialSVGs,
-		// 	"dist/templates/pages/_page.html",
-		// 	"dist/templates/pages/tagged.html",
-		// 	"dist/templates/components/tags.html",
-		// ),
+		"tagged": append(masterFiles,
+			"dist/templates/pages/_page.html",
+			"dist/templates/pages/tagged.html",
+			"dist/templates/components/tags.html",
+		),
 		"404": append(masterFiles,
 			"dist/templates/svgs/illustrations/404.svg",
 			"dist/templates/pages/404.html",
 		),
-		// "blogPost": append(socialSVGs,
-		// 	"dist/templates/pages/_page.html",
-		// 	"dist/templates/pages/article.html",
-		// 	"dist/templates/components/tags.html",
-		// ),
+		"blogPost": append(masterFiles,
+			"dist/templates/pages/_page.html",
+			"dist/templates/pages/article.html",
+			"dist/templates/components/tags.html",
+		),
 		"products": append(masterFiles,
 			"dist/templates/pages/_page.html",
 			"dist/templates/svgs/illustrations/link.svg",
@@ -172,7 +172,7 @@ func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 			return
 		}
 
-		if p == "/robots.xml" {
+		if p == "/robots.txt" {
 			h.robots(w, r)
 			return
 		}

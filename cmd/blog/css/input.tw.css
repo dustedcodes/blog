@@ -8,7 +8,7 @@ Defaults
 ---------------- */
 
 .h1, .article h1 {
-    @apply text-6xl text-center font-bold text-ink-6 mb-10 leading-normal;
+    @apply text-6xl text-center font-bold text-ink-6 mb-10 leading-snug;
 }
 
 .h2, .article h2, .article h1.h2 {
@@ -48,11 +48,11 @@ Defaults
 }
 
 .code, .article code {
-    @apply inline-block px-1 rounded font-mono text-left text-lg whitespace-pre-wrap break-words bg-plum-1400 text-peach-700 leading-snug;
+    @apply inline-block px-2 rounded font-mono text-left text-lg whitespace-pre-wrap break-words bg-ink-0 text-fire leading-snug;
 }
 
 .pre > .code, .article pre > code {
-    @apply block px-3 py-2 text-plum-200 text-lg leading-normal bg-plum-1500;
+    @apply block px-3 py-2 text-ink-0 text-lg leading-normal bg-ink-8;
 }
 
 .ul, .article ul {
@@ -68,11 +68,11 @@ Defaults
 }
 
 .img, .article img {
-    @apply mt-5 mb-10 rounded;
+    @apply my-5 rounded;
 }
 
 .strong, .article strong, .article b {
-    @apply font-medium text-ink-8;
+    @apply font-semibold text-ink-7;
 }
 
 .article i, .article em {
@@ -84,7 +84,7 @@ Defaults
 }
 
 .blockquote, .article blockquote {
-    @apply bg-plum-1500 rounded border-l-8 border-l-plum-500 py-4 px-4 mt-5 text-lg text-plum-500;
+    @apply bg-ink-0 rounded border-l-8 border-l-ink-2 py-4 px-4 mt-5 text-lg;
 }
 
 .blockquote > *:first-child, .article blockquote > *:first-child {
@@ -92,7 +92,7 @@ Defaults
 }
 
 .blockquote > footer, .article blockquote > footer {
-    @apply mt-4 not-italic text-lg text-plum-100;
+    @apply mt-4 not-italic text-base text-ink-5;
 }
 
 /* ----------------
@@ -108,7 +108,7 @@ Customs
 }
 
 .share-links svg {
-    @apply w-7 mx-5 sm:mx-0 my-3 sm:my-0 fill-plum-400 hover:fill-shimmer;
+    @apply w-7 mx-5 sm:mx-0 my-3 sm:my-0 fill-ink-5 hover:fill-accent;
 }
 
 /* ----------------
@@ -156,5 +156,5 @@ Hamburger menu icon
 .ham-burger.ham-active .ham-top,
 .ham-burger.ham-active .ham-middle,
 .ham-burger.ham-active .ham-bottom {
-    @apply stroke-peach-800;
+    @apply stroke-fire;
 }
