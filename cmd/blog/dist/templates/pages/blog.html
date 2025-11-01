@@ -5,10 +5,7 @@
 
 <article class="article">
     <div class="grid grid-cols-1 md:grid-cols-3 gap-10 items-center">
-        <div class="hidden md:block">
-            {{ template "blogging" }}
-        </div>
-        <div class="col-span-2">
+        <div class="col-span-3">
             <p class="!mt-0">I primarily blog about programming topics that are either close to my heart or related to projects which I'm currently working on. The subjects I cover include, but are not limited to, Go, .NET, C#, F#, DevOps, and software security. Although I don't post as often as I used to, when I do, I invest the time to write with a level of care and details which you won't find on Medium or dev.to 😁.</p>
             <p>Thank you for reading my ramblings!</p>
         </div>
@@ -16,10 +13,10 @@
     <h1 class="h2 !text-center !mt-10">Latest articles</h1>
 
     {{ range $i, $year := .SortedYears }}
-    <div class="grid grid-cols-1 gap-0 md:grid-cols-4 items-stretch md:my-10">
+    <div class="grid grid-cols-1 gap-0 md:grid-cols-4 items-stretch md:py-5 md:border-t-2 md:border-ink-0">
         <h2 class="h3 md:border-r-2 md:border-ink-0 mb-5 md:!my-0 md:p-5 md:flex md:flex-row md:items-center md:justify-end">{{ $year }}</h2>
         <ul class="md:col-span-3 ul !my-0 !py-0 self-center">
-            {{ with $posts := index $.Catalogue $year }}
+            {{ with $posts := index $.Catalog $year }}
                 {{ range $i, $post := $posts }}
                     <li class="li"><a href="{{ $post.Permalink }}">{{ $post.Title }}</a></li>
                 {{ end }}
