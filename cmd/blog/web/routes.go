@@ -1,8 +1,10 @@
 package web
 
 import (
+	"errors"
 	"fmt"
 	"net/http"
+	"slices"
 	"strings"
 	"time"
 
@@ -10,7 +12,6 @@ import (
 	"github.com/dusted-go/http/v6/rss"
 	"github.com/dusted-go/http/v6/sitemap"
 
-	"github.com/dustedcodes/blog/internal/array"
 	"github.com/dustedcodes/blog/internal/blog"
 )
 
@@ -66,7 +67,7 @@ func (h *Handler) tagged(
 ) {
 	filtered := []*blog.Post{}
 	for _, b := range h.blogPosts {
-		if array.Contains(b.Tags, tagName) {
+		if slices.Contains(b.Tags, tagName) {
 			filtered = append(filtered, b)
 		}
 	}
@@ -78,18 +79,18 @@ func (h *Handler) tagged(
 func (h *Handler) renderBlogPost(
 	w http.ResponseWriter,
 	r *http.Request,
-	b *blog.Post,
+	blogPost *blog.Post,
 ) {
 	// Respond with view:
 	// ---
-	m := h.
+	model := h.
 		newBaseModel(r).
-		WithTitle(b.Title).
-		WithOpenGraphImage(b.OpenGraphImage).
-		BlogPost(b.ID, b.HTML, b.PublishDate, b.Tags)
-	h.setCacheDirective(w, 60*60*4, b.HashCode)
+		WithTitle(blogPost.Title).
+		WithOpenGraphImage(blogPost.OpenGraphImage).
+		BlogPost(blogPost.ID, blogPost.HTML, blogPost.PublishDate, blogPost.Tags)
+	h.setCacheDirective(w, 60*60*4, blogPost.HashCode)
 	h.renderView(
-		w, r, 200, "blogPost", m)
+		w, r, 200, "blogPost", model)
 }
 
 func (h *Handler) blogPost(
@@ -100,6 +101,11 @@ func (h *Handler) blogPost(
 
 	if !h.config.IsProduction() {
 		blogPost, err := blog.ReadPost(r.Context(), blog.DefaultBlogPostPath, blogPostID)
+		if errors.Is(err, blog.ErrBlogPostNotFound) {
+			h.notFound(w, r)
+			return
+		}
+
 		if h.handleErr(w, r, err) {
 			return
 		}
@@ -171,23 +177,23 @@ func (h *Handler) rss(
 			SetImage(rss.NewImage(urls.Logo(), "Dusted Codes", urls.BaseURL)),
 	)
 
-	for _, b := range h.blogPosts {
-		permalink := urls.BlogPostURL(b.ID)
-		comments := urls.BlogPostCommentsURL(b.ID)
+	for _, blogPost := range h.blogPosts {
+		permalink := urls.BlogPostURL(blogPost.ID)
+		comments := urls.BlogPostCommentsURL(blogPost.ID)
 		ogImage := defaultOpenGraphImage
-		if b.OpenGraphImage.Complete() {
-			ogImage = b.OpenGraphImage
+		if blogPost.OpenGraphImage.Complete() {
+			ogImage = blogPost.OpenGraphImage
 		}
 
-		rssItem := rss.NewItemWithTitle(b.Title).
+		rssItem := rss.NewItemWithTitle(blogPost.Title).
 			SetLink(permalink).
 			SetGUID(permalink, true).
-			SetPubDate(b.PublishDate, time.UTC).
+			SetPubDate(blogPost.PublishDate, time.UTC).
 			SetAuthor("dustin@dusted.codes", "Dustin Moris Gorski").
 			SetComments(comments).
-			SetDescription(string(b.HTML)).
+			SetDescription(string(blogPost.HTML)).
 			SetEnclosure(ogImage.URL, ogImage.Size, ogImage.MimeType)
-		for _, t := range b.Tags {
+		for _, t := range blogPost.Tags {
 			rssItem.AddCategory(t, urls.TagURL(t))
 		}
 		rssFeed.Channel.AddItem(rssItem)
@@ -226,24 +232,24 @@ func (h *Handler) atom(
 			atom.NewText(
 				fmt.Sprintf("Copyright © %d, Dusted Codes Limited", time.Now().Year())))
 
-	for _, b := range h.blogPosts {
-		permalink := urls.BlogPostURL(b.ID)
+	for _, blogPost := range h.blogPosts {
+		permalink := urls.BlogPostURL(blogPost.ID)
 		ogImage := defaultOpenGraphImage
-		if b.OpenGraphImage.Complete() {
-			ogImage = b.OpenGraphImage
+		if blogPost.OpenGraphImage.Complete() {
+			ogImage = blogPost.OpenGraphImage
 		}
 		entry := atom.NewEntry(
 			permalink,
-			atom.NewText(b.Title),
-			b.PublishDate).
+			atom.NewText(blogPost.Title),
+			blogPost.PublishDate).
 			SetAuthor(author).
 			AddLink(atom.NewLink(permalink).SetRel("alternate")).
-			AddLink(atom.NewLink(urls.BlogPostCommentsURL(b.ID)).SetRel("related")).
+			AddLink(atom.NewLink(urls.BlogPostCommentsURL(blogPost.ID)).SetRel("related")).
 			AddLink(atom.NewLink(ogImage.URL).SetRel("enclosure").SetLength(ogImage.Size)).
-			SetPublished(b.PublishDate).
-			SetContent(atom.NewHTML(string(b.HTML)))
+			SetPublished(blogPost.PublishDate).
+			SetContent(atom.NewHTML(string(blogPost.HTML)))
 
-		for _, t := range b.Tags {
+		for _, t := range blogPost.Tags {
 			entry.AddCategory(atom.NewCategory(t).
 				SetLabel(t).
 				SetScheme(urls.TagURL(t)))

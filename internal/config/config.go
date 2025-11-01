@@ -1,7 +1,6 @@
 package config
 
 import (
-	"fmt"
 	"log/slog"
 	"strconv"
 	"strings"
@@ -47,12 +46,14 @@ func (c *Config) PublicHosts() []string {
 
 func (c *Config) DomainRedirects() map[string]string {
 	redirects := map[string]string{}
+
 	if c.RedirectWWW {
 		for _, dest := range c.PublicHosts() {
-			from := fmt.Sprintf("www.%s", dest)
+			from := "www." + dest
 			redirects[from] = dest
 		}
 	}
+
 	return redirects
 }
 

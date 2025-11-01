@@ -1,33 +1,125 @@
+version: "2"
 output:
-  format: colored-line-number
+  formats:
+    text:
+      path: stdout
+      colors: true
 linters:
-  disable-all: true
+  default: none
   enable:
+    - asasalint
+    - asciicheck
+    - bidichk
     - bodyclose
+    - canonicalheader
+    - containedctx
+    - contextcheck
+    - copyloopvar
+    - decorder
+    - dogsled
+    - dupl
+    - dupword
     - durationcheck
+    - embeddedstructfieldcheck
     - errcheck
-    - errorlint
+    - errchkjson
     - errname
+    - errorlint
     - exhaustive
-    - exportloopref
+    - exptostd
+    - fatcontext
+    - forbidigo
+    - forcetypeassert
+    - funcorder
+    - gocheckcompilerdirectives
+    - gochecknoinits
+    - gochecksumtype
     - goconst
-    - gofmt
-    - goimports
+    - gocritic
+    - gocyclo
+    - godoclint
+    - godot
+    - godox
+    - goheader
+    - gomoddirectives
+    - goprintffuncname
     - gosec
-    - gosimple
+    - gosmopolitan
     - govet
+    - grouper
+    - iface
+    - importas
+    - inamedparam
     - ineffassign
+    - interfacebloat
+    - intrange
+    - iotamixing
+    - ireturn
+    - lll
+    - loggercheck
+    - maintidx
+    - makezero
+    - mirror
+    - misspell
+    - modernize
+    - musttag
+    - nakedret
+    - nestif
+    - nilerr
+    - nilnesserr
+    - nilnil
     - noctx
+    - noinlineerr
+    - nolintlint
+    - nonamedreturns
+    - nosprintfhostport
+    - paralleltest
+    - perfsprint
     - prealloc
     - predeclared
+    - promlinter
+    - protogetter
+    - reassign
+    - recvcheck
     - revive
+    - rowserrcheck
+    - sloglint
+    - spancheck
+    - sqlclosecheck
     - staticcheck
-    - typecheck
+    - tagalign
+    - tagliatelle
+    - testableexamples
+    - testpackage
+    - thelper
+    - tparallel
     - unconvert
     - unparam
+    - unqueryvet
     - unused
+    - usestdlibvars
+    - usetesting
+    - varnamelen
     - wastedassign
+    - whitespace
     - wrapcheck
-linters-settings:
-  goconst:
-    ignore-tests: true
+  settings:
+    gocritic:
+      settings:
+        ifElseChain:
+          minThreshold: 4
+    misspell:
+      locale: US
+    revive:
+      rules:
+        - name: exported
+          disabled: true
+    varnamelen:
+      ignore-names:
+        - err
+        - ctx
+      ignore-decls:
+        - t testing.T
+        - i int
+        - w http.ResponseWriter
+        - r *http.Request

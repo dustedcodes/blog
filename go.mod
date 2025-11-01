@@ -1,6 +1,6 @@
 module github.com/dustedcodes/blog
 
-go 1.21.0
+go 1.25.3
 
 require (
 	github.com/alecthomas/chroma/v2 v2.9.1

@@ -4,12 +4,13 @@ import (
 	"bufio"
 	"bytes"
 	"context"
-	"crypto/sha1" // nolint: gosec // used for cache invalidation
+	"crypto/sha1" //nolint: gosec // used for cache invalidation
 	"encoding/hex"
 	"errors"
 	"fmt"
 	"html/template"
 	"os"
+	"path/filepath"
 	"strconv"
 	"strings"
 	"time"
@@ -30,6 +31,8 @@ const (
 )
 
 var (
+	ErrBlogPostNotFound = errors.New("blog post not found")
+
 	syntaxStyle = chroma.MustNewStyle(
 		"custom",
 		chroma.StyleEntries{
@@ -118,12 +121,13 @@ func computeTemplate(markdown string) (template.HTML, error) {
 		))
 
 	var buf bytes.Buffer
-	if err := parser.Convert([]byte(markdown), &buf); err != nil {
+	err := parser.Convert([]byte(markdown), &buf)
+	if err != nil {
 		return template.HTML(""),
 			fmt.Errorf("error converting Markdown into HTML: %w", err)
 	}
 
-	// nolint: gosec // string was already escaped before
+	//nolint: gosec // string was already escaped before
 	return template.HTML(buf.Bytes()), nil
 }
 
@@ -139,6 +143,7 @@ func parsePost(
 
 	var metadata []string
 	var title string
+
 	body := strings.Builder{}
 
 	readMeta := false
@@ -173,50 +178,56 @@ func parsePost(
 	if len(title) == 0 {
 		return nil, errors.New("blog post title is missing")
 	}
-	content := body.String()
 
+	content := body.String()
 	isHTML := false
+
 	var tags []string
 	var ogImage OpenGraphImage
+
 	for _, meta := range metadata {
 		metaParts := strings.SplitN(meta, ":", 2)
 		key := strings.ToLower(strings.TrimSpace(metaParts[0]))
-		if key == "tags" {
+
+		switch key {
+		case "tags":
 			tags = strings.Split(strings.TrimSpace(metaParts[1]), " ")
-		} else if key == "type" {
+		case "type":
 			isHTML = strings.ToLower(strings.TrimSpace(metaParts[1])) == "html"
-		} else if key == "image.url" {
+		case "image.url":
 			ogImage.URL = strings.TrimSpace(metaParts[1])
-		} else if key == "image.width" {
+		case "image.width":
 			width, err := strconv.Atoi(strings.TrimSpace(metaParts[1]))
 			if err == nil {
 				ogImage.Width = width
 			}
-		} else if key == "image.height" {
+		case "image.height":
 			height, err := strconv.Atoi(strings.TrimSpace(metaParts[1]))
 			if err == nil {
 				ogImage.Height = height
 			}
-		} else if key == "image.size" {
+		case "image.size":
 			size, err := strconv.Atoi(strings.TrimSpace(metaParts[1]))
 			if err == nil {
 				ogImage.Size = size
 			}
-		} else if key == "image.mimetype" {
+		case "image.mimetype":
 			ogImage.MimeType = strings.TrimSpace(metaParts[1])
-		} else {
+		default:
 			return nil, fmt.Errorf("unknown blog post metadata key: %s", key)
 		}
 	}
 
-	valueToHash := title + content + publishDate.String()
+	valueToHash := strings.Builder{}
+	valueToHash.WriteString(title + content + publishDate.String())
+
 	for _, tag := range tags {
-		valueToHash = valueToHash + tag
+		valueToHash.WriteString(tag)
 	}
 
-	// nolint: gosec // hash used for caching, not security
+	//nolint: gosec // hash used for caching, not security
 	hash := sha1.New()
-	hash.Write([]byte(valueToHash))
+	hash.Write([]byte(valueToHash.String()))
 	hashCode := hex.EncodeToString(hash.Sum(nil))
 
 	blogPost := &Post{
@@ -231,24 +242,28 @@ func parsePost(
 	}
 
 	if isHTML {
-		// nolint: gosec // This is safe content
+		//nolint: gosec // This is safe content
 		blogPost.HTML = template.HTML(content)
 	} else {
 		html, err := computeTemplate(content)
 		if err != nil {
 			return nil, fmt.Errorf("error computing template: %w", err)
 		}
+
 		blogPost.HTML = html
 	}
 
 	return blogPost, nil
 }
 
-func ReadPost(ctx context.Context, path string, blogPostID string) (*Post, error) {
+func ReadPost(ctx context.Context, basePath string, blogPostID string) (*Post, error) {
+	blogPostsBasePath := filepath.Clean(basePath)
 
-	files, err := os.ReadDir(path)
+	files, err := os.ReadDir(blogPostsBasePath)
 	if err != nil {
-		return nil, fmt.Errorf("error reading files from directory '%s': %w", path, err)
+		return nil, fmt.Errorf("error reading files from directory '%s': %w",
+			blogPostsBasePath,
+			err)
 	}
 
 	fileName := ""
@@ -262,16 +277,22 @@ func ReadPost(ctx context.Context, path string, blogPostID string) (*Post, error
 
 	if len(fileName) == 0 {
 		stackdriver.GetLogger(ctx).Warn("Blog post not found.", "blogPostID", blogPostID)
-		return nil, nil
+		return nil, ErrBlogPostNotFound
 	}
 
 	fileNameParts := strings.SplitN(fileName, "-", 2)
+
 	publishDate, err := time.Parse("2006_01_02", fileNameParts[0])
 	if err != nil {
 		return nil, fmt.Errorf("error parsing date from file '%s': %w", fileName, err)
 	}
 
-	fileBuffer, err := os.ReadFile(path + "/" + fileName)
+	blogPostPath := filepath.Clean(filepath.Join(blogPostsBasePath, fileName))
+	if !strings.HasPrefix(blogPostPath, blogPostsBasePath) {
+		return nil, fmt.Errorf("invalid path to blog post: %s", blogPostPath)
+	}
+
+	fileBuffer, err := os.ReadFile(blogPostPath)
 	if err != nil {
 		return nil, fmt.Errorf("error reading blog post file: %w", err)
 	}
@@ -284,13 +305,13 @@ func ReadPost(ctx context.Context, path string, blogPostID string) (*Post, error
 	return blogPost, nil
 }
 
-func ReadPosts(ctx context.Context, path string) ([]*Post, error) {
-	files, err := os.ReadDir(path)
+func ReadPosts(ctx context.Context, basePath string) ([]*Post, error) {
+	files, err := os.ReadDir(basePath)
 	if err != nil {
-		return nil, fmt.Errorf("error reading files from directory '%s': %w", path, err)
+		return nil, fmt.Errorf("error reading files from directory '%s': %w", basePath, err)
 	}
-	blogPosts := []*Post{}
 
+	blogPosts := []*Post{}
 	logger := stackdriver.GetLogger(ctx)
 
 	for _, f := range files {
@@ -300,20 +321,29 @@ func ReadPosts(ctx context.Context, path string) ([]*Post, error) {
 				"filename", fileName)
 			continue
 		}
+
 		if !strings.HasSuffix(fileName, ".md") {
 			logger.Warn("Skipping file because it doesn't appear to be a Markdown file.",
 				"filename", fileName)
 			continue
 		}
+
 		fileNameParts := strings.SplitN(fileName, "-", 2)
 		blogPostID := strings.TrimSuffix(fileNameParts[1], ".md")
+
 		publishDate, err := time.Parse("2006_01_02", fileNameParts[0])
 		if err != nil {
 			logger.Error("An error occurred when parsing the blog post's date.", "error", err)
 			continue
 		}
 
-		fileBuffer, err := os.ReadFile(path + "/" + fileName)
+		blogPostPath := filepath.Clean(filepath.Join(basePath, fileName))
+		if !strings.HasPrefix(blogPostPath, basePath) {
+			logger.Error("Invalid path to blog post.", "path", blogPostPath)
+			continue
+		}
+
+		fileBuffer, err := os.ReadFile(blogPostPath)
 		if err != nil {
 			logger.Error("An error occurred when reading a .md file from disk.", "error", err)
 			continue
@@ -328,11 +358,13 @@ func ReadPosts(ctx context.Context, path string) ([]*Post, error) {
 		}
 
 		blogPosts = append(blogPosts, blogPost)
+
 		logger.Debug("Successfully parsed blog post.",
 			"filename", fileName)
 	}
 
 	logger.Info("Finished parsing blog posts.",
 		"count", len(blogPosts))
+
 	return blogPosts, nil
 }

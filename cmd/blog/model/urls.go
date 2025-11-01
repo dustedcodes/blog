@@ -10,27 +10,27 @@ type URLs struct {
 }
 
 func (u *URLs) Products() string {
-	return fmt.Sprintf("%s/products", u.BaseURL)
+	return u.BaseURL + "/products"
 }
 
 func (u *URLs) OpenSource() string {
-	return fmt.Sprintf("%s/open-source", u.BaseURL)
+	return u.BaseURL + "/open-source"
 }
 
 func (u *URLs) Hire() string {
-	return fmt.Sprintf("%s/hire", u.BaseURL)
+	return u.BaseURL + "/hire"
 }
 
 func (u *URLs) About() string {
-	return fmt.Sprintf("%s/about", u.BaseURL)
+	return u.BaseURL + "/about"
 }
 
 func (u *URLs) RSSFeed() string {
-	return fmt.Sprintf("%s/feed/rss", u.BaseURL)
+	return u.BaseURL + "/feed/rss"
 }
 
 func (u *URLs) AtomFeed() string {
-	return fmt.Sprintf("%s/feed/atom", u.BaseURL)
+	return u.BaseURL + "/feed/atom"
 }
 
 func (u *URLs) BlogPostURL(blogPostID string) string {
@@ -50,5 +50,5 @@ func (u *URLs) DisqusCountScript() string {
 }
 
 func (u *URLs) Logo() string {
-	return fmt.Sprintf("%s/images/public/logo.png", u.CDN)
+	return u.CDN + "/images/public/logo.png"
 }

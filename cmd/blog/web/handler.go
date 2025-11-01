@@ -24,7 +24,6 @@ func NewHandler(
 	assets *model.Assets,
 	blobPosts []*blog.Post,
 ) *Handler {
-
 	masterFiles := []string{
 		"dist/templates/components/branding.html",
 		"dist/templates/components/nav.html",
@@ -108,94 +107,93 @@ func NewHandler(
 
 func (h *Handler) ServeHTTP(w http.ResponseWriter, r *http.Request) {
 	verb := r.Method
-	p := r.URL.Path
+	path := r.URL.Path
 
-	if verb == "GET" || verb == "HEAD" {
-
-		if p == "/" {
-			h.index(w, r)
-			return
-		}
-
-		if p == "/version" {
-			h.version(w, r)
-			return
-		}
-
-		if p == "/ping" {
-			h.ping(w, r)
-			return
-		}
-
-		if p == "/panic" && !h.config.IsProduction() {
-			h.panic(w, r)
-			return
-		}
-
-		if p == "/blog" {
-			h.blog(w, r)
-			return
-		}
-
-		if p == "/products" {
-			h.products(w, r)
-			return
-		}
-
-		if p == "/open-source" {
-			h.oss(w, r)
-			return
-		}
-
-		if p == "/hire" {
-			h.hire(w, r)
-			return
-		}
-
-		if p == "/about" {
-			h.about(w, r)
-			return
-		}
-
-		if p == "/feed/rss" {
-			h.rss(w, r)
-			return
-		}
-
-		if p == "/feed/atom" {
-			h.atom(w, r)
-			return
-		}
-
-		if p == "/sitemap.xml" {
-			h.sitemap(w, r)
-			return
-		}
-
-		if p == "/robots.txt" {
-			h.robots(w, r)
-			return
-		}
-
-		head, tail := route.ShiftPath(p)
-		if head == "tagged" {
-			tagName := strings.TrimLeft(tail, "/")
-			h.tagged(w, r, tagName)
-			return
-		}
-
-		// Support for legacy URLs:
-		if head == "demystifying-aspnet-mvc-5-error-pages" {
-			http.Redirect(
-				w, r,
-				"/demystifying-aspnet-mvc-5-error-pages-and-error-logging",
-				http.StatusMovedPermanently)
-			return
-		}
-
-		h.blogPost(w, r)
+	if verb != "GET" && verb != "HEAD" {
+		h.notFound(w, r)
 		return
 	}
 
-	h.notFound(w, r)
+	if path == "/" {
+		h.index(w, r)
+		return
+	}
+
+	if path == "/version" {
+		h.version(w, r)
+		return
+	}
+
+	if path == "/ping" {
+		h.ping(w, r)
+		return
+	}
+
+	if path == "/panic" && !h.config.IsProduction() {
+		h.panic(w, r)
+		return
+	}
+
+	if path == "/blog" {
+		h.blog(w, r)
+		return
+	}
+
+	if path == "/products" {
+		h.products(w, r)
+		return
+	}
+
+	if path == "/open-source" {
+		h.oss(w, r)
+		return
+	}
+
+	if path == "/hire" {
+		h.hire(w, r)
+		return
+	}
+
+	if path == "/about" {
+		h.about(w, r)
+		return
+	}
+
+	if path == "/feed/rss" {
+		h.rss(w, r)
+		return
+	}
+
+	if path == "/feed/atom" {
+		h.atom(w, r)
+		return
+	}
+
+	if path == "/sitemap.xml" {
+		h.sitemap(w, r)
+		return
+	}
+
+	if path == "/robots.txt" {
+		h.robots(w, r)
+		return
+	}
+
+	head, tail := route.ShiftPath(path)
+	if head == "tagged" {
+		tagName := strings.TrimLeft(tail, "/")
+		h.tagged(w, r, tagName)
+		return
+	}
+
+	// Support for legacy URLs:
+	if head == "demystifying-aspnet-mvc-5-error-pages" {
+		http.Redirect(
+			w, r,
+			"/demystifying-aspnet-mvc-5-error-pages-and-error-logging",
+			http.StatusMovedPermanently)
+		return
+	}
+
+	h.blogPost(w, r)
 }

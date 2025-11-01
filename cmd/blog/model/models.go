@@ -3,10 +3,10 @@ package model
 import (
 	"html/template"
 	"net/url"
+	"slices"
 	"sort"
 	"time"
 
-	"github.com/dustedcodes/blog/internal/array"
 	"github.com/dustedcodes/blog/internal/blog"
 )
 
@@ -34,7 +34,9 @@ func (b Base) WithOpenGraphImage(img blog.OpenGraphImage) Base {
 	if !img.Complete() {
 		return b
 	}
+
 	b.OpenGraphImage = img
+
 	return b
 }
 
@@ -65,7 +67,7 @@ func (b BlogPostLink) PublishedOn() string {
 
 type Blog struct {
 	Base        Base
-	Catalogue   map[int][]BlogPostLink
+	Catalog     map[int][]BlogPostLink
 	SortedYears []int
 }
 
@@ -112,12 +114,12 @@ func (b Base) UserMessages(msgs ...template.HTML) UserMessage {
 }
 
 func (b Base) Blog(blogPosts []*blog.Post) Blog {
-	catalogue := map[int][]BlogPostLink{}
+	catalog := map[int][]BlogPostLink{}
 	years := []int{}
 
 	for _, post := range blogPosts {
 		year := post.Year()
-		if !array.Contains(years, year) {
+		if !slices.Contains(years, year) {
 			years = append(years, year)
 		}
 		tags := []Tag{}
@@ -127,8 +129,8 @@ func (b Base) Blog(blogPosts []*blog.Post) Blog {
 				URL:   b.URLs.TagURL(tag),
 			})
 		}
-		catalogue[year] = append(
-			catalogue[year],
+		catalog[year] = append(
+			catalog[year],
 			BlogPostLink{
 				Title:       post.Title,
 				Permalink:   b.URLs.BlogPostURL(post.ID),
@@ -136,19 +138,20 @@ func (b Base) Blog(blogPosts []*blog.Post) Blog {
 				Tags:        tags,
 			})
 	}
+
 	sort.Slice(years, func(i, j int) bool {
 		return years[i] > years[j]
 	})
 
 	for _, year := range years {
-		sort.Slice(catalogue[year], func(i, j int) bool {
-			return catalogue[year][i].PublishDate.After(catalogue[year][j].PublishDate)
+		sort.Slice(catalog[year], func(i, j int) bool {
+			return catalog[year][i].PublishDate.After(catalog[year][j].PublishDate)
 		})
 	}
 
 	return Blog{
 		Base:        b,
-		Catalogue:   catalogue,
+		Catalog:     catalog,
 		SortedYears: years,
 	}
 }
@@ -189,9 +192,9 @@ func (b Base) BlogPost(
 	tags []string,
 ) BlogPost {
 	permalink := b.URLs.BlogPostURL(blogPostID)
-	t := []Tag{}
+	tagURLs := []Tag{}
 	for _, tag := range tags {
-		t = append(t, Tag{
+		tagURLs = append(tagURLs, Tag{
 			Value: tag,
 			URL:   b.URLs.TagURL(tag),
 		})
@@ -201,7 +204,7 @@ func (b Base) BlogPost(
 		ID:               blogPostID,
 		PublishDate:      publishDate,
 		Content:          content,
-		Tags:             t,
+		Tags:             tagURLs,
 		EncodedTitle:     url.QueryEscape(b.Title),
 		Permalink:        permalink,
 		EncodedPermalink: url.QueryEscape(permalink),

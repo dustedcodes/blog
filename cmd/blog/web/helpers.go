@@ -60,7 +60,8 @@ func (h *Handler) internalError(
 ) {
 	h.writeText(w, r,
 		http.StatusInternalServerError,
-		"Oops, something went wrong. The server encountered an internal error or misconfiguration and was unable to complete your request.")
+		"Oops, something went wrong. The server encountered an internal error "+
+			"or misconfiguration and was unable to complete your request.")
 }
 
 func (h *Handler) renderView(
@@ -122,7 +123,7 @@ func (h *Handler) setCacheDirective(
 
 func (h *Handler) Recover(recovered any) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
-		err := fmt.Errorf("Panic: %+v", recovered)
+		err := fmt.Errorf("panic: %+v", recovered)
 		stackdriver.GetLogger(r.Context()).Error(
 			"Application panicked.",
 			"error", err)
