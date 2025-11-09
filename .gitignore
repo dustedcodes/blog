@@ -25,3 +25,7 @@ node_modules
 
 # Environment variables
 .env
+
+# AI
+CLAUDE.md
+GEMINI.md
