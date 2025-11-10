@@ -158,3 +158,137 @@ Hamburger menu icon
 .ham-burger.ham-active .ham-bottom {
     @apply stroke-fire;
 }
+
+/* ----------------
+Fonts
+---------------- */
+
+@font-face {
+  font-family: 'Inconsolata';
+  font-style: normal;
+  font-weight: 400;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url(https://cdn.dusted.codes/fonts/FU0bx3ip3fpZT7LM_ASHPA.woff) format('woff');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 100;
+  font-display: swap;
+  src: url(https://cdn.dusted.codes/fonts/Ty08tKwOvknuiybtey9VtA.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 200;
+  font-display: swap;
+  src: url(https://cdn.dusted.codes/fonts/Ty08tKwOvknuiybtey9VtA.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url(https://cdn.dusted.codes/fonts/Ty08tKwOvknuiybtey9VtA.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://cdn.dusted.codes/fonts/Ty08tKwOvknuiybtey9VtA.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://cdn.dusted.codes/fonts/Ty08tKwOvknuiybtey9VtA.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://cdn.dusted.codes/fonts/Ty08tKwOvknuiybtey9VtA.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 700;
+  font-display: swap;
+  src: url(https://cdn.dusted.codes/fonts/Ty08tKwOvknuiybtey9VtA.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url(https://cdn.dusted.codes/fonts/Ty08tKwOvknuiybtey9VtA.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'Inter';
+  font-style: normal;
+  font-weight: 900;
+  font-display: swap;
+  src: url(https://cdn.dusted.codes/fonts/Ty08tKwOvknuiybtey9VtA.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'Nunito';
+  font-style: italic;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://cdn.dusted.codes/fonts/aKbnU1DWSvOtPEA9vpyDAw.woff) format('woff');
+}
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 300;
+  font-display: swap;
+  src: url(https://cdn.dusted.codes/fonts/Bzi1bPYQTyjn3bDlekdu4A.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 400;
+  font-display: swap;
+  src: url(https://cdn.dusted.codes/fonts/Bzi1bPYQTyjn3bDlekdu4A.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 500;
+  font-display: swap;
+  src: url(https://cdn.dusted.codes/fonts/Bzi1bPYQTyjn3bDlekdu4A.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 600;
+  font-display: swap;
+  src: url(https://cdn.dusted.codes/fonts/Bzi1bPYQTyjn3bDlekdu4A.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'Nunito';
+  font-style: normal;
+  font-weight: 800;
+  font-display: swap;
+  src: url(https://cdn.dusted.codes/fonts/Bzi1bPYQTyjn3bDlekdu4A.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'Nunito Sans';
+  font-style: italic;
+  font-weight: 200 1000;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url(https://cdn.dusted.codes/fonts/Nk2l4WPhqjqsyAoifZEqLA.woff2) format('woff2');
+}
+@font-face {
+  font-family: 'Nunito Sans';
+  font-style: normal;
+  font-weight: 200 1000;
+  font-stretch: 100%;
+  font-display: swap;
+  src: url(https://cdn.dusted.codes/fonts/JOcT47xOQSVmWC2xcCBhlA.woff2) format('woff2');
+}

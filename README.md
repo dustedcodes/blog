@@ -1,17 +1,33 @@
-# [Dusted Codes](https://dusted.codes/)
+# Dusted Codes Blog & Website
 
-My personal website, blog and home of Dusted Codes Limited.
+Visit: https://dusted.codes
+
+My personal website, blog and home of Dusted Codes Limited (UK based software development business).
 
 Migrated from my previous [F# blog](https://github.com/dustinmoris/dustedcodes).
 
-![Build and Deploy](https://github.com/dustedcodes/blog/workflows/Build%2C%20Test%20and%20Deploy/badge.svg?branch=master)
-
 # About
 
-Inspired by GitHub Pages and Jekyll this is a Go blog engine which renders static HTML pages.
+My personal take on a simple Go blog engine which renders static HTML pages.
 
-Blog articles can be written in Markdown or HTML. Markdown pages get compiled into static HTML pages during startup.
+Blog articles can be written in Markdown or HTML. Markdown pages get compiled into static HTML during startup.
 
 Feel free to fork it and create your own nerdy space in the world wide web!
 
-Visit my blog at [https://dusted.codes](https://dusted.codes/).
+# Cloudflare hosted CDN
+
+I use Cloudflare R2 storage buckets and their CDN feature to host static assets behind https://cdn.dusted.codes.
+
+Files inside `./cdn` mirror what goes into the CDN.
+
+Upload contents into R2:
+
+```bash
+rclone copy ./cdn cf-dusted-codes:dusted-codes-cdn
+```
+
+Delete uploaded content (e.g. an entire folder):
+
+```bash
+rclone delete cf-dusted-codes:dusted-codes-cdn/folder-to-delete
+```
