@@ -37,7 +37,7 @@ jobs:
       id-token: write
     env:
       GITHUB_SHA: ${{ github.sha }}
-      IMAGE: dustedcodes/blog
+      IMAGE: blog
       REGISTRY: ghcr.io
 
     steps:

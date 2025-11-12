@@ -1163,6 +1163,10 @@ video {
     grid-template-columns: repeat(4, minmax(0, 1fr));
   }
 
+  .xs\:justify-start {
+    justify-content: flex-start;
+  }
+
   .xs\:gap-0 {
     gap: 0px;
   }
@@ -1175,6 +1179,10 @@ video {
   .xs\:py-10 {
     padding-top: 2.5rem;
     padding-bottom: 2.5rem;
+  }
+
+  .xs\:text-left {
+    text-align: left;
   }
 
   .xs\:text-3xl {
