@@ -16,7 +16,7 @@
 
     {{ range $i, $year := .SortedYears }}
     <div class="grid grid-cols-1 gap-0 md:grid-cols-4 items-stretch md:py-5 md:border-t-2 md:border-ink-0">
-        <h2 class="h3 md:border-r-2 md:border-ink-0 mb-5 md:!my-0 md:p-5 md:flex md:flex-row md:items-center md:justify-end">{{ $year }}</h2>
+        <h2 class="h3 ml-8 md:ml-0 md:border-r-2 md:border-ink-0 mb-5 md:!my-0 md:p-5 md:flex md:flex-row md:items-center md:justify-end">{{ $year }}</h2>
         <ul class="md:col-span-3 ul !my-0 !py-0 self-center">
             {{ with $posts := index $.Catalog $year }}
                 {{ range $i, $post := $posts }}
