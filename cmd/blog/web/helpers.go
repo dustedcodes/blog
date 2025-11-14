@@ -13,11 +13,11 @@ import (
 
 var (
 	defaultOpenGraphImage = blog.OpenGraphImage{
-		URL:      "https://cdn.dusted.codes/images/public/dusted-codes-banner.png",
-		Width:    1792,
-		Height:   1024,
-		Size:     1700 * 1024,
-		MimeType: "image/png",
+		URL:      "https://cdn.dusted.codes/images/general/dusted-codes-banner.jpg",
+		Width:    1200,
+		Height:   630,
+		Size:     1200 * 630,
+		MimeType: "image/jpeg",
 	}
 )
 

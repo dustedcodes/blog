@@ -50,5 +50,5 @@ func (u *URLs) DisqusCountScript() string {
 }
 
 func (u *URLs) Logo() string {
-	return u.CDN + "/images/public/logo.png"
+	return u.CDN + "/images/general/logo.png"
 }
