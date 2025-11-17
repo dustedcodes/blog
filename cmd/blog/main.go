@@ -92,7 +92,11 @@ func main() {
 	middleware := mware.Bind(
 		recoverer.HandlePanics(webHandler.Recover),
 		healthz.LivenessProbe,
-		httplogger.RequestScoped(logHandler, true, true),
+		httplogger.RequestScoped(
+			logHandler,
+			true,
+			true,
+			[]string{}),
 		proxy.ForwardedHeaders(config.ProxyCount),
 		redirect.TrailingSlash,
 		redirect.Hosts(config.DomainRedirects(), true),
