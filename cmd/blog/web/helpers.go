@@ -5,8 +5,7 @@ import (
 	"net/http"
 	"time"
 
-	"github.com/dusted-go/logging/stackdriver"
-
+	"github.com/dusted-go/logging/v2/slogctx"
 	"github.com/dustedcodes/blog/cmd/blog/model"
 	"github.com/dustedcodes/blog/internal/blog"
 )
@@ -47,7 +46,7 @@ func (h *Handler) writeText(w http.ResponseWriter, r *http.Request, statusCode i
 	w.WriteHeader(statusCode)
 	_, err := fmt.Fprint(w, text)
 	if err != nil {
-		stackdriver.GetLogger(r.Context()).Error(
+		slogctx.GetLogger(r.Context()).Error(
 			"Failed to write text/plain response.",
 			"error", err,
 			"response", text)
@@ -77,7 +76,7 @@ func (h *Handler) renderView(
 		viewKey,
 		viewModel)
 	if err != nil {
-		stackdriver.GetLogger(r.Context()).Error(
+		slogctx.GetLogger(r.Context()).Error(
 			"Failed to write html view response.",
 			"error", err,
 			"view", viewKey)
@@ -93,7 +92,7 @@ func (h *Handler) handleErr(
 	if err == nil {
 		return false
 	}
-	stackdriver.GetLogger(r.Context()).Error(
+	slogctx.GetLogger(r.Context()).Error(
 		"An unexpected error occurred.",
 		"error", err)
 	h.internalError(w, r)
@@ -124,7 +123,7 @@ func (h *Handler) setCacheDirective(
 func (h *Handler) Recover(recovered any) http.HandlerFunc {
 	return func(w http.ResponseWriter, r *http.Request) {
 		err := fmt.Errorf("panic: %+v", recovered)
-		stackdriver.GetLogger(r.Context()).Error(
+		slogctx.GetLogger(r.Context()).Error(
 			"Application panicked.",
 			"error", err)
 		h.internalError(w, r)

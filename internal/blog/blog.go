@@ -15,10 +15,9 @@ import (
 	"strings"
 	"time"
 
-	"github.com/dusted-go/logging/stackdriver"
-
 	"github.com/alecthomas/chroma/v2"
 	chromahtml "github.com/alecthomas/chroma/v2/formatters/html"
+	"github.com/dusted-go/logging/v2/slogctx"
 	"github.com/yuin/goldmark"
 	syntax "github.com/yuin/goldmark-highlighting/v2"
 	"github.com/yuin/goldmark/extension"
@@ -276,7 +275,7 @@ func ReadPost(ctx context.Context, basePath string, blogPostID string) (*Post, e
 	}
 
 	if len(fileName) == 0 {
-		stackdriver.GetLogger(ctx).Warn("Blog post not found.", "blogPostID", blogPostID)
+		slogctx.GetLogger(ctx).Warn("Blog post not found.", "blogPostID", blogPostID)
 		return nil, ErrBlogPostNotFound
 	}
 
@@ -312,7 +311,7 @@ func ReadPosts(ctx context.Context, basePath string) ([]*Post, error) {
 	}
 
 	blogPosts := []*Post{}
-	logger := stackdriver.GetLogger(ctx)
+	logger := slogctx.GetLogger(ctx)
 
 	for _, f := range files {
 		fileName := f.Name()

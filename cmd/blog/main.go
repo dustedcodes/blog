@@ -4,6 +4,7 @@ import (
 	"context"
 	"log/slog"
 	"net/http"
+	"os"
 	"sort"
 	"time"
 
@@ -16,8 +17,8 @@ import (
 	"github.com/dusted-go/http/v6/middleware/proxy"
 	"github.com/dusted-go/http/v6/middleware/recoverer"
 	"github.com/dusted-go/http/v6/middleware/redirect"
-	"github.com/dusted-go/logging/prettylog"
-	"github.com/dusted-go/logging/stackdriver"
+	"github.com/dusted-go/logging/v2/handlers/prettylog"
+	"github.com/dusted-go/logging/v2/middlewares/httplogger"
 
 	"github.com/dustedcodes/blog/cmd/blog/model"
 	"github.com/dustedcodes/blog/cmd/blog/web"
@@ -42,28 +43,17 @@ func main() {
 	// Init default logger
 	// -----------------------------
 	var logHandler slog.Handler
-	var loggingMiddleware func(http.Handler) http.Handler
-	// if config.IsProduction() {
-	// 	logHandlerOptions := &stackdriver.HandlerOptions{
-	// 		ServiceName:    config.ApplicationName,
-	// 		ServiceVersion: config.ApplicationVersion,
-	// 		MinLevel:       config.MinLogLevel(),
-	// 		AddSource:      config.IsProduction(),
-	// 	}
-	// 	logMiddlewareOptions := &stackdriver.MiddlewareOptions{
-	// 		GCPProjectID:   config.GoogleCloudProjectID,
-	// 		AddTrace:       config.IsProduction(),
-	// 		AddHTTPRequest: config.IsProduction(),
-	// 	}
-	// 	logHandler = stackdriver.NewHandler(logHandlerOptions)
-	// 	loggingMiddleware = stackdriver.Logging(logHandlerOptions, logMiddlewareOptions)
-	// } else {
-	logHandler = prettylog.NewHandler(&slog.HandlerOptions{
-		Level:       config.MinLogLevel(),
-		AddSource:   config.IsProduction(),
-		ReplaceAttr: stackdriver.ReplaceLogLevel,
-	})
-	// }
+	if config.IsProduction() {
+		logHandler = slog.NewJSONHandler(os.Stdout, &slog.HandlerOptions{
+			Level:     config.MinLogLevel(),
+			AddSource: false,
+		})
+	} else {
+		logHandler = prettylog.NewHandler(&slog.HandlerOptions{
+			Level:     config.MinLogLevel(),
+			AddSource: false,
+		})
+	}
 	logger := slog.New(logHandler)
 	slog.SetDefault(logger)
 
@@ -102,7 +92,7 @@ func main() {
 	middleware := mware.Bind(
 		recoverer.HandlePanics(webHandler.Recover),
 		healthz.LivenessProbe,
-		loggingMiddleware,
+		httplogger.RequestScoped(logHandler, true, true),
 		proxy.ForwardedHeaders(config.ProxyCount),
 		redirect.TrailingSlash,
 		redirect.Hosts(config.DomainRedirects(), true),

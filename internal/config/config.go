@@ -6,7 +6,6 @@ import (
 	"strings"
 
 	"github.com/dusted-go/config/env"
-	"github.com/dusted-go/logging/stackdriver"
 )
 
 type Config struct {
@@ -22,6 +21,34 @@ type Config struct {
 	CDN                string
 	MaxRequestSize     int64
 	DisqusShortname    string
+}
+
+func parseLogLevel(value string) slog.Leveler {
+	if len(value) == 0 {
+		return slog.LevelInfo
+	}
+
+	level := strings.ToLower(strings.Trim(value, " "))
+
+	if level == "debug" {
+		return slog.LevelDebug
+	}
+	if level == "info" {
+		return slog.LevelInfo
+	}
+	if level == "warning" {
+		return slog.LevelWarn
+	}
+	if level == "error" {
+		return slog.LevelError
+	}
+
+	i, err := strconv.Atoi(value)
+	if err == nil {
+		return slog.Level(i)
+	}
+
+	return slog.LevelInfo
 }
 
 func (c *Config) MinLogLevel() slog.Leveler {
@@ -60,7 +87,7 @@ func (c *Config) DomainRedirects() map[string]string {
 func Load() *Config {
 	return &Config{
 		EnvironmentName:    env.GetOrDefault("ENV_NAME", "Development"),
-		LogLevel:           stackdriver.ParseLogLevel(env.GetOrDefault("LOG_LEVEL", "Debug")),
+		LogLevel:           parseLogLevel(env.GetOrDefault("LOG_LEVEL", "Debug")),
 		ApplicationName:    env.GetOrDefault("APP_NAME", "dustedcodes"),
 		ApplicationVersion: env.GetOrDefault("APP_VERSION", "0.1.0"),
 		HTTPPort:           env.GetIntOrDefault("HTTP_PORT", 3000),
