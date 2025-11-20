@@ -17,8 +17,8 @@ github.com/dusted-go/config v1.0.0 h1:G/zz/CJC9//ZBEDdFyMK5RQ5dnE0i7LHeoOs6q+yzK
 github.com/dusted-go/config v1.0.0/go.mod h1:dEaLb35jkv7uUQ1/oKRIPORF2r4lXTBDi6FD5eMRtVE=
 github.com/dusted-go/http/v6 v6.1.0 h1:+Wd4jjv3QcJCDocGP0Hhmn6P3eBPtw9e917Y2cWNK1Y=
 github.com/dusted-go/http/v6 v6.1.0/go.mod h1:oK0SexaH2mEF3iRMFDlf8oAcScvAqh5ZD3nMk4y7LJQ=
-github.com/dusted-go/logging/v2 v2.0.0-rc-03 h1:34SBFyMLKdG0sywpJmh5WmcJLAv5037KJ3M0QlIvrqA=
-github.com/dusted-go/logging/v2 v2.0.0-rc-03/go.mod h1:k8uAJHzbWFJbUIMil/mvWwY6BkhVoxf7CjNdiI03+A0=
+github.com/dusted-go/logging/v2 v2.0.0-rc-04 h1:v15/t9HrnIccQJ5DIkddGt3cjWzNYnh7iBQV2m6V2oo=
+github.com/dusted-go/logging/v2 v2.0.0-rc-04/go.mod h1:k8uAJHzbWFJbUIMil/mvWwY6BkhVoxf7CjNdiI03+A0=
 github.com/google/go-cmp v0.7.0 h1:wk8382ETsv4JYUZwIsn6YpYiWiBsYLSJiTsyBybVuN8=
 github.com/google/go-cmp v0.7.0/go.mod h1:pXiqmnSA92OHEEa9HXL2W4E7lf9JzCmGVUdgjX3N/iU=
 github.com/google/uuid v1.6.0 h1:NIvaJDMOsjHA8n1jAhLSgzrAzy1Hgr+hNrb57e+94F0=

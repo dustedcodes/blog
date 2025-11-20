@@ -6,7 +6,7 @@ require (
 	github.com/alecthomas/chroma/v2 v2.20.0
 	github.com/dusted-go/config v1.0.0
 	github.com/dusted-go/http/v6 v6.1.0
-	github.com/dusted-go/logging/v2 v2.0.0-rc-03
+	github.com/dusted-go/logging/v2 v2.0.0-rc-04
 	github.com/yuin/goldmark v1.7.13
 	github.com/yuin/goldmark-highlighting/v2 v2.0.0-20230729083705-37449abec8cc
 )
