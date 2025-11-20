@@ -30,16 +30,16 @@ func parseLogLevel(value string) slog.Leveler {
 
 	level := strings.ToLower(strings.Trim(value, " "))
 
-	if level == "debug" {
+	if level == "debug" || level == "dbg" {
 		return slog.LevelDebug
 	}
-	if level == "info" {
+	if level == "info" || level == "information" {
 		return slog.LevelInfo
 	}
-	if level == "warning" {
+	if level == "warning" || level == "warn" {
 		return slog.LevelWarn
 	}
-	if level == "error" {
+	if level == "error" || level == "err" {
 		return slog.LevelError
 	}
 

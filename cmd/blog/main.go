@@ -98,6 +98,7 @@ func main() {
 			true,
 			[]string{}),
 		proxy.ForwardedHeaders(config.ProxyCount),
+		proxy.GetRealIP("X-Real-IP"),
 		redirect.TrailingSlash,
 		redirect.Hosts(config.DomainRedirects(), true),
 		redirect.ForceHTTPS(
@@ -113,8 +114,9 @@ func main() {
 	// Launch web server
 	// -----------------------------
 	logger.Info("Starting server...",
-		"web-server-address", config.ServerAddress(),
-		"base-url", config.BaseURL)
+		"network.local.address", config.ServerAddress(),
+		"network.local.port", config.HTTPPort,
+		"server.address", config.BaseURL)
 	httpServer := &http.Server{
 		Addr:              config.ServerAddress(),
 		ReadHeaderTimeout: 3 * time.Second,
